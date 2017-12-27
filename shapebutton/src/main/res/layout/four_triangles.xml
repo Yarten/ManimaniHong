@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteY="81dp">
+
+    <com.yarten.shapebutton.ShapeButton
+        android:id="@+id/left"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="120dp"
+        android:layout_marginTop="120dp"
+        app:color="@color/triangle_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rotation="270"
+        app:shape="triangle" />
+
+    <com.yarten.shapebutton.ShapeButton
+        android:id="@+id/top"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginStart="120dp"
+        app:color="@color/triangle_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rotation="0"
+        app:shape="triangle" />
+
+    <com.yarten.shapebutton.ShapeButton
+        android:id="@+id/right"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="120dp"
+        android:layout_marginTop="120dp"
+        app:color="@color/triangle_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rotation="90"
+        app:shape="triangle" />
+
+    <com.yarten.shapebutton.ShapeButton
+        android:id="@+id/bottom"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginStart="120dp"
+        app:color="@color/triangle_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rotation="180"
+        app:shape="triangle" />
+
+</android.support.constraint.ConstraintLayout>
