@@ -1,1 +1,1 @@
-include ':app', ':shapebutton', ':utils', ':mainmenu'
+include ':app', ':shapebutton', ':utils', ':mainmenu', ':device'
