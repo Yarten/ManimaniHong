@@ -6,7 +6,7 @@ import java.util.Vector;
  * Created by yfic on 2017/12/26.
  */
 
-public interface Basic
+public interface Touchable
 {
     interface Listener
     {
@@ -16,8 +16,6 @@ public interface Basic
 
         void onMove(Vector<Float> values);
     }
-
-
 
     void setListener(Listener listener);
 }

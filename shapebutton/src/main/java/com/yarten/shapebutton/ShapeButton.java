@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yarten.utils.Interface.Basic;
+import com.yarten.device.UCP.Controllable;
+import com.yarten.device.UCP.Controller;
+import com.yarten.device.UCP.Signal;
+import com.yarten.utils.Interface.Touchable;
 import com.yarten.utils.Interface.Styleable;
+import com.yarten.utils.Style;
 
 import java.util.Vector;
 
@@ -24,7 +28,7 @@ import static android.view.MotionEvent.ACTION_UP;
  * Created by yfic on 2017/12/26.
  */
 
-public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButton>, Basic
+public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButton>, Touchable, Controllable
 {
     //region 构造器
     public ShapeButton(Context context)
@@ -41,6 +45,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     {
         super(context, attrs, defStyle);
         this.context = context;
+        this.controller = new Controller(Signal.Type.Boolean);
 
         LayoutInflater.from(context).inflate(R.layout.shape_button, this);
         textView = findViewById(R.id.text);
@@ -165,18 +170,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
 
     @Override
     public ShapeButton setShape(Shape shape) {
-        switch (shape)
-        {
-            case Square:
-                shapeView.setShape(ShapeView.Shape.Square);
-                break;
-            case Circle:
-                shapeView.setShape(ShapeView.Shape.Circle);
-                break;
-            case Triangle:
-                shapeView.setShape(ShapeView.Shape.Triangle);
-                break;
-        }
+        shapeView.setShape(shape);
         return this;
     }
 
@@ -204,5 +198,28 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
             imageView.setImageDrawable(context.getDrawable(reference));
         return this;
     }
+
+    @Override
+    public Style getStyle() {
+        Style style = new Style();
+        style.color = mColor;
+        style.shape = shapeView.getShape();
+        style.text = textView.getText().toString();
+        style.x = getX();
+        style.y = getY();
+
+        return style;
+    }
+
+    //endregion
+
+    //region Controller设置
+    private Controller controller;
+
+    @Override
+    public Controller getController() {
+        return controller;
+    }
+
     //endregion
 }

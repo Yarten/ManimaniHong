@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ManimaniHong.iml" filepath="$PROJECT_DIR$/ManimaniHong.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circlepicker/circlepicker.iml" filepath="$PROJECT_DIR$/circlepicker/circlepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/device/device.iml" filepath="$PROJECT_DIR$/device/device.iml" />
+      <module fileurl="file://$PROJECT_DIR$/editor/editor.iml" filepath="$PROJECT_DIR$/editor/editor.iml" />
       <module fileurl="file://$PROJECT_DIR$/mainmenu/mainmenu.iml" filepath="$PROJECT_DIR$/mainmenu/mainmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/shapebutton/shapebutton.iml" filepath="$PROJECT_DIR$/shapebutton/shapebutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />

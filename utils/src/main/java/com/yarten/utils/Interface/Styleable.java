@@ -1,5 +1,7 @@
 package com.yarten.utils.Interface;
 
+import com.yarten.utils.Style;
+
 /**
  * Created by yfic on 2017/12/26.
  */
@@ -21,5 +23,6 @@ public interface Styleable<T>
     T setText(String text);
     T setRotation(int rotation);
 
+    Style getStyle();
     T showText(boolean b);
 }

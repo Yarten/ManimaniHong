@@ -1,18 +1,12 @@
 package com.yarten.mainmenu;
 
-import android.app.ActivityOptions;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
 
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
-import com.yarten.utils.Interface.Basic;
+import com.yarten.utils.Interface.Touchable;
 import com.yarten.utils.Utils;
 
 import java.util.Vector;
@@ -46,7 +40,7 @@ public class MainActivity extends BaseActivity {
         initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM);
 
         buttonPanel.getMiddleButton()
-                .setListener(new Basic.Listener() {
+                .setListener(new Touchable.Listener() {
                     @Override
                     public void onDown() {}
 
@@ -64,7 +58,7 @@ public class MainActivity extends BaseActivity {
                 });
 
         buttonPanel.getLeftTopButton()
-                .setListener(new Basic.Listener() {
+                .setListener(new Touchable.Listener() {
                     @Override
                     public void onDown() {}
 

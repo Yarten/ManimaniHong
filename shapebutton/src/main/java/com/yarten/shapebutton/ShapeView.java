@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.yarten.utils.Interface.Styleable;
+
 /**
  * Created by yfic on 2017/12/26.
  */
@@ -35,13 +37,13 @@ public class ShapeView extends View
         switch (ta.getInt(R.styleable.ShapeView_shape, 0))
         {
             case 0:
-                shape = Shape.Square;
+                shape = Styleable.Shape.Square;
                 break;
             case 1:
-                shape = Shape.Circle;
+                shape = Styleable.Shape.Circle;
                 break;
             case 2:
-                shape = Shape.Triangle;
+                shape = Styleable.Shape.Triangle;
                 break;
         }
 
@@ -49,17 +51,12 @@ public class ShapeView extends View
         ta.recycle();
     }
 
-    public enum Shape
-    {
-        Square, Circle, Triangle
-    }
-
     public static class Color
     {
         public static int Red = 0xFFFF0000;
     }
 
-    private Shape shape;
+    private Styleable.Shape shape;
 
     private Paint paint = new Paint();
     private Paint paint2 = new Paint();
@@ -71,10 +68,15 @@ public class ShapeView extends View
         postInvalidate();
     }
 
-    public void setShape(Shape shape)
+    public void setShape(Styleable.Shape shape)
     {
         this.shape = shape;
         postInvalidate();
+    }
+
+    public Styleable.Shape getShape()
+    {
+        return shape;
     }
 
     @Override

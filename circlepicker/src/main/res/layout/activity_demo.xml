@@ -1,0 +1,86 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <hu.bugadani.circlepickerlib.CirclePickerView
+                android:id="@+id/rotation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dividerColor="#303030"
+                app:label="Rotation"
+                app:labelColor="@android:color/secondary_text_dark"
+                app:labelSize="15sp"
+                app:max="180"
+                app:min="-180"
+                app:showDivider="true"
+                app:step="15"
+                app:wheelRadius="125dp"/>
+
+            <hu.bugadani.circlepickerlib.CirclePickerView
+                android:id="@+id/steps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="Steps"
+                app:labelColor="@android:color/secondary_text_dark"
+                app:labelSize="15sp"
+                app:max="10"
+                app:min="0.1"
+                app:value="1"
+                app:wheelRadius="125dp"/>
+
+            <CheckBox
+                android:id="@+id/show_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Show value text"/>
+
+            <CheckBox
+                android:id="@+id/show_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Show label"/>
+
+            <CheckBox
+                android:id="@+id/show_pointer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Show pointert"/>
+
+            <CheckBox
+                android:id="@+id/show_dividers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show dividers"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <hu.bugadani.circlepickerlib.CirclePickerView
+        android:id="@+id/picker"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:padding="30dp"
+        app:cycleValue="50"
+        app:dividerColor="#303030"
+        app:label="This is a label: "
+        app:min="-20"
+        app:step="1"/>
+
+</LinearLayout>
