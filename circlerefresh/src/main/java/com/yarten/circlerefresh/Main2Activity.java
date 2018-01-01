@@ -1,37 +1,38 @@
-package com.yarten.manimanihong;
-
+package com.yarten.circlerefresh;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.icu.text.LocaleDisplayNames;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yarten.utils.CommonRecyclerView;
 
-public class MainActivity extends AppCompatActivity {
+public class Main2Activity extends AppCompatActivity {
 
-    private CommonRecyclerView recyclerView;
-    private CommonRecyclerView.Adapter adapter;
-
+    RefreshListView refreshListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
-        recyclerView = findViewById(R.id.common_list);
-        adapter = new CommonRecyclerView.Adapter(this, R.layout.item_layout, 10, A.class);
-        recyclerView.setAdapter(adapter);
+        refreshListView = findViewById(R.id.refresh_list_view);
+        refreshListView.setOnCircleRefreshListener(new CircleRefreshLayout.OnCircleRefreshListener() {
+            @Override
+            public void completeRefresh() {
+
+            }
+
+            @Override
+            public void refreshing() {
+                Log.i("Refresh", " .. . . . . . ");
+            }
+        }).setAdapter(R.layout.item_layout, A.class).updateAll(10);
     }
 
     static class A extends CommonRecyclerView.ViewHolder

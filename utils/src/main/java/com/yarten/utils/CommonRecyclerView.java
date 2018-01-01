@@ -1,6 +1,7 @@
 package com.yarten.utils;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,7 @@ public class CommonRecyclerView extends RecyclerView
         this(context, attrs, 0);
     }
 
-    public  CommonRecyclerView(Context context, AttributeSet attrs, int defStyle)
+    public CommonRecyclerView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
         setItemAnimator(new DefaultItemAnimator());
@@ -35,39 +36,27 @@ public class CommonRecyclerView extends RecyclerView
 
     public static class Adapter extends RecyclerView.Adapter<ViewHolder>
     {
-        public interface Listener
-        {
-            void onBind(View view, int position);
-
-            void onClick(View view, int position);
-
-            void onLongClick(View view, int position);
-        }
-
         private int size = 0;
-        private Listener listener;
         private int layout;
         private Context context;
+        private Class[] parameterTypes;
         private Constructor constructor;
-        private Object[] parameters;
 
-        public Adapter(Context context, int layout, Listener listener)
+        public Adapter(Context context, int layout, Class holderClass)
         {
-            this(context, layout, 0, listener);
+            this(context, layout, 0, holderClass);
         }
 
-        public Adapter(Context context, int layout, int size, Listener listener)
+        public Adapter(Context context, int layout, int size, Class holderClass)
         {
             this.layout = layout;
-            this.listener = listener;
             this.context = context;
             this.size = size;
 
             try
             {
-                Class listenerClass = Class.forName(listener.getClass().getName());
-                constructor = listenerClass.getConstructors()[0];
-                parameters = new Object[]{context};
+                parameterTypes = new Class[]{Context.class, View.class};
+                constructor = holderClass.getConstructor(parameterTypes);
             }
             catch (Exception e)
             {
@@ -92,6 +81,12 @@ public class CommonRecyclerView extends RecyclerView
             notifyItemChanged(position);
         }
 
+        public void updateAll(int size)
+        {
+            this.size = size;
+            notifyDataSetChanged();
+        }
+
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(layout, null);
@@ -99,8 +94,8 @@ public class CommonRecyclerView extends RecyclerView
 
             try
             {
-                Listener listener = (Listener) constructor.newInstance(parameters);
-                viewHolder = new ViewHolder(view, listener);
+                Object[] parameters = {context, view};
+                viewHolder = (ViewHolder) constructor.newInstance(parameters);
             }
             catch (Exception e)
             {
@@ -112,23 +107,20 @@ public class CommonRecyclerView extends RecyclerView
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            if(holder.listener != null)
-            {
-                holder.listener.onBind(holder.itemView, position);
-                holder.itemView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.listener.onClick(v, holder.getAdapterPosition());
-                    }
-                });
-                holder.itemView.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        holder.listener.onLongClick(v, holder.getAdapterPosition());
-                        return false;
-                    }
-                });
-            }
+            holder.onBind(position);
+            holder.itemView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.onClick(holder.getAdapterPosition());
+                }
+            });
+            holder.itemView.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    holder.onLongClick(holder.getAdapterPosition());
+                    return false;
+                }
+            });
         }
 
         @Override
@@ -137,14 +129,25 @@ public class CommonRecyclerView extends RecyclerView
         }
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder
+    public static abstract class ViewHolder extends RecyclerView.ViewHolder
     {
-        Adapter.Listener listener;
+        protected Context context;
 
-        ViewHolder(View view, Adapter.Listener listener)
+        public ViewHolder(Context context, View view)
         {
             super(view);
-            this.listener = listener;
+            this.context = context;
         }
+
+        protected  <T extends View> T findViewById(@IdRes int id)
+        {
+            return itemView.findViewById(id);
+        }
+
+        public abstract void onBind(int position);
+
+        public abstract void onClick(int position);
+
+        public abstract boolean onLongClick(int position);
     }
 }
