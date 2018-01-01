@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SeekbarLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.example.doublecursorseekbar.MainActivity">
+
+    <TextView
+        android:id="@+id/LeftCursor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/MySeekBar"
+        app:layout_constraintLeft_toLeftOf="@+id/MySeekBar" />
+
+    <com.example.doublecursorseekbar.MySeekBar
+        android:id="@+id/MySeekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/RightCursor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="350"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/MySeekBar"
+        app:layout_constraintRight_toRightOf="@+id/MySeekBar" />
+
+</android.support.constraint.ConstraintLayout>
