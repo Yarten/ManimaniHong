@@ -18,23 +18,23 @@ public class Controller
         this.type = type;
     }
 
-    public static class Range
-    {
-        public float min, max;
-
-        public Range(float min, float  max)
-        {
+    public static class Value {
+        public float min;
+        public float max;
+        public float num;
+        public Value(float min, float max, float num) {
             this.min = min;
             this.max = max;
+            this.num = num;
         }
     }
 
     public class Pair
     {
         public Signal signal;
-        public Object value;
+        public Value value;
 
-        public Pair(Signal signal, Object value)
+        public Pair(Signal signal, Value value)
         {
             this.signal = signal;
             this.value = value;
@@ -43,7 +43,7 @@ public class Controller
 
     private List<Pair> controlList = new LinkedList<>();
 
-    public void add(Signal signal, Object value)
+    public void add(Signal signal, Value value)
     {
         controlList.add(new Pair(signal, value));
     }
