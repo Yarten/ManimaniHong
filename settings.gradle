@@ -1,1 +1,1 @@
-include ':app', ':shapebutton', ':utils', ':mainmenu', ':device', ':editor', ':circlepicker'
+include ':app', ':shapebutton', ':utils', ':mainmenu', ':device', ':editor', ':circlepicker', ':circlerefresh'

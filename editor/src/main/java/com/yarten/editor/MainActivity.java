@@ -11,13 +11,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ColorPicker colorPicker = findViewById(R.id.color_picker);
-        colorPicker.setOnPickListener(new ColorPicker.Listener() {
-            @Override
-            public void onPick(int color) {
-                Log.i("Color Picker", color + "");
-            }
-        }).build(3, 2, Color.RED, Color.BLACK, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN);
     }
 }
