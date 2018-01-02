@@ -1,5 +1,6 @@
 package com.example.drawer;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
@@ -29,9 +30,15 @@ public class DrawerActivity extends AppCompatActivity {
         gesture();
     }
 
+    public void closeDrawer()
+    {
+        mainLayout.closeDrawer(Gravity.LEFT);
+    }
+
     //region 绑定控件
     private void ini() {
         mainLayout = findViewById(R.id.mainLayout);
+        mainLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout = findViewById(R.id.drawLayout);
     }
     //endregion

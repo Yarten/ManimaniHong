@@ -8,15 +8,17 @@ import android.view.LayoutInflater;
 
 import com.yarten.utils.CommonRecyclerView;
 
+import java.util.List;
+
 /**
  * Created by yfic on 2018/1/1.
  */
 
-public class RefreshListView extends ConstraintLayout
+public class RefreshListView<T, E extends CommonRecyclerView.ViewHolder<T>> extends ConstraintLayout
 {
     private Context context;
     private CommonRecyclerView commonRecyclerView;
-    private CommonRecyclerView.Adapter adapter;
+    private CommonRecyclerView.Adapter<T, E> adapter;
     private CircleRefreshLayout circleRefreshLayout;
 
     public RefreshListView(Context context)
@@ -41,16 +43,16 @@ public class RefreshListView extends ConstraintLayout
         return this;
     }
 
-    public RefreshListView setAdapter(int layout, Class holderClass)
+    public  RefreshListView setAdapter(int layout, Class<E> holderClass)
     {
         adapter = new CommonRecyclerView.Adapter(context, layout, holderClass);
         commonRecyclerView.setAdapter(adapter);
         return this;
     }
 
-    public void add(int position)
+    public void add(T data, int position)
     {
-        if(adapter != null) adapter.add(position);
+        if(adapter != null) adapter.add(data, position);
     }
 
     public void remove(int position)
@@ -58,14 +60,14 @@ public class RefreshListView extends ConstraintLayout
         if(adapter != null) adapter.remove(position);
     }
 
-    public void update(int position)
+    public void update(T data, int position)
     {
-        if(adapter != null) adapter.update(position);
+        if(adapter != null) adapter.update(data, position);
     }
 
-    public void updateAll(int size)
+    public void updateAll(List<T> data)
     {
-        if(adapter != null) adapter.updateAll(size);
+        if(adapter != null) adapter.updateAll(data);
     }
 
     public void finishRefreshing()

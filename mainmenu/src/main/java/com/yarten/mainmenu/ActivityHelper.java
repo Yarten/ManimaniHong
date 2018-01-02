@@ -11,9 +11,9 @@ import android.transition.Slide;
 import android.transition.Visibility;
 import android.view.Window;
 
+import com.yarten.device.UCP.Controllable;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
-import com.yarten.utils.Interface.Touchable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -101,7 +101,7 @@ class ActivityHelper
     //region 控件设置
     static void initTriangle(ShapeButton button, final ButtonPanel buttonPanel, final AppCompatActivity source, final Class target, final int inDirection, final int outDirection)
     {
-        button.setListener(new Touchable.Listener() {
+        button.setListener(new Controllable.Listener() {
             @Override
             public void onDown() {
 

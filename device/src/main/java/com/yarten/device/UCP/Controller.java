@@ -12,10 +12,12 @@ import java.util.List;
 public class Controller
 {
     private final Type type;
+    private final String name;
 
-    public Controller(Type type)
+    public Controller(Type type, String name)
     {
         this.type = type;
+        this.name = name;
     }
 
     public static class Value {
@@ -54,4 +56,8 @@ public class Controller
     }
 
     public List<Pair> getControlList(){return controlList;}
+
+    public Type getType(){return type;}
+
+    public String getName(){return name;}
 }

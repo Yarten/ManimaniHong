@@ -4,7 +4,7 @@
     <item>
         <rotate
             android:fromDegrees="45"
-            android:pivotX="80"
+            android:pivotX="60"
             android:pivotY="90">
             <shape android:shape="rectangle">
                 <size
@@ -21,7 +21,7 @@
         android:bottom="3dp">
         <rotate
             android:fromDegrees="45"
-            android:pivotX="80"
+            android:pivotX="60"
             android:pivotY="90">
             <shape android:shape="rectangle">
                 <size

@@ -9,7 +9,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import org.w3c.dom.ProcessingInstruction;
+
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yfic on 2017/12/31.
@@ -17,6 +23,8 @@ import java.lang.reflect.Constructor;
 
 public class CommonRecyclerView extends RecyclerView
 {
+    private LinearLayoutManager linearLayoutManager;
+
     public CommonRecyclerView(Context context)
     {
         this(context, null);
@@ -31,27 +39,59 @@ public class CommonRecyclerView extends RecyclerView
     {
         super(context, attrs, defStyle);
         setItemAnimator(new DefaultItemAnimator());
-        setLayoutManager(new LinearLayoutManager(context));
+        this.linearLayoutManager = new LinearLayoutManager(context);
+        setLayoutManager(linearLayoutManager);
     }
 
-    public static class Adapter extends RecyclerView.Adapter<ViewHolder>
+    public void setScrollEnable(boolean b)
     {
-        private int size = 0;
+        linearLayoutManager.canMove = b;
+    }
+
+    public class LinearLayoutManager extends android.support.v7.widget.LinearLayoutManager
+    {
+        LinearLayoutManager(Context context)
+        {
+            super(context);
+        }
+
+        boolean canMove = true;
+
+        @Override
+        public boolean canScrollHorizontally() {
+            return canMove && super.canScrollHorizontally();
+        }
+
+        @Override
+        public boolean canScrollVertically() {
+            return canMove && super.canScrollVertically();
+        }
+    }
+
+
+    public static class Adapter<T, E extends ViewHolder<T>> extends RecyclerView.Adapter<ViewHolder<T>>
+    {
+        private List<T> items;
         private int layout;
         private Context context;
         private Class[] parameterTypes;
-        private Constructor constructor;
+        private Constructor<E> constructor;
 
-        public Adapter(Context context, int layout, Class holderClass)
+        public Adapter(Context context, Class<E> holderClass)
         {
-            this(context, layout, 0, holderClass);
+            this(context, 0, holderClass);
         }
 
-        public Adapter(Context context, int layout, int size, Class holderClass)
+        public Adapter(Context context, int layout, Class<E> holderClass)
+        {
+            this(context, layout, new ArrayList<T>(), holderClass);
+        }
+
+        public Adapter(Context context, int layout, List<T> items, Class<E> holderClass)
         {
             this.layout = layout;
             this.context = context;
-            this.size = size;
+            this.items = items;
 
             try
             {
@@ -64,38 +104,39 @@ public class CommonRecyclerView extends RecyclerView
             }
         }
 
-        public void add(int position)
+        public void add(T data, int position)
         {
-            size += 1;
+            items.add(data);
             notifyItemInserted(position);
         }
 
         public void remove(int position)
         {
-            size -= 1;
+            items.remove(position);
             notifyItemRemoved(position);
         }
 
-        public void update(int position)
+        public void update(T data, int position)
         {
+            items.set(position, data);
             notifyItemChanged(position);
         }
 
-        public void updateAll(int size)
+        public void updateAll(List<T> items)
         {
-            this.size = size;
+            this.items = items;
             notifyDataSetChanged();
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(layout, null);
-            ViewHolder viewHolder = null;
+        public ViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+            ViewHolder<T> viewHolder = null;
 
             try
             {
                 Object[] parameters = {context, view};
-                viewHolder = (ViewHolder) constructor.newInstance(parameters);
+                viewHolder = constructor.newInstance(parameters);
             }
             catch (Exception e)
             {
@@ -106,30 +147,42 @@ public class CommonRecyclerView extends RecyclerView
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.onBind(position);
+        public void onBindViewHolder(final ViewHolder<T> holder, int position)
+        {
+            holder.onBind(items.get(position), position);
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.onClick(holder.getAdapterPosition());
+                    int position = holder.getAdapterPosition();
+                    holder.onClick(items.get(position), position);
                 }
             });
             holder.itemView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    holder.onLongClick(holder.getAdapterPosition());
-                    return false;
+                    int position = holder.getAdapterPosition();
+                    return holder.onLongClick(items.get(position), position);
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return size;
+            return items.size();
+        }
+
+        @Override
+        public final int getItemViewType(int position) {
+            return getItemViewLayout(items.get(position), position);
+        }
+
+        protected int getItemViewLayout(T data, int position)
+        {
+            return layout;
         }
     }
 
-    public static abstract class ViewHolder extends RecyclerView.ViewHolder
+    public static abstract class ViewHolder<T> extends RecyclerView.ViewHolder
     {
         protected Context context;
 
@@ -139,15 +192,15 @@ public class CommonRecyclerView extends RecyclerView
             this.context = context;
         }
 
-        protected  <T extends View> T findViewById(@IdRes int id)
+        protected  <E extends View> E findViewById(@IdRes int id)
         {
             return itemView.findViewById(id);
         }
 
-        public abstract void onBind(int position);
+        public abstract void onBind(T data, int position);
 
-        public abstract void onClick(int position);
+        public abstract void onClick(T data, int position);
 
-        public abstract boolean onLongClick(int position);
+        public abstract boolean onLongClick(T data, int position);
     }
 }

@@ -60,6 +60,15 @@ public class ColorPicker extends GridLayout
         postInvalidate();
     }
 
+    public void check(int index)
+    {
+        int id = getChildAt(index).getId();
+        setCheckedStateForView(mCheckedId, false);
+        setCheckedStateForView(id, true);
+        setCheckedId(id);
+        postInvalidate();
+    }
+
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof RadioButton) {

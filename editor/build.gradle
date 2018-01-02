@@ -40,4 +40,8 @@ dependencies {
     implementation project(':utils')
     implementation project(':circlepicker')
     implementation 'com.android.support:cardview-v7:26.1.0'
+
+    implementation project(':sgbutton')
+    implementation project (':drawer')
+    implementation project (':airbubble')
 }

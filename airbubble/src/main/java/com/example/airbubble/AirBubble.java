@@ -16,7 +16,6 @@ public class AirBubble extends ConstraintLayout {
 
     private ConstraintLayout bubbleLayout;
     private TextView description;
-    private ImageView triangle;
 
     public AirBubble(Context context) {
         this(context,null);
@@ -32,7 +31,6 @@ public class AirBubble extends ConstraintLayout {
     private void ini() {
         bubbleLayout = findViewById(R.id.BubbleLayout);
         description = findViewById(R.id.Description);
-        triangle = findViewById(R.id.Triangle);
     }
 
     public void setText(String buttonDescription) {
