@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.yarten.mainmenu"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -37,4 +37,6 @@ dependencies {
     implementation project(':utils')
     implementation project(':shapebutton')
     implementation project(':device')
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
 }
