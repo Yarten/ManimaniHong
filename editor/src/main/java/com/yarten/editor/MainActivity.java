@@ -1,30 +1,15 @@
 package com.yarten.editor;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.constraint.ConstraintSet;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
+import com.yarten.editor.WidgetManager.Widget;
 import com.example.drawer.DrawerActivity;
-import com.yarten.device.UCP.Package;
 import com.yarten.sgbutton.SGFloat;
 import com.yarten.sgbutton.SGWidget;
-import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.CommonRecyclerView;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +20,8 @@ public class MainActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tool_desktop, R.layout.tool_drawer);
 
+        WidgetManager.init();
+
         initView();
     }
 
@@ -43,31 +30,37 @@ public class MainActivity extends DrawerActivity {
     {
         final CommonRecyclerView commonRecyclerView = findViewById(R.id.common_list_view);
         final ViewGroup viewGroup = findViewById(R.id.root_view);
-        List<DrawerAdapter.Widget> widgets = new ArrayList<>();
+        List<Widget> widgets = new ArrayList<>();
         for(int i = 0; i < 10; i++)
         {
-            DrawerAdapter.Widget widget = new DrawerAdapter.Widget();
-            widget.type = DrawerAdapter.Widget.Type.Button;
+            Widget widget = new Widget();
+            widget.type = Widget.Type.Button;
             widget.name = "B" + i;
             widget.description = "D" + i;
-            widget.style = DrawerAdapter.Widget.BUTTON_STYLE.clone();
+            widget.style = Widget.BUTTON_STYLE.clone();
             widget.style.text = "C" + i;
             widgets.add(widget);
         }
 
 
-        adapter = new DrawerAdapter(this, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener() {
+        adapter = new DrawerAdapter(this, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener()
+        {
             @Override
-            public void onCreateView(View view, ViewGroup.LayoutParams params, float x, float y) {
+            public void onCreateView(Widget widget)
+            {
                 commonRecyclerView.setScrollEnable(true);
+                View view = WidgetManager.createView(MainActivity.this, widget);
                 SGFloat sgFloat = new SGFloat(view);
-                viewGroup.addView(view, params);
-                view.setX(x);
-                view.setY(y);
-                sgFloat.setOnClickListener(new SGWidget.OnActionListener() {
-                    @Override
-                    public void onAction(View view, MotionEvent event) {
+                viewGroup.addView(view);
 
+                final int position = WidgetManager.add(view, widget);
+
+                sgFloat.setOnClickListener(new SGWidget.OnActionListener()
+                {
+                    @Override
+                    public void onAction(View view, MotionEvent event)
+                    {
+                        WidgetManager.showDialog(MainActivity.this, position);
                     }
                 });
             }

@@ -18,6 +18,8 @@ import com.yarten.sgbutton.SGWidget;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
@@ -46,7 +48,8 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     {
         super(context, attrs, defStyle);
         this.context = context;
-        this.controller = new Controller(Signal.Type.Boolean);
+        this.controllers = new ArrayList<Controller>()
+        {{new Controller(Signal.Type.Boolean, "Event");}};
 
         LayoutInflater.from(context).inflate(R.layout.shape_button, this);
 
@@ -223,11 +226,11 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     //endregion
 
     //region Controller设置
-    private Controller controller;
+    private List<Controller> controllers;
 
     @Override
-    public Controller getController() {
-        return controller;
+    public List<Controller> getControllers() {
+        return controllers;
     }
 
     private Listener listener = null;

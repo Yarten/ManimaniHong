@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public interface Controllable
 {
-    Controller getController();
+    List<Controller> getControllers();
 
     interface Listener
     {

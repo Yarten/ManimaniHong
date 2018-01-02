@@ -1,21 +1,15 @@
 package com.yarten.editor;
 
 import android.content.Context;
-import android.support.constraint.ConstraintSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
 import com.example.airbubble.AirBubble;
 import com.yarten.sgbutton.SGWidget;
 import com.yarten.sgbutton.SGWidgetButton;
-import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.CommonRecyclerView;
-import com.yarten.utils.Interface.Styleable;
-import com.yarten.utils.Style;
 import com.yarten.utils.Utils;
-
+import com.yarten.editor.WidgetManager.Widget;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +17,7 @@ import java.util.List;
  * Created by yfic on 2018/1/1.
  */
 
-public class DrawerAdapter extends CommonRecyclerView.Adapter<DrawerAdapter.Widget, DrawerAdapter.ViewHolder>
+public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdapter.ViewHolder>
 {
     private ViewGroup tempLayout;
     private Context context;
@@ -44,7 +38,7 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<DrawerAdapter.Widg
 
     public interface Listener
     {
-        void onCreateView(View view, ViewGroup.LayoutParams params, float x, float y);
+        void onCreateView(Widget widget);
 
         void onDragBegin();
     }
@@ -81,7 +75,12 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<DrawerAdapter.Widg
             @Override
             public void postFinish(View newView) {
                 if(listener != null)
-                    listener.onCreateView(viewHolder.clone(), newView.getLayoutParams(), newView.getX(), newView.getY());
+                {
+                    Widget widget = viewHolder.widget.clone();
+                    widget.style.x = newView.getX();
+                    widget.style.y = newView.getY();
+                    listener.onCreateView(widget);
+                }
                 tempLayout.removeAllViews();
 
             }
@@ -99,30 +98,7 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<DrawerAdapter.Widg
         }
     }
 
-    public static class Widget
-    {
-        public enum Type
-        {
-            Button
-        }
 
-        public static final int WIDGET_LENGTH = 100;
-        public static final int BUTTON_LENGTH = 100;
-        public static Style BUTTON_STYLE;
-
-        public Type type;
-        public String name;
-        public String description;
-        public Style style;
-
-        static
-        {
-            BUTTON_STYLE = new Style();
-            BUTTON_STYLE.color = Styleable.Color.Blue;
-            BUTTON_STYLE.shape = Styleable.Shape.Circle;
-        }
-
-    }
 
     public static class ViewHolder extends CommonRecyclerView.ViewHolder<Widget>
     {
@@ -146,36 +122,12 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<DrawerAdapter.Widg
         public void onBind(Widget data, int position)
         {
             widget = data;
-            if(view instanceof Styleable)
-            {
-                widget.style.stylize((Styleable)view);
-            }
+            WidgetManager.tryStylize(view, widget.style);
         }
-
 
         public View clone()
         {
-            View view = null;
-            int length = Widget.WIDGET_LENGTH;
-            switch (widget.type)
-            {
-                case Button:
-                    view = new ShapeButton(context);
-                    length = Widget.BUTTON_LENGTH;
-                    break;
-            }
-
-            length = Utils.dip2px(context, length);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(length, length);
-            view.setLayoutParams(params);
-
-            if(view instanceof Styleable)
-            {
-                widget.style.stylize((Styleable)view);
-            }
-
-            return view;
+            return WidgetManager.createView(context, widget);
         }
     }
 }
