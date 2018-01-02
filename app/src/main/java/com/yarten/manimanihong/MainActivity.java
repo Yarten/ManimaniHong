@@ -18,11 +18,14 @@ import android.widget.Toast;
 
 import com.yarten.utils.CommonRecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private CommonRecyclerView recyclerView;
     private CommonRecyclerView.Adapter adapter;
-
+    private List<Integer> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +33,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.common_list);
-        adapter = new CommonRecyclerView.Adapter(this, R.layout.item_layout, 10, A.class);
+        items = new ArrayList<>();
+        for(int i = 0; i < 10; i++)
+            items.add(i);
+
+        adapter = new CommonRecyclerView.Adapter<>(this, R.layout.item_layout, items, A.class);
         recyclerView.setAdapter(adapter);
     }
 
-    static class A extends CommonRecyclerView.ViewHolder
+    static class A extends CommonRecyclerView.ViewHolder<Integer>
     {
         public A(Context context, View view)
         {
@@ -48,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         private TextView textView;
 
         @Override
-        public void onBind(final int position) {
+        public void onBind(Integer data, final int position) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onClick(int position) {
+        public void onClick(Integer data, int position) {
 
         }
 
         @Override
-        public boolean onLongClick(int position) {
+        public boolean onLongClick(Integer data, int position) {
             return false;
         }
     }

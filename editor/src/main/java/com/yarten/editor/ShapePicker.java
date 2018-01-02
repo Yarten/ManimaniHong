@@ -5,9 +5,9 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
+import com.yarten.device.UCP.Controllable;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Interface.Styleable;
-import com.yarten.utils.Interface.Touchable;
 
 import java.util.Vector;
 
@@ -55,7 +55,7 @@ public class ShapePicker extends ConstraintLayout
 
     private void setListener(ShapeButton button, final Listener listener, final Styleable.Shape shape)
     {
-        button.setListener(new Touchable.Listener() {
+        button.setListener(new Controllable.Listener() {
             @Override
             public void onDown() {
 

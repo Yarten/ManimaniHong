@@ -4,9 +4,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 
+import com.yarten.device.UCP.Controllable;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
-import com.yarten.utils.Interface.Touchable;
 import com.yarten.utils.Utils;
 
 import java.util.Vector;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
         initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM);
 
         buttonPanel.getMiddleButton()
-                .setListener(new Touchable.Listener() {
+                .setListener(new Controllable.Listener() {
                     @Override
                     public void onDown() {}
 
@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
                 });
 
         buttonPanel.getLeftTopButton()
-                .setListener(new Touchable.Listener() {
+                .setListener(new Controllable.Listener() {
                     @Override
                     public void onDown() {}
 

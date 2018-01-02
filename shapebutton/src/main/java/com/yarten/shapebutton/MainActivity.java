@@ -3,7 +3,7 @@ package com.yarten.shapebutton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.yarten.utils.Interface.Touchable;
+import com.yarten.device.UCP.Controllable;
 
 import java.util.Vector;
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPanel.toggle();
         buttonPanel
                 .getMiddleButton()
-                .setListener(new Touchable.Listener() {
+                .setListener(new Controllable.Listener() {
                     @Override
                     public void onDown() {
                         if(!isReverse)
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 });
         buttonPanel
                 .getLeftTopButton()
-                .setListener(new Touchable.Listener() {
+                .setListener(new Controllable.Listener() {
                     @Override
                     public void onDown() {
                         if(isReverse)

@@ -3,6 +3,7 @@ package com.yarten.shapebutton;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 import com.yarten.device.UCP.Controllable;
 import com.yarten.device.UCP.Controller;
 import com.yarten.device.UCP.Signal;
-import com.yarten.utils.Interface.Touchable;
+import com.yarten.sgbutton.SGWidget;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 
@@ -28,7 +29,7 @@ import static android.view.MotionEvent.ACTION_UP;
  * Created by yfic on 2017/12/26.
  */
 
-public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButton>, Touchable, Controllable
+public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButton>, Controllable
 {
     //region 构造器
     public ShapeButton(Context context)
@@ -48,6 +49,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         this.controller = new Controller(Signal.Type.Boolean);
 
         LayoutInflater.from(context).inflate(R.layout.shape_button, this);
+
         textView = findViewById(R.id.text);
         imageView = findViewById(R.id.image);
         shapeView = findViewById(R.id.shape);
@@ -56,7 +58,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         values.add(0f);
         values.add(0f);
         initStyle(context, attrs);
-        initEvent();
+    //    initEvent();
     }
 
     private TextView textView;
@@ -119,6 +121,23 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        super.onTouchEvent(event);
+        switch (event.getAction())
+        {
+            case ACTION_DOWN:
+                onDown();
+                break;
+            case ACTION_UP:
+            case ACTION_CANCEL:
+                onUp();
+                break;
+        }
+        return true;
+    }
+
     private void onDown()
     {
         shapeView.setColor(mColor - 0x70000000);
@@ -147,16 +166,6 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
 
     //endregion
 
-    //region Basic设置
-    private Listener listener = null;
-
-    @Override
-    public void setListener(Listener listener)
-    {
-        this.listener = listener;
-    }
-
-    //endregion
 
     //region Styleable设置
     private int mColor = 0xFFFF0000;
@@ -219,6 +228,14 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     @Override
     public Controller getController() {
         return controller;
+    }
+
+    private Listener listener = null;
+
+    @Override
+    public void setListener(Listener listener)
+    {
+        this.listener = listener;
     }
 
     //endregion

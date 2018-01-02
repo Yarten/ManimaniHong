@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/drawer" />
             <option value="$PROJECT_DIR$/editor" />
             <option value="$PROJECT_DIR$/mainmenu" />
+            <option value="$PROJECT_DIR$/sgbutton" />
             <option value="$PROJECT_DIR$/shapebutton" />
             <option value="$PROJECT_DIR$/utils" />
           </set>

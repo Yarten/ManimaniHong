@@ -54,4 +54,6 @@ public class Controller
     }
 
     public List<Pair> getControlList(){return controlList;}
+
+    public Type getType(){return type;}
 }

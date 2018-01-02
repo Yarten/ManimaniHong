@@ -21,4 +21,22 @@ public class Style
         String json = gson.toJson(this);
         return json;
     }
+
+    public Style clone()
+    {
+        Style style = new Style();
+        style.color = color;
+        style.shape = shape;
+        style.text = text;
+        style.x = x;
+        style.y = y;
+        return style;
+    }
+
+    public void stylize(Styleable styleable)
+    {
+        styleable.setText(text);
+        styleable.setColor(color);
+        styleable.setShape(shape);
+    }
 }

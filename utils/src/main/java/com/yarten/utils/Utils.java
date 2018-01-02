@@ -17,4 +17,14 @@ public class Utils
                 .setPositiveButton("确定", listener)
                 .show();
     }
+
+    public static float px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return pxValue * 1.0f / scale;
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
 }

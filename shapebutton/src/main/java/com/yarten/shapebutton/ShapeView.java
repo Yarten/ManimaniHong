@@ -18,17 +18,17 @@ import com.yarten.utils.Interface.Styleable;
 
 public class ShapeView extends View
 {
-    ShapeView(Context context)
+    public ShapeView(Context context)
     {
         this(context, null);
     }
 
-    ShapeView(Context context, AttributeSet attrs)
+    public ShapeView(Context context, AttributeSet attrs)
     {
         this(context, attrs, 0);
     }
 
-    ShapeView(Context context, AttributeSet attrs, int defStyle)
+    public ShapeView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
 

@@ -36,4 +36,5 @@ dependencies {
 
     implementation project (':utils')
     implementation project (':device')
+    implementation project (':sgbutton')
 }
