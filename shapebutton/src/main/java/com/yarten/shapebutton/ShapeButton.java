@@ -48,8 +48,8 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     {
         super(context, attrs, defStyle);
         this.context = context;
-        this.controllers = new ArrayList<Controller>()
-        {{new Controller(Signal.Type.Boolean, "Event");}};
+        this.controllers = new ArrayList<>();
+        this.controllers.add(new Controller(Signal.Type.Boolean, "Event"));
 
         LayoutInflater.from(context).inflate(R.layout.shape_button, this);
 
@@ -193,7 +193,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     }
 
     @Override
-    public ShapeButton setRotation(int rotation) {
+    public ShapeButton setBackgroundRotation(float rotation) {
         shapeView.setRotation(rotation);
         return this;
     }
@@ -212,6 +212,13 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     }
 
     @Override
+    public ShapeButton setScale(float scale) {
+        super.setScaleX(scale);
+        super.setScaleY(scale);
+        return this;
+    }
+
+    @Override
     public Style getStyle() {
         Style style = new Style();
         style.color = mColor;
@@ -219,7 +226,8 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         style.text = textView.getText().toString();
         style.x = getX();
         style.y = getY();
-
+        style.scale = getScaleX();
+        style.rotation = shapeView.getRotation();
         return style;
     }
 

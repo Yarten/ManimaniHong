@@ -60,7 +60,7 @@ public class MainActivity extends DrawerActivity {
                     @Override
                     public void onAction(View view, MotionEvent event)
                     {
-                        WidgetManager.showDialog(MainActivity.this, position);
+                        WidgetManager.showDialog(MainActivity.this, viewGroup, position);
                     }
                 });
             }

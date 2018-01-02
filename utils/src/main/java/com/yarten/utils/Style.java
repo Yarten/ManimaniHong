@@ -14,6 +14,8 @@ public class Style
     public String text;
     public float x;
     public float y;
+    public float scale = 1.0f;
+    public float rotation = 0;
 
     // 将Controller对象转换为JSON
     public String toString() {
@@ -30,6 +32,8 @@ public class Style
         style.text = text;
         style.x = x;
         style.y = y;
+        style.scale = scale;
+        style.rotation = rotation;
         return style;
     }
 
@@ -38,5 +42,7 @@ public class Style
         styleable.setText(text);
         styleable.setColor(color);
         styleable.setShape(shape);
+        styleable.setScale(scale);
+        styleable.setBackgroundRotation(rotation);
     }
 }

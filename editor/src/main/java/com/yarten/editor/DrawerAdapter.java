@@ -82,7 +82,6 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
                     listener.onCreateView(widget);
                 }
                 tempLayout.removeAllViews();
-
             }
         });
     }
@@ -97,7 +96,6 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
                 return super.getItemViewLayout(data, position);
         }
     }
-
 
 
     public static class ViewHolder extends CommonRecyclerView.ViewHolder<Widget>

@@ -30,7 +30,8 @@ public interface Styleable<T>
     T setColor(int color);
     T setShape(Shape shape);
     T setText(String text);
-    T setRotation(int rotation);
+    T setBackgroundRotation(float rotation);
+    T setScale(float scale);
 
     Style getStyle();
     T showText(boolean b);

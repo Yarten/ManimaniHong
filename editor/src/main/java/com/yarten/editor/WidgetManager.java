@@ -1,10 +1,13 @@
 package com.yarten.editor;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -91,51 +94,62 @@ public class WidgetManager
         else return false;
     }
 
-    public static void showDialog(final Context context, final int position)
+    public static void showDialog(final Context context, final ViewGroup viewGroup, final int position)
     {
-        String[] items = new String[position];
-        WidgetButton widget = widgets.get(position);
+        final WidgetButton widget = widgets.get(position);
         final View view = widget.view;
-
         final Controllable controllable = (Controllable)view;
         final List<Controller> controllers = controllable.getControllers();
-        for(int i = 0; i < items.length; i++)
-            items[i] = controllers.get(i).getName();
+
+        String[] items;
+        int i = 0, size = controllers.size();
+
+        if(view instanceof Styleable)
+        {
+            items = new String[size+1];
+            items[i++] = "Style";
+        }
+        else items  = new String[size];
+
+        for(int j = 0; j < size; i++, j++)
+            items[i] = controllers.get(j).getName();
 
         new AlertDialog.Builder(context)
                 .setTitle("请选择一个设置项")
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent;
                         switch (which)
                         {
                             case 0:
                                 if (view instanceof Styleable)
                                 {
                                     WidgetManager.styleable = (Styleable)view;
-                                    Intent intent = new Intent(context, EditActivity.class);
-                                    context.startActivity(intent);
-                                    return;
+                                    WidgetManager.widget = widget.info;
+                                    intent = new Intent(context, EditActivity.class);
+                                    break;
                                 }
                                 which++;
                             default:
                             {
                                 WidgetManager.controller = controllers.get(which-1);
                                 // TODO: 跳转到控制制定
-                                Intent intent = new Intent(context, EditActivity.class);
-                                context.startActivity(intent);
-                                return;
+                                intent = new Intent(context, EditActivity.class);
+                                break;
                             }
                         }
+
+                        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity)context).toBundle());
                     }
                 })
-                .setNegativeButton("取消", null)
-                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                .setPositiveButton("取消", null)
+                .setNegativeButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Widget info = widgets.get(position).info;
                         Toast.makeText(context, "[" + info.name + "] 已经被删除", Toast.LENGTH_SHORT).show();
-                        widgets.remove(position);
+                        remove(viewGroup, position);
                     }
                 }).show();
     }
@@ -154,6 +168,7 @@ public class WidgetManager
     private static LinkedList<WidgetButton> widgets;
     private static Controller controller;
     private static Styleable styleable;
+    private static Widget widget;
 
     public static void init()
     {
@@ -166,8 +181,9 @@ public class WidgetManager
         return widgets.size()-1;
     }
 
-    public static void remove(int position)
+    public static void remove(ViewGroup viewGroup, int position)
     {
+        viewGroup.removeView(widgets.get(position).view);
         widgets.remove(position);
     }
 
@@ -176,8 +192,21 @@ public class WidgetManager
         return controller;
     }
 
-    public static Styleable getStyleable()
+    public static Styleable getCurrentStyleable()
     {
         return styleable;
+    }
+
+    public static Widget getCurrentWidget(){return widget;}
+
+    public static View createCurrentView(Context context)
+    {
+        return createView(context, widget);
+    }
+
+    public static void updateStyle(Styleable styleable)
+    {
+        widget.style = styleable.getStyle();
+        widget.style.stylize(WidgetManager.styleable);
     }
 }
