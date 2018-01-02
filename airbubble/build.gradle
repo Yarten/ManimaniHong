@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-    //    applicationId "com.example.airbubble"
+        //applicationId "com.example.airbubble"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
@@ -35,4 +35,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     implementation project (':shapebutton')
+    implementation project (':utils')
+    implementation project (':device')
 }

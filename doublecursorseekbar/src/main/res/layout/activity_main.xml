@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.example.doublecursorseekbar.SeekBar
-        android:id="@+id/DoubleCursor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </com.example.doublecursorseekbar.SeekBar>
-</android.support.constraint.ConstraintLayout>
+    android:layout_height="match_parent"></android.support.constraint.ConstraintLayout>
