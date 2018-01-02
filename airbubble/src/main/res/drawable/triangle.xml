@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 正三角 -->
+    <item>
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="80"
+            android:pivotY="90">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="30dp"
+                    android:height="40dp" />
+                <gradient
+                    android:startColor="#66aaaaaa"
+                    android:centerColor="#88aaaaaa"
+                    android:endColor="#aaaaaaaa"/>
+            </shape>
+        </rotate>
+    </item>
+    <item
+        android:bottom="3dp">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="80"
+            android:pivotY="90">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="30dp"
+                    android:height="40dp" />
+                <solid android:color="#7d72ff" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>
