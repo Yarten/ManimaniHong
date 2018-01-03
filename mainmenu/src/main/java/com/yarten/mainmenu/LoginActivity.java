@@ -54,12 +54,11 @@ public class LoginActivity extends BaseActivity
                     }
                 })
                 .initLayout(R.layout.page_register, R.id.bt2, new ViewPagerHelper.InitHandler() {
-                    TextInputEditText ET_register_username;
-                    TextInputEditText ET_register_password;
-                    TextInputEditText ET_register_confirm;
+                    EditText ET_register_username;
+                    EditText ET_register_password;
+                    EditText ET_register_confirm;
                     Button register_button;
                     CheckBox CB_register_password;
-                    CheckBox CB_register_confirm;
 
                     @Override
                     public void onInit(View view) {
@@ -68,30 +67,20 @@ public class LoginActivity extends BaseActivity
                         ET_register_confirm = view.findViewById(R.id.register_confirm_edit);
                         register_button = view.findViewById(R.id.register_button);
                         CB_register_password = view.findViewById(R.id.checkBox_password);
-                        CB_register_confirm = view.findViewById(R.id.checkBox_confirm);
 
                         CB_register_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                                 if(b){
                                     ET_register_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                }
-                                else{
-                                    ET_register_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                                }
-                            }
-
-                        });
-                        CB_register_confirm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                if(b){
                                     ET_register_confirm.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                                 }
                                 else{
+                                    ET_register_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                     ET_register_confirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                 }
                             }
+
                         });
                     }
                 })

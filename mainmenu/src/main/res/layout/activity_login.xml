@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
+    android:background="#0066ff"
     tools:context="com.yarten.mainmenu.LoginActivity">
 
     <ImageView
         android:id="@+id/bt1"
         android:layout_width="80dp"
         android:layout_height="0dp"
+        android:background="#0066ff"
         app:layout_constraintBottom_toTopOf="@+id/bt2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@android:color/holo_blue_bright" />
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/bt2"
