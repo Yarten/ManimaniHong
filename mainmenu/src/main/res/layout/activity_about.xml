@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#44bb88ff"
+    android:background="@drawable/about_backgroud"
     tools:context="com.yarten.mainmenu.AboutActivity">
 
     <android.support.constraint.Guideline

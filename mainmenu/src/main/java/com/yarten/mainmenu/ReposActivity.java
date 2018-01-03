@@ -19,7 +19,7 @@ public class ReposActivity extends BaseActivity
         setContentView(R.layout.activity_repos);
 
         buttonPanel = findViewById(R.id.button_panel);
-        ActivityHelper.initTriangle(buttonPanel.getBottomButton(), buttonPanel, this, MainActivity.class, Gravity.TOP, Gravity.BOTTOM);
+        ActivityHelper.initTriangle(buttonPanel.getBottomButton(), buttonPanel, this, MainActivity.class, Gravity.TOP, Gravity.BOTTOM, R.mipmap.up);
 
         new ViewPagerHelper(this)
                 .initLayout(R.layout.page_local, R.id.bt1, new ViewPagerHelper.InitHandler() {

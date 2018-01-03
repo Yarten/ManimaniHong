@@ -16,6 +16,6 @@ public class AboutActivity extends BaseActivity
         setContentView(R.layout.activity_about);
 
         buttonPanel = findViewById(R.id.button_panel);
-        ActivityHelper.initTriangle(buttonPanel.getRightButton(), buttonPanel, this, MainActivity.class, Gravity.LEFT, Gravity.RIGHT);
+        ActivityHelper.initTriangle(buttonPanel.getRightButton(), buttonPanel, this, MainActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.left);
     }
 }

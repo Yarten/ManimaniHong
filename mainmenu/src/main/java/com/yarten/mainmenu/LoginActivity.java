@@ -24,7 +24,7 @@ public class LoginActivity extends BaseActivity
 
         buttonPanel = findViewById(R.id.button_panel);
 
-        ActivityHelper.initTriangle(buttonPanel.getLeftButton(), buttonPanel, this, MainActivity.class, Gravity.RIGHT, Gravity.LEFT);
+        ActivityHelper.initTriangle(buttonPanel.getLeftButton(), buttonPanel, this, MainActivity.class, Gravity.RIGHT, Gravity.LEFT, R.mipmap.right);
 
         new ViewPagerHelper(this)
                 .initLayout(R.layout.page_login, R.id.bt1, new ViewPagerHelper.InitHandler() {
