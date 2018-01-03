@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.yarten.mainmenu"
+        applicationId "com.xiaoshq.database"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
@@ -33,13 +33,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-    implementation project(':utils')
-    implementation project(':shapebutton')
-    implementation project(':device')
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:cardview-v7:26.1.0'
-
-    implementation project (':device')
-    implementation project (':utils')
 }
