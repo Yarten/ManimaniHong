@@ -43,11 +43,16 @@ public class RefreshListView<T, E extends CommonRecyclerView.ViewHolder<T>> exte
         return this;
     }
 
-    public  RefreshListView setAdapter(int layout, Class<E> holderClass)
+    public RefreshListView setAdapter(CommonRecyclerView.Adapter adapter)
     {
-        adapter = new CommonRecyclerView.Adapter(context, layout, holderClass);
         commonRecyclerView.setAdapter(adapter);
+        this.adapter = adapter;
         return this;
+    }
+
+    public RefreshListView setAdapter(int layout, Class<E> holderClass)
+    {
+        return setAdapter(new CommonRecyclerView.Adapter(context, layout, holderClass));
     }
 
     public void add(T data, int position)
@@ -74,4 +79,6 @@ public class RefreshListView<T, E extends CommonRecyclerView.ViewHolder<T>> exte
     {
         circleRefreshLayout.finishRefreshing();
     }
+
+    public CommonRecyclerView getCommonRecyclerView(){return commonRecyclerView;}
 }

@@ -32,7 +32,7 @@ public class EditActivity extends AppCompatActivity {
     private void initStyleable()
     {
         View view = WidgetManager.createCurrentView(this);
-        ViewGroup viewGroup = findViewById(R.id.root_view);
+        ViewGroup viewGroup = findViewById(R.id.widget_layout);
         viewGroup.addView(view);
 
         WindowManager wm = getWindowManager();
@@ -43,6 +43,7 @@ public class EditActivity extends AppCompatActivity {
 
         view.setX((size.x - editPanel.getWidth()) * 0.5f - params.height * 0.5f);
         view.setY(size.y * 0.5f - params.width * 0.5f);
+
         currentView = (Styleable)view;
     }
 
@@ -100,11 +101,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        int[] colors = {
-                Color.Qing, Color.Green, Color.Blue,
-                Color.Purple, Color.Dark, Color.Orange,
-                Color.Red, Color.White, Color.Gray
-        };
+        int[] colors = Color.colors;
         color = findViewById(R.id.color_picker);
         color.setOnPickListener(new ColorPicker.Listener() {
             @Override

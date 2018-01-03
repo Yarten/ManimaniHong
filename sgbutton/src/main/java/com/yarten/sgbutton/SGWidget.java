@@ -100,6 +100,9 @@ public class SGWidget
                             else if(noClick && noLongClick && onLeaveListener != null)
                                 onLeaveListener.onAction(SGWidget.this.view, event);
 
+                            if(onUpListener != null)
+                                onUpListener.onAction(SGWidget.this.view, event);
+
                         } break;
                         //endregion
                     }
@@ -139,6 +142,7 @@ public class SGWidget
     private OnActionListener onPressListener;
     private OnActionListener onMoveListener;
     private OnActionListener onLeaveListener;
+    private OnActionListener onUpListener;
 
     public void setOnClickListener(OnActionListener onClickListener)
     {
@@ -168,6 +172,11 @@ public class SGWidget
     public void setOnDownListener(OnActionListener onDownListener)
     {
         this.onDownListener = onDownListener;
+    }
+
+    public void setOnUpListener(OnActionListener onUpListener)
+    {
+        this.onUpListener = onUpListener;
     }
 
     public boolean noLongClick = false;

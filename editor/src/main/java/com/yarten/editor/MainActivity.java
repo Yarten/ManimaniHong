@@ -2,9 +2,15 @@ package com.yarten.editor;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.yarten.editor.WidgetManager.Widget;
 import com.example.drawer.DrawerActivity;
 import com.yarten.sgbutton.SGFloat;
@@ -23,13 +29,27 @@ public class MainActivity extends DrawerActivity {
         WidgetManager.init();
 
         initView();
+        initMenu();
+    }
+
+    private void initMenu()
+    {
+        FloatingActionsMenu menu = findViewById(R.id.menu_button);
+        FloatingActionButton clearAll = findViewById(R.id.clear_all_option);
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WidgetManager.removeAll(viewGroup);
+            }
+        });
     }
 
     private DrawerAdapter adapter;
+    private ViewGroup viewGroup;
     private void initView()
     {
         final CommonRecyclerView commonRecyclerView = findViewById(R.id.common_list_view);
-        final ViewGroup viewGroup = findViewById(R.id.root_view);
+        viewGroup = findViewById(R.id.widget_layout);
         List<Widget> widgets = new ArrayList<>();
         for(int i = 0; i < 10; i++)
         {
@@ -43,36 +63,68 @@ public class MainActivity extends DrawerActivity {
         }
 
 
-        adapter = new DrawerAdapter(this, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener()
+        adapter = new DrawerAdapter(this, commonRecyclerView, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener()
         {
             @Override
             public void onCreateView(Widget widget)
             {
-                commonRecyclerView.setScrollEnable(true);
                 View view = WidgetManager.createView(MainActivity.this, widget);
                 SGFloat sgFloat = new SGFloat(view);
                 viewGroup.addView(view);
 
-                final int position = WidgetManager.add(view, widget);
+                WidgetManager.add(view, widget);
+                Log.e("Create", "" + view);
 
                 sgFloat.setOnClickListener(new SGWidget.OnActionListener()
                 {
                     @Override
                     public void onAction(View view, MotionEvent event)
                     {
-                        WidgetManager.showDialog(MainActivity.this, viewGroup, position);
+                        WidgetManager.showDialog(MainActivity.this, viewGroup, view);
                     }
                 });
+
+                MainActivity.super.lockDrawer(false);
             }
 
             @Override
             public void onDragBegin()
             {
-                commonRecyclerView.setScrollEnable(false);
+                MainActivity.super.lockDrawer(true);
                 MainActivity.super.closeDrawer();
             }
         });
 
         commonRecyclerView.setAdapter(adapter);
+        commonRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                adapter.hideBubble();
+            }
+        });
+
+        super.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                adapter.hideBubble();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                adapter.hideBubble();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
+
+
 }

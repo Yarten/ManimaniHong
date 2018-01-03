@@ -1,5 +1,6 @@
 package com.yarten.editor;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,18 +23,25 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
     private ViewGroup tempLayout;
     private Context context;
     private Listener listener;
+    private AirBubble airBubble;
+    private CommonRecyclerView commonRecyclerView;
 
-    public DrawerAdapter(Context context, ViewGroup tempLayout, Listener listener)
+    public DrawerAdapter(Context context, CommonRecyclerView commonRecyclerView, ViewGroup tempLayout, Listener listener)
     {
-        this(context, tempLayout, new ArrayList<Widget>(), listener);
+        this(context, commonRecyclerView, tempLayout, new ArrayList<Widget>(), listener);
     }
 
-    public DrawerAdapter(Context context, ViewGroup tempLayout, List<Widget> items, Listener listener)
+    public DrawerAdapter(Context context, CommonRecyclerView commonRecyclerView, ViewGroup tempLayout, List<Widget> items, Listener listener)
     {
         super(context, R.layout.item_layout, items, ViewHolder.class);
         this.tempLayout = tempLayout;
         this.context = context;
         this.listener = listener;
+        this.commonRecyclerView = commonRecyclerView;
+
+        airBubble = new AirBubble(context);
+        airBubble.setVisibility(View.GONE);
+        airBubble.setY(-1);
     }
 
     public interface Listener
@@ -54,12 +62,20 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
             @Override
             public void onAction(View view, MotionEvent event)
             {
-                AirBubble airBubble = new AirBubble(context);
-                airBubble.setText(viewHolder.widget.description);
-                tempLayout.removeAllViews();
-                tempLayout.addView(airBubble);
-                airBubble.setX(viewHolder.itemView.getX() + Utils.dip2px(context, 120));
-                airBubble.setY(viewHolder.itemView.getY() + Utils.dip2px(context, 15) );
+                float y = viewHolder.itemView.getY() + Utils.dip2px(context, 15);
+                if(airBubble.getVisibility() == View.GONE || airBubble.getY() != y)
+                {
+                    if(airBubble.getParent() == null) tempLayout.addView(airBubble);
+                    airBubble.setText(viewHolder.widget.description);
+                    airBubble.setText(viewHolder.widget.description);
+                    airBubble.setX(viewHolder.itemView.getX() + Utils.dip2px(context, 120));
+                    airBubble.setY(y);
+                    airBubble.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    cleanUp();
+                }
             }
         });
         sgWidgetButton.setOnAddHandler(new SGWidgetButton.OnAddHandler() {
@@ -67,7 +83,7 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
             public View createNewView(int userdata) {
                 listener.onDragBegin();
                 View view = viewHolder.clone();
-                tempLayout.removeAllViews();
+                cleanUp();
                 return view;
             }
         });
@@ -81,9 +97,33 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
                     widget.style.y = newView.getY();
                     listener.onCreateView(widget);
                 }
-                tempLayout.removeAllViews();
+                cleanUp();
             }
         });
+        sgWidgetButton.setOnDownListener(new SGWidget.OnActionListener() {
+            @Override
+            public void onAction(View view, MotionEvent event) {
+                commonRecyclerView.setScrollEnable(false);
+            }
+        });
+        sgWidgetButton.setOnUpListener(new SGWidget.OnActionListener() {
+            @Override
+            public void onAction(View view, MotionEvent event) {
+                commonRecyclerView.setScrollEnable(true);
+            }
+        });
+    }
+
+    public void cleanUp()
+    {
+        tempLayout.removeAllViews();
+        hideBubble();
+    }
+
+    public void hideBubble()
+    {
+        airBubble.setVisibility(View.GONE);
+        airBubble.setY(-1);
     }
 
     @Override
@@ -96,7 +136,6 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
                 return super.getItemViewLayout(data, position);
         }
     }
-
 
     public static class ViewHolder extends CommonRecyclerView.ViewHolder<Widget>
     {

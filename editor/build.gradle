@@ -40,8 +40,13 @@ dependencies {
     implementation project(':utils')
     implementation project(':circlepicker')
     implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
 
     implementation project(':sgbutton')
-    implementation project (':drawer')
-    implementation project (':airbubble')
+    implementation project(':drawer')
+    implementation project(':airbubble')
+    implementation project (':doublecursorseekbar')
+    implementation project (':circlerefresh')
+    implementation project (':singleseekbar')
+
 }

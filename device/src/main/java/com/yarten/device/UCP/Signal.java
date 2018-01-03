@@ -8,7 +8,7 @@ public class Signal
 {
     public enum Type
     {
-        Boolean, Vector
+        Boolean, Vector, Undefined
     }
 
     String name;

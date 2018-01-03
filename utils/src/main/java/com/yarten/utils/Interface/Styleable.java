@@ -25,6 +25,11 @@ public interface Styleable<T>
         public static int White = 0xFFBEC3C7;
         public static int Gray = 0xFF7E8C8D;
 
+        public static final int[] colors = {
+                Color.Qing, Color.Green, Color.Blue,
+                Color.Purple, Color.Dark, Color.Orange,
+                Color.Red, Color.White, Color.Gray
+        };
     }
 
     T setColor(int color);

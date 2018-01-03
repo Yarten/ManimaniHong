@@ -94,7 +94,7 @@ public class MySeekBar extends View implements ValueAnimator.AnimatorUpdateListe
         //获取自定义属性
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MySeekBar);
         perValue = a.getInt(R.styleable.MySeekBar_per_value, 1);
-        minValue = a.getInt(R.styleable.MySeekBar_min, 0);
+        minValue = 0; //a.getInt(R.styleable.MySeekBar_min, 0);
         pointCount = a.getInt(R.styleable.MySeekBar_point_count, 100);
         backLineColor = a.getColor(R.styleable.MySeekBar_back_line_color, Color.LTGRAY);
         indicatorLineColor = a.getInt(R.styleable.MySeekBar_indicator_line_color, Color.BLUE);
@@ -161,7 +161,7 @@ public class MySeekBar extends View implements ValueAnimator.AnimatorUpdateListe
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.WHITE);
+    //    canvas.drawColor(Color.WHITE);
 
         if (mPoints.length >= 2) {
             //画背景线
@@ -319,7 +319,7 @@ public class MySeekBar extends View implements ValueAnimator.AnimatorUpdateListe
      * @param left
      * @param right
      */
-    public void setPos(int left, int right) {
+    public void setPosition(int left, int right) {
         if (right > left && right >= 0 && left >= 0 && right <= pointCount) {
             mLeftCI.setPoint(mPoints[left]);
             mRightCI.setPoint(mPoints[right]);

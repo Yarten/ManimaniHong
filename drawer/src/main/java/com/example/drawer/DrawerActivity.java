@@ -35,6 +35,23 @@ public class DrawerActivity extends AppCompatActivity {
         mainLayout.closeDrawer(Gravity.LEFT);
     }
 
+    public void addDrawerListener(DrawerLayout.DrawerListener drawerListener)
+    {
+        mainLayout.addDrawerListener(drawerListener);
+    }
+
+    public void lockDrawer(boolean isLock)
+    {
+        if(isLock)
+        {
+            mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        }
+        else
+        {
+            mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
+
     //region 绑定控件
     private void ini() {
         mainLayout = findViewById(R.id.mainLayout);

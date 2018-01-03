@@ -31,7 +31,7 @@ public class Controller
         }
     }
 
-    public class Pair
+    public static class Pair
     {
         public Signal signal;
         public Value value;

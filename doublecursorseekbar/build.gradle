@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
@@ -6,8 +6,8 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.doublecursorseekbar"
-        minSdkVersion 19
+    //    applicationId "com.example.doublecursorseekbar"
+        minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

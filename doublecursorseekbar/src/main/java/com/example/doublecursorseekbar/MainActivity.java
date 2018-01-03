@@ -9,7 +9,7 @@ public class MainActivity extends AppCompatActivity {
     private MySeekBar mySeekBar;
     private TextView leftCursor,rightCursor;
     float leftX,rightX,count;
-    private SeekBar seekBar;
+    private DoubleSeekBar doubleSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
 //        mySeekBar = findViewById(R.id.MySeekBar);
 //        leftCursor = findViewById(R.id.LeftCursor);
 //        rightCursor = findViewById(R.id.RightCursor);
-        seekBar = findViewById(R.id.DoubleCursor);
-        seekBar.setRange(3,5);
+        doubleSeekBar = findViewById(R.id.DoubleCursor);
+        doubleSeekBar.setRange(3,5);
     }
 
 //    private void notifySeekbarChanged(final float min, final float max) {

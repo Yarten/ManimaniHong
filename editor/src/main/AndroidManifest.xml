@@ -18,13 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".EditActivity"
-            android:screenOrientation="landscape">
-
-
-        </activity>
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".EventActivity"
+            android:screenOrientation="landscape"
+            ></activity>
     </application>
 
 </manifest>

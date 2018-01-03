@@ -94,10 +94,10 @@ public class WidgetManager
         else return false;
     }
 
-    public static void showDialog(final Context context, final ViewGroup viewGroup, final int position)
+    public static void showDialog(final Context context, final ViewGroup viewGroup, final View view)
     {
-        final WidgetButton widget = widgets.get(position);
-        final View view = widget.view;
+        final int postion = views.indexOf(view);
+        final Widget widget = widgets.get(postion);
         final Controllable controllable = (Controllable)view;
         final List<Controller> controllers = controllable.getControllers();
 
@@ -120,13 +120,14 @@ public class WidgetManager
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent;
+                        WidgetManager.widget = widget;
+
                         switch (which)
                         {
                             case 0:
                                 if (view instanceof Styleable)
                                 {
                                     WidgetManager.styleable = (Styleable)view;
-                                    WidgetManager.widget = widget.info;
                                     intent = new Intent(context, EditActivity.class);
                                     break;
                                 }
@@ -134,8 +135,7 @@ public class WidgetManager
                             default:
                             {
                                 WidgetManager.controller = controllers.get(which-1);
-                                // TODO: 跳转到控制制定
-                                intent = new Intent(context, EditActivity.class);
+                                intent = new Intent(context, EventActivity.class);
                                 break;
                             }
                         }
@@ -147,9 +147,8 @@ public class WidgetManager
                 .setNegativeButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Widget info = widgets.get(position).info;
-                        Toast.makeText(context, "[" + info.name + "] 已经被删除", Toast.LENGTH_SHORT).show();
-                        remove(viewGroup, position);
+                        Toast.makeText(context, "[" + widget.name + "] 已经被删除", Toast.LENGTH_SHORT).show();
+                        remove(viewGroup, view);
                     }
                 }).show();
     }
@@ -165,7 +164,9 @@ public class WidgetManager
         View view;
     }
 
-    private static LinkedList<WidgetButton> widgets;
+    //private static LinkedList<WidgetButton> widgets;
+    private static LinkedList<View> views;
+    private static LinkedList<Widget> widgets;
     private static Controller controller;
     private static Styleable styleable;
     private static Widget widget;
@@ -173,18 +174,28 @@ public class WidgetManager
     public static void init()
     {
         widgets = new LinkedList<>();
+        views = new LinkedList<>();
     }
 
-    public static int add(View view, Widget info)
+    public static void add(View view, Widget widget)
     {
-        widgets.add(new WidgetButton(view, info));
-        return widgets.size()-1;
+        widgets.add(widget);
+        views.add(view);
     }
 
-    public static void remove(ViewGroup viewGroup, int position)
+    public static void remove(ViewGroup viewGroup, View view)
     {
-        viewGroup.removeView(widgets.get(position).view);
+        int position = views.indexOf(view);
+        viewGroup.removeView(view);
+        views.remove(position);
         widgets.remove(position);
+    }
+
+    public static void removeAll(ViewGroup viewGroup)
+    {
+        viewGroup.removeAllViews();
+        views.clear();
+        widgets.clear();
     }
 
     public static Controller getCurrentController()

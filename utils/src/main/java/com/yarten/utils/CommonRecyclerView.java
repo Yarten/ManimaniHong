@@ -104,6 +104,11 @@ public class CommonRecyclerView extends RecyclerView
             }
         }
 
+        public void add(T data)
+        {
+            add(data, items.size());
+        }
+
         public void add(T data, int position)
         {
             items.add(data);
@@ -129,7 +134,7 @@ public class CommonRecyclerView extends RecyclerView
         }
 
         @Override
-        public ViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
+        public final ViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
             ViewHolder<T> viewHolder = null;
 
@@ -137,6 +142,7 @@ public class CommonRecyclerView extends RecyclerView
             {
                 Object[] parameters = {context, view};
                 viewHolder = constructor.newInstance(parameters);
+                viewHolder.adapter = this;
             }
             catch (Exception e)
             {
@@ -185,6 +191,7 @@ public class CommonRecyclerView extends RecyclerView
     public static abstract class ViewHolder<T> extends RecyclerView.ViewHolder
     {
         protected Context context;
+        private Adapter adapter;
 
         public ViewHolder(Context context, View view)
         {
@@ -195,6 +202,16 @@ public class CommonRecyclerView extends RecyclerView
         protected  <E extends View> E findViewById(@IdRes int id)
         {
             return itemView.findViewById(id);
+        }
+
+        protected void remove(int position)
+        {
+            adapter.remove(position);
+        }
+
+        protected void update(T data, int position)
+        {
+            adapter.update(data, position);
         }
 
         public abstract void onBind(T data, int position);
