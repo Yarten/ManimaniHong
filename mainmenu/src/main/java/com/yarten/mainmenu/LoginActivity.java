@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.yarten.shapebutton.ButtonPanel;
 
@@ -27,8 +28,8 @@ public class LoginActivity extends BaseActivity
 
         new ViewPagerHelper(this)
                 .initLayout(R.layout.page_login, R.id.bt1, new ViewPagerHelper.InitHandler() {
-                    TextInputEditText ET_login_username;
-                    TextInputEditText ET_login_password;
+                    EditText ET_login_username;
+                    EditText ET_login_password;
                     Button login_button;
                     CheckBox CB_login;
 

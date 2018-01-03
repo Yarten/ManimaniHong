@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/circlepicker/circlepicker.iml" filepath="$PROJECT_DIR$/circlepicker/circlepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/circlerefresh/circlerefresh.iml" filepath="$PROJECT_DIR$/circlerefresh/circlerefresh.iml" />
-      <module fileurl="file://$PROJECT_DIR$/database/database.iml" filepath="$PROJECT_DIR$/database/database.iml" />
       <module fileurl="file://$PROJECT_DIR$/device/device.iml" filepath="$PROJECT_DIR$/device/device.iml" />
       <module fileurl="file://$PROJECT_DIR$/doublecursorseekbar/doublecursorseekbar.iml" filepath="$PROJECT_DIR$/doublecursorseekbar/doublecursorseekbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/drawer/drawer.iml" filepath="$PROJECT_DIR$/drawer/drawer.iml" />
