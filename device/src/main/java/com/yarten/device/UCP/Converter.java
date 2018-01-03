@@ -214,4 +214,20 @@ public class Converter
         Controller controller = gson.fromJson(json, Controller.class);
         return controller;
     }
+
+    // 将Controllable对象转换为JSON
+    public String toString(Controllable controllable) {
+        List<Controller> list = controllable.getControllers();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{\"controller\": [");
+        for (int i=0; i<list.size(); i++) {
+            String temp = toString(list.get(i));
+            stringBuilder.append(temp);
+            if (i < list.size()-1) {
+                stringBuilder.append(",");
+            }
+        }
+        stringBuilder.append("]}");
+        return stringBuilder.toString();
+    }
 }
