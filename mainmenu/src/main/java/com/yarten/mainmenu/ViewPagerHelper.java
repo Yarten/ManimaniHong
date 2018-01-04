@@ -22,6 +22,7 @@ public class ViewPagerHelper
     private ArrayList<InitHandler> handlers;
     private ArrayList<Integer> layouts;
     private ArrayList<Integer> triggers;
+    private ArrayList<OnTriggleListener> onTriggleListeners;
 
     public ViewPagerHelper(Context context)
     {
@@ -29,14 +30,15 @@ public class ViewPagerHelper
         handlers = new ArrayList<>();
         layouts = new ArrayList<>();
         triggers = new ArrayList<>();
+        onTriggleListeners = new ArrayList<>();
     }
 
-    public ViewPagerHelper initLayout(int layout, int trigger, InitHandler handler)
+    public ViewPagerHelper initLayout(int layout, int trigger, InitHandler handler, OnTriggleListener onTriggleListener)
     {
         layouts.add(layout);
         triggers.add(trigger);
         handlers.add(handler);
-
+        onTriggleListeners.add(onTriggleListener);
         return this;
     }
 
@@ -54,7 +56,7 @@ public class ViewPagerHelper
             views.add(view);
             handlers.get(i).onInit(view);
 
-            trigger.setOnClickListener(new OnChangeListener(viewPager, i));
+            trigger.setOnClickListener(new OnChangeListener(viewPager, i, onTriggleListeners.get(i)));
         }
 
         viewPager.setAdapter(new Adapter(views));
@@ -71,20 +73,29 @@ public class ViewPagerHelper
         void onInit(View view);
     }
 
+    public interface OnTriggleListener
+    {
+        boolean onTriggle();
+    }
+
     class OnChangeListener implements View.OnClickListener
     {
         private ViewPager viewPager;
         private int position;
+        private OnTriggleListener onTriggleListener;
 
-        OnChangeListener(ViewPager viewPage, int position)
+        OnChangeListener(ViewPager viewPage, int position, OnTriggleListener onTriggleListener)
         {
             this.viewPager = viewPage;
             this.position = position;
+            this.onTriggleListener = onTriggleListener;
         }
 
         @Override
-        public void onClick(View v) {
-            viewPager.setCurrentItem(position);
+        public void onClick(View v)
+        {
+            if(onTriggleListener == null || onTriggleListener.onTriggle())
+                viewPager.setCurrentItem(position);
         }
     }
 

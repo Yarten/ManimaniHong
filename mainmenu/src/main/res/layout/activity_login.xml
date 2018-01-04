@@ -4,38 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
+    android:background="#90d7ec"
     tools:context="com.yarten.mainmenu.LoginActivity">
 
     <ImageView
         android:id="@+id/bt1"
         android:layout_width="80dp"
         android:layout_height="0dp"
+        android:background="#90d7ec"
         app:layout_constraintBottom_toTopOf="@+id/bt2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@android:color/holo_blue_bright" />
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/bt2"
         android:layout_width="80dp"
         android:layout_height="0dp"
+        android:background="#76becc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt1"
-        app:srcCompat="@color/colorPrimaryDark" />
+        app:layout_constraintTop_toBottomOf="@+id/bt1" />
 
     <com.yarten.shapebutton.ButtonPanel
         android:id="@+id/button_panel"
         android:layout_width="360dp"
         android:layout_height="360dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="280dp"
         android:layout_marginTop="8dp"
         android:transitionName="@string/button_panel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.yarten.mainmenu.VerticalViewPager
@@ -86,5 +85,19 @@
         app:layout_constraintEnd_toEndOf="@+id/bt2"
         app:layout_constraintStart_toStartOf="@+id/bt2"
         app:layout_constraintTop_toTopOf="@+id/bt2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="80dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </android.support.constraint.ConstraintLayout>

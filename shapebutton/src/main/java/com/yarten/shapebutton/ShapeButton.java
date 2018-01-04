@@ -87,7 +87,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         }
 
         setColor(ta.getColor(R.styleable.ShapeButton_color, Color.Red));
-        setRotation(ta.getInteger(R.styleable.ShapeButton_rotation, 0));
+        setBackgroundRotation(ta.getInteger(R.styleable.ShapeButton_rotation, 0));
         setText(ta.getString(R.styleable.ShapeButton_text));
         setImage(ta.getResourceId(R.styleable.ShapeButton_image, 0));
     }
@@ -247,6 +247,16 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     public void setListener(Listener listener)
     {
         this.listener = listener;
+    }
+
+    @Override
+    public void setControllers(List<Controller> controllers) {
+        this.controllers = controllers;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.Button;
     }
 
     //endregion

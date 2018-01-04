@@ -30,16 +30,21 @@
         app:fab_expandDirection="down">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/quit_option"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/quit_option" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save_option"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/save_option" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/clear_all_option"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/clear_all_option" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </android.support.constraint.ConstraintLayout>

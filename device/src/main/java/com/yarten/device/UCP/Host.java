@@ -29,6 +29,8 @@ public class Host implements Comparable<Host>
         Discovered, Connected, Connecting
     }
 
+    public State getState(){return state;}
+
     @Override
     public int compareTo(@NonNull Host o) {
         return name.compareTo(o.name);
@@ -37,5 +39,13 @@ public class Host implements Comparable<Host>
     public String toString()
     {
         return host + " " + name;
+    }
+
+    public Host clone()
+    {
+        Host newHost = new Host(host, name);
+        newHost.state = state;
+        newHost.password = password;
+        return newHost;
     }
 }

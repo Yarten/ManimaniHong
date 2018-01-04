@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.Gravity;
 
 import com.yarten.device.UCP.Controllable;
+import com.yarten.device.UCP.Host;
+import com.yarten.device.UCP.Manager;
+import com.yarten.device.UCP.Signal;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Utils;
 
+import java.util.List;
 import java.util.Vector;
 
 public class MainActivity extends BaseActivity {
@@ -34,10 +38,10 @@ public class MainActivity extends BaseActivity {
     private void init()
     {
         buttonPanel = findViewById(R.id.button_panel);
-        initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT);
-        initTriangle(buttonPanel.getLeftButton(), AboutActivity.class, Gravity.RIGHT, Gravity.LEFT);
-        initTriangle(buttonPanel.getTopButton(), ReposActivity.class, Gravity.BOTTOM, Gravity.TOP);
-        initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM);
+        initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.user);
+        initTriangle(buttonPanel.getLeftButton(), AboutActivity.class, Gravity.RIGHT, Gravity.LEFT, R.mipmap.member);
+        initTriangle(buttonPanel.getTopButton(), ReposActivity.class, Gravity.BOTTOM, Gravity.TOP, R.mipmap.cloud);
+        initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM, R.mipmap.wifi);
 
         buttonPanel.getMiddleButton()
                 .setListener(new Controllable.Listener() {
@@ -50,6 +54,10 @@ public class MainActivity extends BaseActivity {
                         {
                             buttonPanel.toggle();
                             isSubMenu = true;
+                        }
+                        else // 进入第二级界面时，跳转到新增编辑界面
+                        {
+                            ActivityHelper.toEditor(MainActivity.this);
                         }
                     }
 
@@ -79,6 +87,8 @@ public class MainActivity extends BaseActivity {
     private void initFirstTime()
     {
         buttonPanel.toggle();
+        new Manager(this.getApplicationContext())
+                .setSelfName("Honor V9");
     }
 
     private void initNotFirstTime(Bundle bundle)
@@ -89,9 +99,9 @@ public class MainActivity extends BaseActivity {
             ActivityHelper.setSlideIn(this, direction);
     }
 
-    private void initTriangle(ShapeButton button, Class target, int inDirection, int outDirection)
+    private void initTriangle(ShapeButton button, Class target, int inDirection, int outDirection, int imageID)
     {
-        ActivityHelper.initTriangle(button, buttonPanel, this, target, inDirection, outDirection);
+        ActivityHelper.initTriangle(button, buttonPanel, this, target, inDirection, outDirection, imageID);
     }
 
     @Override

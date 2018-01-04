@@ -1,6 +1,8 @@
 package com.yarten.utils;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,6 +78,7 @@ public class CommonRecyclerView extends RecyclerView
         private Context context;
         private Class[] parameterTypes;
         private Constructor<E> constructor;
+        private Handler handler;
 
         public Adapter(Context context, Class<E> holderClass)
         {
@@ -92,6 +95,7 @@ public class CommonRecyclerView extends RecyclerView
             this.layout = layout;
             this.context = context;
             this.items = items;
+            this.handler = new Handler();
 
             try
             {
@@ -109,29 +113,84 @@ public class CommonRecyclerView extends RecyclerView
             add(data, items.size());
         }
 
-        public void add(T data, int position)
+        public void add(T data, final int position)
         {
             items.add(data);
-            notifyItemInserted(position);
+            notifyAdd(position);
         }
 
-        public void remove(int position)
+        public void notifyAdd(final int position)
+        {
+            if(checkThread())
+                notifyItemInserted(position);
+            else handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemInserted(position);
+                }
+            });
+        }
+
+        public void remove(final int position)
         {
             items.remove(position);
-            notifyItemRemoved(position);
+            notifyRemove(position);
         }
 
-        public void update(T data, int position)
+        public void notifyRemove(final int position)
+        {
+            if(checkThread())
+                notifyItemRemoved(position);
+            else handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemRemoved(position);
+                }
+            });
+        }
+
+        public void update(T data, final int position)
         {
             items.set(position, data);
-            notifyItemChanged(position);
+            notifyUpdate(position);
+        }
+
+        public void notifyUpdate(final int position)
+        {
+            if(checkThread())
+                notifyItemChanged(position);
+            else handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemChanged(position);
+                }
+            });
         }
 
         public void updateAll(List<T> items)
         {
             this.items = items;
-            notifyDataSetChanged();
+            notifyUpdateAll();
         }
+
+        public void notifyUpdateAll()
+        {
+            if(checkThread())
+                notifyDataSetChanged();
+            else handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+
+        private boolean checkThread()
+        {
+            return Thread.currentThread() == Looper.getMainLooper().getThread();
+        }
+
+        public List<T> getItems(){return items;}
 
         @Override
         public final ViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -213,6 +272,8 @@ public class CommonRecyclerView extends RecyclerView
         {
             adapter.update(data, position);
         }
+
+        protected void notifyUpdate(int position){adapter.notifyUpdate(position);}
 
         public abstract void onBind(T data, int position);
 

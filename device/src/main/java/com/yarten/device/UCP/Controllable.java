@@ -11,6 +11,15 @@ public interface Controllable
 {
     List<Controller> getControllers();
 
+    void setControllers(List<Controller> controllers);
+
+    enum Type
+    {
+        Button
+    }
+
+    Type getType();
+
     interface Listener
     {
         void onDown();
@@ -21,4 +30,6 @@ public interface Controllable
     }
 
     void setListener(Listener listener);
+
+
 }

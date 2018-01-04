@@ -127,7 +127,7 @@ public class Converter
                 case Connect: s2connect(pkg, words); break;
                 case Boolean: s2boolean(pkg, words); break;
                 case Vector: s2vector(pkg, words); break;
-                default: throw new Exception("Unknow Type of Package.");
+                default: throw new Exception("Unknow Type of Package: " + s);
             }
         }
         catch (Exception e)
@@ -200,34 +200,4 @@ public class Converter
         pkg.setVector(values);
     }
     //endregion
-
-    // 将Controller对象转换为JSON
-    public String toString(Controller controller) {
-        Gson gson = new Gson();
-        String json = gson.toJson(controller);
-        return json;
-    }
-
-    // 将JSON转换为Controller对象
-    public Controller toController(String json) {
-        Gson gson = new Gson();
-        Controller controller = gson.fromJson(json, Controller.class);
-        return controller;
-    }
-
-    // 将Controllable对象转换为JSON
-    public String toString(Controllable controllable) {
-        List<Controller> list = controllable.getControllers();
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{\"controller\": [");
-        for (int i=0; i<list.size(); i++) {
-            String temp = toString(list.get(i));
-            stringBuilder.append(temp);
-            if (i < list.size()-1) {
-                stringBuilder.append(",");
-            }
-        }
-        stringBuilder.append("]}");
-        return stringBuilder.toString();
-    }
 }

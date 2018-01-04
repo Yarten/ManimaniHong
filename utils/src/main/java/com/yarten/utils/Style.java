@@ -17,7 +17,7 @@ public class Style
     public float scale = 1.0f;
     public float rotation = 0;
 
-    // 将Controller对象转换为JSON
+    // 将Style对象转换为JSON
     public String toString() {
         Gson gson = new Gson();
         String json = gson.toJson(this);

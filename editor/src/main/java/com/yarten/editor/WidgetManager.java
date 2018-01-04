@@ -30,7 +30,7 @@ public class WidgetManager
     {
         public enum Type
         {
-            Button
+            Button, Vector, Undefined
         }
 
         public static final int WIDGET_LENGTH = 100;

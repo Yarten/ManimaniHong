@@ -8,8 +8,11 @@ import com.yarten.device.Communication.WifiNetwork;
 import com.yarten.utils.LoopThread;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -22,23 +25,23 @@ public class Manager
     private Context context;
     private WifiNetwork wifiNetwork;
     private Converter converter;
-    private Listener listener;
     private String selfName;
 
-    public Manager(Context context, Listener listener)
+    public static Manager instance;
+
+    public Manager(Context context)
     {
+        instance = this;
         this.context = context;
         this.wifiNetwork = new WifiNetwork(context, communicationListener);
         this.wifiNetwork.connect(7259, 9527, "239.0.0.1");
         this.converter = new Converter();
-        this.listener = listener;
-
-        this.sendThread.start();
+    //    this.sendThread.start();
     }
 
     public void setSelfName(String name){selfName = name;}
 
-    public interface Listener
+    public interface DiscoverListener
     {
         /**
          * 接收到受控端的Hello报文时回调
@@ -52,7 +55,10 @@ public class Manager
          * @param position
          */
         void onGoodbye(int position);
+    }
 
+    public interface ConnectListener
+    {
         /**
          * 成功连接上时回调
          * @param host
@@ -65,13 +71,24 @@ public class Manager
          * @param isTimeout 是否因为超时而断开的连接
          */
         void onDisconnected(Host host, boolean isTimeout);
+    }
 
+    public interface ControlListListener
+    {
         /**
          * 获取受控端的列表
          * @param signals
          */
         void onList(List<Signal> signals);
     }
+
+    private DiscoverListener discoverListener;
+    private ConnectListener connectListener;
+    private ControlListListener controlListListener;
+
+    public Manager setDiscoverListener(DiscoverListener discoverListener){this.discoverListener = discoverListener; return this;}
+    public Manager setConnectListener(ConnectListener connectListener){this.connectListener = connectListener; return this;}
+    public Manager setControlListListener(ControlListListener controlListListener){this.controlListListener = controlListListener; return this;}
     //endregion
 
     //region 事件处理
@@ -85,7 +102,7 @@ public class Manager
                 switch (pkg.getType())
                 {
                     case Hello:
-                        onHello(host, pkg);
+                        onHello(ip, host, pkg);
                         break;
                     case Connect:
                         onConnect(host, pkg);
@@ -94,7 +111,7 @@ public class Manager
                         onReply(host);
                         break;
                     case List:
-                        onList(pkg);
+                        onList(host, pkg);
                         break;
                 }
             }
@@ -113,36 +130,47 @@ public class Manager
         }
     };
 
-    synchronized private void onHello(Host host, Package pkg) throws Package.IncompatibleType
+    synchronized private void onHello(String ip, Host host, Package pkg) throws Package.IncompatibleType
     {
+        if(host == null) // 在AllHost中找不到时，再从newHosts中找，避免添加重复
+        {
+            for(Host i : newHosts)
+                if(i.host.equals(ip))
+                {
+                    host = i;
+                    break;
+                }
+        }
+
         if(host == null)
-             newHosts.add(new Host(pkg.getHost(), pkg.getName()));
-        else host.discoveredTime = System.currentTimeMillis();
+            newHosts.add(new Host(ip, pkg.getName()));
+        else if(host.state == Host.State.Discovered)
+            host.discoveredTime = System.currentTimeMillis();
     }
 
     synchronized private void onConnect(Host host, Package pkg) throws Package.IncompatibleType
     {
         boolean state = pkg.isConnected();
+        if(host == null) return;
 
-        if(host != null)
+        if(state) // 主机非空且密码正确
         {
-            if(state) // 密码正确
-            {
-                host.watchDog = 0;
+            host.watchDog = 0;
 
-                if(host.state != Host.State.Connected)
-                {
-                    connectedHosts.add(host);
-                    host.state = Host.State.Connected;
-                }
-
-                listener.onConnected(host);
-            }
-            else // 授权错误（连接过程中，或者还未连接）
+            if(host.state != Host.State.Connected)
             {
-                listener.onDisconnected(host, false);
-                disconnect(host);
+                host.state = Host.State.Connected;
+                connectedHosts.add(host);
             }
+
+            if(connectListener != null)
+                connectListener.onConnected(host);
+        }
+        else
+        {
+            disconnect(host);
+            if(connectListener != null)
+                connectListener.onDisconnected(host, false);
         }
     }
 
@@ -156,10 +184,19 @@ public class Manager
         else Log.i("Reply", "Null");
     }
 
-    private void onList(Package pkg) throws Package.IncompatibleType
+    private void onList(Host host, Package pkg) throws Package.IncompatibleType
     {
+        if(host == null)
+        {
+            if(controlListListener != null)
+                controlListListener.onList(null);
+            return;
+        }
+
         List<Signal> signals = pkg.getList();
-        listener.onList(signals);
+        this.signals.put(host, signals);
+        if(controlListListener != null)
+            controlListListener.onList(getSignals());
     }
     //endregion
 
@@ -174,10 +211,9 @@ public class Manager
      */
     public List<Host> startListenCast()
     {
-        wifiNetwork.startListen();
         newHosts = new ArrayList<>();
         hostCheckThread.start();
-
+        wifiNetwork.startListen();
         return allHosts;
     }
 
@@ -203,19 +239,21 @@ public class Manager
                     Host host = allHosts.get(i);
                     if(host.state == Host.State.Discovered)
                     {
-                        if(time - host.discoveredTime > 1500)
+                        if(time - host.discoveredTime > 10000)
                         {
                             allHosts.remove(i);
-                            listener.onGoodbye(i);
+                            if(discoverListener != null)
+                                discoverListener.onGoodbye(i);
                             size = allHosts.size();
                         }
                     }
 
                     if(host.state == Host.State.Connecting)
                     {
-                        if(time - host.discoveredTime > 2000)
+                        if(time - host.discoveredTime > 5000)
                         {
-                            listener.onDisconnected(host, true);
+                            if(connectListener != null)
+                                connectListener.onDisconnected(host, true);
                             host.state = Host.State.Discovered;
                         }
                     }
@@ -240,7 +278,8 @@ public class Manager
                     }
 
                     allHosts.add(j, newHost);
-                    listener.onHello(newHost, j);
+                    if(discoverListener != null)
+                        discoverListener.onHello(newHost, j);
                 }
 
                 newHosts.clear();
@@ -254,10 +293,10 @@ public class Manager
     synchronized public void connect(Host host)
     {
         if(host.state != Host.State.Connected)
-        {
             host.state = Host.State.Connecting;
+
+        if(host.state == Host.State.Discovered)
             host.discoveredTime = System.currentTimeMillis();
-        }
 
         try
         {
@@ -288,9 +327,17 @@ public class Manager
     }
 
     public List<Host> getConnectedHosts(){return connectedHosts;}
+
+    public List<Host> getAllHosts(){return allHosts;}
     //endregion
 
     //region 指令发送管理
+    public void requireList()
+    {
+        for(Host host : connectedHosts)
+            requireList(host);
+    }
+
     public void requireList(Host host)
     {
         try
@@ -365,10 +412,12 @@ public class Manager
                 {
                     for(Host host : connectedHosts)
                     {
+                        Log.e("Watch Dog", host.watchDog + "");
                         //region 超时处理：直接断开
                         if(host.watchDog / 5 >= 4)
                         {
-                            listener.onDisconnected(host, true);
+                            if(connectListener != null)
+                                connectListener.onDisconnected(host, true);
                             disconnect(host);
                             continue;
                         }
@@ -394,7 +443,31 @@ public class Manager
             }
             catch (Exception e){e.printStackTrace();}
         }
-    }.setRate(50);
+    }.setRate(100);
+    //endregion
+
+    //region 控制列表管理
+    private Map<Host, List<Signal>> signals = new HashMap<>();
+
+    public List<Signal> getSignals()
+    {
+        List<Signal> ls = new ArrayList<>();
+
+        if(signals == null) return ls;
+
+        for(Map.Entry<Host, List<Signal>> i : signals.entrySet())
+        {
+            ls.addAll(i.getValue());
+        }
+
+        return ls;
+    }
+
+    public Manager resetSignalList()
+    {
+        signals = new HashMap<>();
+        return this;
+    }
     //endregion
 
     //region 工具函数

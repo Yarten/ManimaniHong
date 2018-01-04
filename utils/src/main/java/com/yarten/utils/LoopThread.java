@@ -63,12 +63,18 @@ public abstract class LoopThread extends Thread
 
     public void quit()
     {
+        quit(true);
+    }
+
+    public void quit(boolean immediately)
+    {
         synchronized (this)
         {
             requireFinish = true;
         }
 
-        if(this == Thread.currentThread()) return;
+        super.interrupt();
+        if(immediately || this == Thread.currentThread()) return;
 
         while (true)
         {

@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity
 
     void testUCPManager()
     {
-        manager = new Manager(this, new Manager.Listener() {
+        manager = new Manager(this);
+
+        manager.setDiscoverListener(new Manager.DiscoverListener() {
             @Override
             public void onHello(Host host, int position) {
                 Log.i("UCP-Hello", host.toString() + " " + position);
@@ -38,10 +40,9 @@ public class MainActivity extends AppCompatActivity
             public void onGoodbye(int position) {
                 Log.i("UCP-Goodbye", "" + position);
             }
-
+        }).setConnectListener(new Manager.ConnectListener() {
             @Override
-            public void onConnected(Host host)
-            {
+            public void onConnected(Host host) {
                 Log.i("UCP-Connected", host.toString());
             }
 
@@ -49,13 +50,14 @@ public class MainActivity extends AppCompatActivity
             public void onDisconnected(Host host, boolean isTimeout) {
                 Log.i("UCP-Disconnceted", host.toString() + (isTimeout ? " Timout" : " Break"));
             }
-
+        }).setControlListListener(new Manager.ControlListListener() {
             @Override
             public void onList(List<Signal> signals) {
                 for(int i = 0, size = signals.size(); i < size; i++)
                     Log.i("UCP-List", signals.get(i).toString());
             }
         });
+
         manager.startListenCast();
     }
 
