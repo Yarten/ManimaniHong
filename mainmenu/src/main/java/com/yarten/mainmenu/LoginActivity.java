@@ -26,7 +26,8 @@ public class LoginActivity extends BaseActivity
         ActivityHelper.initTriangle(buttonPanel.getLeftButton(), buttonPanel, this, MainActivity.class, Gravity.RIGHT, Gravity.LEFT);
 
         new ViewPagerHelper(this)
-                .initLayout(R.layout.page_login, R.id.bt1, new ViewPagerHelper.InitHandler() {
+                .initLayout(R.layout.page_login, R.id.bt1, new ViewPagerHelper.InitHandler()
+                {
                     TextInputEditText ET_login_username;
                     TextInputEditText ET_login_password;
                     Button login_button;
@@ -42,17 +43,23 @@ public class LoginActivity extends BaseActivity
                         CB_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                if(b){
+                                if (b) {
                                     ET_login_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                }
-                                else{
+                                } else {
                                     ET_login_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                 }
                             }
                         });
                     }
+                }, new ViewPagerHelper.OnTriggleListener()
+                {
+                    @Override
+                    public boolean onTriggle() {
+                        return false;
+                    }
                 })
-                .initLayout(R.layout.page_register, R.id.bt2, new ViewPagerHelper.InitHandler() {
+                .initLayout(R.layout.page_register, R.id.bt2, new ViewPagerHelper.InitHandler()
+                {
                     TextInputEditText ET_register_username;
                     TextInputEditText ET_register_password;
                     TextInputEditText ET_register_confirm;
@@ -72,10 +79,9 @@ public class LoginActivity extends BaseActivity
                         CB_register_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                if(b){
+                                if (b) {
                                     ET_register_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                }
-                                else{
+                                } else {
                                     ET_register_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                 }
                             }
@@ -84,14 +90,19 @@ public class LoginActivity extends BaseActivity
                         CB_register_confirm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                if(b){
+                                if (b) {
                                     ET_register_confirm.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                                }
-                                else{
+                                } else {
                                     ET_register_confirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
                                 }
                             }
                         });
+                    }
+                }, new ViewPagerHelper.OnTriggleListener()
+                {
+                    @Override
+                    public boolean onTriggle() {
+                        return false;
                     }
                 })
                 .build(R.id.view_pager);

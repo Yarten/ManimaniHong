@@ -12,9 +12,9 @@ import android.transition.Visibility;
 import android.view.Window;
 
 import com.yarten.device.UCP.Controllable;
+import com.yarten.editor.*;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -25,6 +25,7 @@ import java.util.Vector;
 
 class ActivityHelper
 {
+    //region Activity栈管理
     private static List<BaseActivity> activities = new LinkedList<>();
 
     public static void add(BaseActivity activity)
@@ -59,8 +60,7 @@ class ActivityHelper
 
         System.exit(0);
     }
-
-
+    //endregion
 
     //region Activity切换动画
     static void setSlideOut(AppCompatActivity activity, int direction)
@@ -127,6 +127,14 @@ class ActivityHelper
 
             }
         });
+    }
+    //endregion
+
+    //region Activity跳转 -》 编辑界面/使用界面
+    public static void toEditor(AppCompatActivity src)
+    {
+        Intent intent = new Intent(src, com.yarten.editor.MainActivity.class);
+        src.startActivity(intent);
     }
     //endregion
 

@@ -42,4 +42,5 @@ dependencies {
 
     implementation project (':device')
     implementation project (':utils')
+    implementation project (':editor')
 }

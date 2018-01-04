@@ -1,6 +1,7 @@
 package com.yarten.editor;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,8 @@ import com.example.drawer.DrawerActivity;
 import com.yarten.sgbutton.SGFloat;
 import com.yarten.sgbutton.SGWidget;
 import com.yarten.utils.CommonRecyclerView;
+import com.yarten.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,27 @@ public class MainActivity extends DrawerActivity {
             @Override
             public void onClick(View v) {
                 WidgetManager.removeAll(viewGroup);
+            }
+        });
+
+        FloatingActionButton save = findViewById(R.id.save_option);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        FloatingActionButton quit = findViewById(R.id.quit_option);
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.makeDialog(MainActivity.this, "是否放弃修改？", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
             }
         });
     }

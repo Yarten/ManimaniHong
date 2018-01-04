@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#ff4081</color>
     <color name="background">#406252</color>
+    <color name="clear_all_option">#e62d2d</color>
+    <color name="save_option">#ffed2a</color>
+    <color name="quit_option">#dd01ff</color>
 </resources>

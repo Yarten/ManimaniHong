@@ -239,7 +239,12 @@ public class WifiNetwork implements Communication
             public void onRun() {
                 try
                 {
+                    socket.setSoTimeout(500);
                     socket.receive(packet);
+                }
+                catch (java.net.SocketTimeoutException e)
+                {
+                    return;
                 }
                 catch (Exception e)
                 {

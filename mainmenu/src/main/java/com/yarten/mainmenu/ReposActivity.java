@@ -22,7 +22,8 @@ public class ReposActivity extends BaseActivity
         ActivityHelper.initTriangle(buttonPanel.getBottomButton(), buttonPanel, this, MainActivity.class, Gravity.TOP, Gravity.BOTTOM);
 
         new ViewPagerHelper(this)
-                .initLayout(R.layout.page_local, R.id.bt1, new ViewPagerHelper.InitHandler() {
+                .initLayout(R.layout.page_local, R.id.bt1, new ViewPagerHelper.InitHandler()
+                {
                     ImageView local_img;
                     ImageButton BT_local_play;
                     ImageButton BT_local_delete;
@@ -36,8 +37,15 @@ public class ReposActivity extends BaseActivity
                         BT_local_delete = view.findViewById(R.id.local_delete_button);
 
                     }
+                }, new ViewPagerHelper.OnTriggleListener()
+                {
+                    @Override
+                    public boolean onTriggle() {
+                        return false;
+                    }
                 })
-                .initLayout(R.layout.page_cloud, R.id.bt2, new ViewPagerHelper.InitHandler() {
+                .initLayout(R.layout.page_cloud, R.id.bt2, new ViewPagerHelper.InitHandler()
+                {
                     ImageView cloud_img;
                     ImageButton BT_cloud_play;
                     ImageButton BT_cloud_edit;
@@ -49,6 +57,12 @@ public class ReposActivity extends BaseActivity
                         BT_cloud_play = view.findViewById(R.id.cloud_play_button);
                         BT_cloud_edit = view.findViewById(R.id.cloud_edit_button);
                         BT_cloud_delete = view.findViewById(R.id.cloud_delete_button);
+                    }
+                }, new ViewPagerHelper.OnTriggleListener()
+                {
+                    @Override
+                    public boolean onTriggle() {
+                        return false;
                     }
                 })
                 .build(R.id.view_pager);

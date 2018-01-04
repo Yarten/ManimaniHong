@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.Gravity;
 
 import com.yarten.device.UCP.Controllable;
+import com.yarten.device.UCP.Host;
+import com.yarten.device.UCP.Manager;
+import com.yarten.device.UCP.Signal;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Utils;
 
+import java.util.List;
 import java.util.Vector;
 
 public class MainActivity extends BaseActivity {
@@ -51,6 +55,10 @@ public class MainActivity extends BaseActivity {
                             buttonPanel.toggle();
                             isSubMenu = true;
                         }
+                        else // 进入第二级界面时，跳转到新增编辑界面
+                        {
+                            ActivityHelper.toEditor(MainActivity.this);
+                        }
                     }
 
                     @Override
@@ -79,6 +87,8 @@ public class MainActivity extends BaseActivity {
     private void initFirstTime()
     {
         buttonPanel.toggle();
+        new Manager(this.getApplicationContext())
+                .setSelfName("Honor V9");
     }
 
     private void initNotFirstTime(Bundle bundle)
