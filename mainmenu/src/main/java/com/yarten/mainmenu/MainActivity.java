@@ -38,10 +38,10 @@ public class MainActivity extends BaseActivity {
     private void init()
     {
         buttonPanel = findViewById(R.id.button_panel);
-        initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT);
-        initTriangle(buttonPanel.getLeftButton(), AboutActivity.class, Gravity.RIGHT, Gravity.LEFT);
-        initTriangle(buttonPanel.getTopButton(), ReposActivity.class, Gravity.BOTTOM, Gravity.TOP);
-        initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM);
+        initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.user);
+        initTriangle(buttonPanel.getLeftButton(), AboutActivity.class, Gravity.RIGHT, Gravity.LEFT, R.mipmap.member);
+        initTriangle(buttonPanel.getTopButton(), ReposActivity.class, Gravity.BOTTOM, Gravity.TOP, R.mipmap.cloud);
+        initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM, R.mipmap.wifi);
 
         buttonPanel.getMiddleButton()
                 .setListener(new Controllable.Listener() {
@@ -99,9 +99,9 @@ public class MainActivity extends BaseActivity {
             ActivityHelper.setSlideIn(this, direction);
     }
 
-    private void initTriangle(ShapeButton button, Class target, int inDirection, int outDirection)
+    private void initTriangle(ShapeButton button, Class target, int inDirection, int outDirection, int imageID)
     {
-        ActivityHelper.initTriangle(button, buttonPanel, this, target, inDirection, outDirection);
+        ActivityHelper.initTriangle(button, buttonPanel, this, target, inDirection, outDirection, imageID);
     }
 
     @Override

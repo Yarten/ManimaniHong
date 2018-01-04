@@ -3,6 +3,7 @@ package com.yarten.mainmenu;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Explode;
@@ -99,7 +100,7 @@ class ActivityHelper
     //endregion
 
     //region 控件设置
-    static void initTriangle(ShapeButton button, final ButtonPanel buttonPanel, final AppCompatActivity source, final Class target, final int inDirection, final int outDirection)
+    static void initTriangle(ShapeButton button, final ButtonPanel buttonPanel, final AppCompatActivity source, final Class target, final int inDirection, final int outDirection, int imageID)
     {
         button.setListener(new Controllable.Listener() {
             @Override
@@ -127,6 +128,7 @@ class ActivityHelper
 
             }
         });
+        button.setImage(imageID);
     }
     //endregion
 

@@ -37,7 +37,7 @@ public class DeviceActivity extends BaseActivity
         instance = this;
 
         buttonPanel = findViewById(R.id.button_panel);
-        ActivityHelper.initTriangle(buttonPanel.getTopButton(), buttonPanel, this, MainActivity.class, Gravity.BOTTOM, Gravity.TOP);
+        ActivityHelper.initTriangle(buttonPanel.getTopButton(), buttonPanel, this, MainActivity.class, Gravity.BOTTOM, Gravity.TOP, R.mipmap.down);
 
         new ViewPagerHelper(this)
                 .initLayout(R.layout.page_wifi, R.id.bt1, new ViewPagerHelper.InitHandler() {

@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
     <color name="triangle_arrow">#66cab4</color>
-    <color name="circle_option">#f98e55</color>
-    <color name="middle_circle">#000000</color>
+    <color name="circle_option">#88d349e3</color>
+    <color name="middle_circle">#da7979</color>
 </resources>
