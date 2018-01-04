@@ -33,18 +33,21 @@
             android:id="@+id/quit_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/quit_option" />
+            app:fab_colorNormal="@color/quit_option"
+            app:fab_icon="@mipmap/quit" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/save_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/save_option" />
+            app:fab_colorNormal="@color/save_option"
+            app:fab_icon="@mipmap/save" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/clear_all_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/clear_all_option" />
+            app:fab_colorNormal="@color/clear_all_option"
+            app:fab_icon="@mipmap/clear_all" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </android.support.constraint.ConstraintLayout>
