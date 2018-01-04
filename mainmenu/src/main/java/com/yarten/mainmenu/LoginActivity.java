@@ -59,7 +59,6 @@ public class LoginActivity extends BaseActivity
                     EditText ET_register_confirm;
                     Button register_button;
                     CheckBox CB_register_password;
-                    CheckBox CB_register_confirm;
 
                     @Override
                     public void onInit(View view) {
@@ -68,7 +67,6 @@ public class LoginActivity extends BaseActivity
                         ET_register_confirm = view.findViewById(R.id.register_confirm_edit);
                         register_button = view.findViewById(R.id.register_button);
                         CB_register_password = view.findViewById(R.id.checkBox_password);
-                        CB_register_confirm = view.findViewById(R.id.checkBox_confirm);
 
                         CB_register_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
