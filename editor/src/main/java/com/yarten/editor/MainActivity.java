@@ -75,14 +75,14 @@ public class MainActivity extends DrawerActivity {
         final CommonRecyclerView commonRecyclerView = findViewById(R.id.common_list_view);
         viewGroup = findViewById(R.id.widget_layout);
         List<Widget> widgets = new ArrayList<>();
-        for(int i = 0; i < 10; i++)
+
         {
             Widget widget = new Widget();
             widget.type = Widget.Type.Button;
-            widget.name = "B" + i;
-            widget.description = "D" + i;
+            widget.name = "Button";
+            widget.description = "一个普通按钮，按下为1，松开为0";
             widget.style = Widget.BUTTON_STYLE.clone();
-            widget.style.text = "C" + i;
+            widget.style.text = widget.name;
             widgets.add(widget);
         }
 
