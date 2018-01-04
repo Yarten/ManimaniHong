@@ -54,7 +54,7 @@ public class LoginActivity extends BaseActivity
                 }, new ViewPagerHelper.OnTriggleListener() {
                     @Override
                     public boolean onTriggle() {
-                        return false;
+                        return true;
                     }
                 })
                 .initLayout(R.layout.page_register, R.id.bt2, new ViewPagerHelper.InitHandler() {
@@ -91,7 +91,7 @@ public class LoginActivity extends BaseActivity
                 }, new ViewPagerHelper.OnTriggleListener() {
                     @Override
                     public boolean onTriggle() {
-                        return false;
+                        return true;
                     }
                 })
                 .build(R.id.view_pager);

@@ -41,7 +41,7 @@ public class ReposActivity extends BaseActivity
                 {
                     @Override
                     public boolean onTriggle() {
-                        return false;
+                        return true;
                     }
                 })
                 .initLayout(R.layout.page_cloud, R.id.bt2, new ViewPagerHelper.InitHandler()
@@ -62,7 +62,7 @@ public class ReposActivity extends BaseActivity
                 {
                     @Override
                     public boolean onTriggle() {
-                        return false;
+                        return true;
                     }
                 })
                 .build(R.id.view_pager);
