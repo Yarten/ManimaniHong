@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yarten.shapebutton.ShapeButton;
+import com.yarten.shapebutton.ShapeView;
 import com.yarten.utils.Utils;
 
 /**
@@ -54,26 +55,32 @@ public class AirBubble extends ConstraintLayout {
     }
 
     public void setBubbleLayout(int Direction, float Percentage) {
+        if (Percentage <= 0.35) Percentage = (float)0.35;
+        if (Percentage >= 1.78) Percentage = (float)1.78;
         if (Direction == Gravity.LEFT) {
             bubbleLayout.getLayoutParams().height = description.getLayoutParams().height;
             triangle.setY(description.getY());
-            triangle.setRotation(270);
+//            triangle.setRotation(270);
         }
         if (Direction == Gravity.RIGHT) {
             bubbleLayout.getLayoutParams().height = description.getLayoutParams().height;
             triangle.setX(description.getX() + description.getLayoutParams().width - Utils.dip2px(context,10));
             triangle.setY(description.getY());
-            triangle.setRotation(90);
+//            triangle.setRotation(90);
+            triangle.setRotation(180);
         }
         if (Direction == Gravity.TOP) {
             triangle.setX((float)(description.getX() + description.getLayoutParams().width * 0.5 * Percentage -  Utils.dip2px(context,10)));
             triangle.setY(description.getY() - triangle.getLayoutParams().height / 2);
-            triangle.setRotation(0);
+//            triangle.setRotation(0);
+            triangle.setRotation(90);
         }
         if (Direction == Gravity.BOTTOM) {
             triangle.setX((float)(description.getX() + description.getLayoutParams().width * 0.5 * Percentage -  Utils.dip2px(context,10)));
             triangle.setY(description.getY() + triangle.getLayoutParams().height / 2);
-            triangle.setRotation(180);
+//            triangle.setRotation(180);
+            triangle.setRotation(270);
         }
     }
+
 }
