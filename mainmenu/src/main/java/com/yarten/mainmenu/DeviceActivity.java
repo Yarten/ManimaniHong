@@ -1,21 +1,16 @@
 package com.yarten.mainmenu;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.yarten.device.UCP.Host;
-import com.yarten.device.UCP.Manager;
+import com.yarten.ucp.Host;
+import com.yarten.ucp.Manager;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.utils.CommonRecyclerView;
 import com.yarten.utils.Interface.EditDialogCallback;
@@ -78,7 +73,6 @@ public class DeviceActivity extends BaseActivity
     protected void onDestroy()
     {
         Manager.instance.stopListenCast();
-        instance = null;
         super.onDestroy();
     }
 

@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    implementation project(':device')
+
     implementation project(':shapebutton')
     implementation project(':utils')
     implementation project(':circlepicker')
@@ -48,5 +48,7 @@ dependencies {
     implementation project (':doublecursorseekbar')
     implementation project (':circlerefresh')
     implementation project (':singleseekbar')
-
+    implementation project (':widget')
+    implementation project (':ucp')
+    implementation project (':rocker')
 }

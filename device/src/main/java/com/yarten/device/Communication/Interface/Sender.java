@@ -6,5 +6,5 @@ package com.yarten.device.Communication.Interface;
 
 public interface Sender
 {
-    void send(String host, String msg);
+    void send(String ip, int port, String msg);
 }

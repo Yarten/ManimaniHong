@@ -5,7 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
-import com.yarten.device.UCP.Controllable;
+import com.yarten.ucp.Controllable;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Interface.Styleable;
 

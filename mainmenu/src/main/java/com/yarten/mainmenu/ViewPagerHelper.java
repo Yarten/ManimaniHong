@@ -46,7 +46,7 @@ public class ViewPagerHelper
     {
         List<View> views = new ArrayList<>();
         AppCompatActivity activity = (AppCompatActivity)context;
-        ViewPager viewPager = activity.findViewById(view_pager);
+        NoScrollViewPager viewPager = activity.findViewById(view_pager);
 
         for(int i = 0, size = layouts.size(); i< size; i++)
         {
@@ -60,12 +60,7 @@ public class ViewPagerHelper
         }
 
         viewPager.setAdapter(new Adapter(views));
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        viewPager.setNoScroll(true);
     }
 
     public interface InitHandler

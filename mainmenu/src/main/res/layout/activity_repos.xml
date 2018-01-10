@@ -9,19 +9,21 @@
 
     <ImageView
         android:id="@+id/bt1"
-        android:layout_width="190dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="#dbce8f"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/guideline7"/>
+        app:layout_constraintRight_toRightOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/bt2"
-        android:layout_width="190dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="#c7a252"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline7"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.yarten.shapebutton.ButtonPanel
         android:id="@+id/button_panel"
@@ -68,7 +70,7 @@
         app:layout_constraintStart_toStartOf="@+id/bt2"
         app:layout_constraintTop_toTopOf="@+id/bt2" />
 
-    <android.support.v4.view.ViewPager
+    <com.yarten.mainmenu.NoScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"

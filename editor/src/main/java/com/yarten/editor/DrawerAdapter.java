@@ -1,6 +1,5 @@
 package com.yarten.editor;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,7 +9,9 @@ import com.yarten.sgbutton.SGWidget;
 import com.yarten.sgbutton.SGWidgetButton;
 import com.yarten.utils.CommonRecyclerView;
 import com.yarten.utils.Utils;
-import com.yarten.editor.WidgetManager.Widget;
+import com.yarten.widget.Widget;
+import com.yarten.widget.WidgetManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +25,18 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
     private Context context;
     private Listener listener;
     private AirBubble airBubble;
-    private CommonRecyclerView commonRecyclerView;
 
-    public DrawerAdapter(Context context, CommonRecyclerView commonRecyclerView, ViewGroup tempLayout, Listener listener)
+    public DrawerAdapter(Context context, ViewGroup tempLayout, Listener listener)
     {
-        this(context, commonRecyclerView, tempLayout, new ArrayList<Widget>(), listener);
+        this(context, tempLayout, new ArrayList<Widget>(), listener);
     }
 
-    public DrawerAdapter(Context context, CommonRecyclerView commonRecyclerView, ViewGroup tempLayout, List<Widget> items, Listener listener)
+    public DrawerAdapter(Context context, ViewGroup tempLayout, List<Widget> items, Listener listener)
     {
         super(context, R.layout.item_layout, items, ViewHolder.class);
         this.tempLayout = tempLayout;
         this.context = context;
         this.listener = listener;
-        this.commonRecyclerView = commonRecyclerView;
 
         airBubble = new AirBubble(context);
         airBubble.setVisibility(View.GONE);
@@ -49,6 +48,10 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
         void onCreateView(Widget widget);
 
         void onDragBegin();
+
+        void onItemDown();
+
+        void onItemUp();
     }
 
     @Override
@@ -103,13 +106,13 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
         sgWidgetButton.setOnDownListener(new SGWidget.OnActionListener() {
             @Override
             public void onAction(View view, MotionEvent event) {
-                commonRecyclerView.setScrollEnable(false);
+                listener.onItemDown();
             }
         });
         sgWidgetButton.setOnUpListener(new SGWidget.OnActionListener() {
             @Override
             public void onAction(View view, MotionEvent event) {
-                commonRecyclerView.setScrollEnable(true);
+                listener.onItemUp();
             }
         });
     }
@@ -131,7 +134,9 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
         switch (data.type)
         {
             case Button:
-                return R.layout.button_item;
+                return R.layout.item_button;
+            case Rocker:
+                return R.layout.item_rocker;
             default:
                 return super.getItemViewLayout(data, position);
         }

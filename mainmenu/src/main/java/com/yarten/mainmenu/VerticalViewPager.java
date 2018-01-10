@@ -10,7 +10,7 @@ import android.view.View;
  * Created by yfic on 2017/12/26.
  */
 
-public class VerticalViewPager extends ViewPager {
+public class VerticalViewPager extends NoScrollViewPager {
 
     public VerticalViewPager(Context context) {
         super(context);
@@ -81,5 +81,4 @@ public class VerticalViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         return super.onTouchEvent(swapXY(ev));
     }
-
 }

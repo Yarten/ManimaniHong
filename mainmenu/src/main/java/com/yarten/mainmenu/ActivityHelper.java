@@ -3,7 +3,6 @@ package com.yarten.mainmenu;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Explode;
@@ -12,8 +11,7 @@ import android.transition.Slide;
 import android.transition.Visibility;
 import android.view.Window;
 
-import com.yarten.device.UCP.Controllable;
-import com.yarten.editor.*;
+import com.yarten.ucp.Controllable;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
 import java.util.LinkedList;

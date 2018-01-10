@@ -3,7 +3,7 @@ package com.yarten.shapebutton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.yarten.device.UCP.Controllable;
+import com.yarten.ucp.Controllable;
 
 import java.util.Vector;
 

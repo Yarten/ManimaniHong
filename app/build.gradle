@@ -1,9 +1,9 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.yarten.manimanihong"
+    //    applicationId "com.yarten.manimanihong"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
@@ -28,4 +28,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation project(':utils')
     implementation 'com.google.code.gson:gson:2.8.0'
+
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+
+    implementation project (':utils')
+    implementation project (':ucp')
+    implementation project (':shapebutton')
 }
