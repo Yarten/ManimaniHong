@@ -23,7 +23,7 @@ public abstract class LoopThread extends Thread
     }
 
     @Override
-    public void run()
+    public final void run()
     {
         while (true)
         {

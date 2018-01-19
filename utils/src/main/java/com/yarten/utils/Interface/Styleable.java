@@ -10,7 +10,7 @@ public interface Styleable<T>
 {
     enum Shape
     {
-        Square, Circle, Triangle
+        Square, Circle, Triangle, Default
     }
 
     class Color

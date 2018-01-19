@@ -22,6 +22,7 @@ public class WifiNetwork implements Communication
     private Context context;
     private Listener listener;
 
+
     public WifiNetwork(Context context, Listener listener)
     {
         this.context = context;
@@ -66,9 +67,9 @@ public class WifiNetwork implements Communication
     }
 
     @Override
-    public void send(String ip, String msg)
+    public void send(String ip, int port, String msg)
     {
-        singlecaster.send(ip, msg);
+        singlecaster.send(ip, port, msg);
     }
 
     public WifiNetwork ping(String ip)
@@ -108,18 +109,17 @@ public class WifiNetwork implements Communication
         public Singlecaster(int port, Listener listener) throws Exception
         {
             DatagramSocket socket = new DatagramSocket(port);
-            DatagramPacket packet1 = new DatagramPacket(new byte[1024], 1024);
+            DatagramPacket packet1 = new DatagramPacket(new byte[4096], 4096);
             packet1.setPort(port);
             DatagramPacket packet2 = new DatagramPacket(new byte[0], 0);
-            packet2.setPort(port);
             udpReceiver = new UDPReceiver(socket, packet1, listener);
             udpSender = new UDPSender(socket, packet2, listener);
         }
 
         @Override
-        public void send(String ip, String msg)
+        public void send(String ip, int port, String msg)
         {
-            udpSender.send(ip, msg);
+            udpSender.send(ip, port, msg);
         }
 
         @Override
@@ -145,7 +145,7 @@ public class WifiNetwork implements Communication
         {
             MulticastSocket socket = new MulticastSocket(port);
             socket.joinGroup(InetAddress.getByName(groupIP));
-            DatagramPacket packet1 = new DatagramPacket(new byte[1024], 1024);
+            DatagramPacket packet1 = new DatagramPacket(new byte[4096], 4096);
             DatagramPacket packet2 = new DatagramPacket(new byte[0], 0);
             udpReceiver = new UDPReceiver(socket, packet1, listener);
             udpSender = new UDPSender(socket, packet2, listener);
@@ -169,9 +169,7 @@ public class WifiNetwork implements Communication
         }
 
         @Override
-        public void send(String host, String msg) {
-
-        }
+        public void send(String host, int port, String msg) {}
     }
 
     public static class UDPSender implements Sender
@@ -194,7 +192,8 @@ public class WifiNetwork implements Communication
             super.finalize();
         }
 
-        public void send(String ip, String msg)
+        @Override
+        public void send(String ip, int port, String msg)
         {
             byte[] data = msg.getBytes();
             packet.setData(data);
@@ -202,6 +201,7 @@ public class WifiNetwork implements Communication
             try
             {
                 packet.setAddress(InetAddress.getByName(ip));
+                packet.setPort(port);
                 socket.send(packet);
             }
             catch (Exception e)

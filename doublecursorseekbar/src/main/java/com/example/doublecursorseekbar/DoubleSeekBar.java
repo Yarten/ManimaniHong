@@ -66,8 +66,8 @@ public class DoubleSeekBar extends ConstraintLayout {
         this.min = min;
         this.max = max;
         outputFormat = "%." + fixed + "f";
-        minValue.setText(String.format(outputFormat, fixed, min));
-        maxValue.setText(String.format(outputFormat, fixed, max));
+        minValue.setText(String.format(outputFormat, min));
+        maxValue.setText(String.format(outputFormat, max));
     }
 
     //返回最小值

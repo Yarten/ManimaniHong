@@ -16,6 +16,7 @@ import com.yarten.circlepicker.CirclePickerView;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 import com.yarten.utils.Utils;
+import com.yarten.widget.WidgetManager;
 
 public class EditActivity extends AppCompatActivity {
 

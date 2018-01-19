@@ -4,15 +4,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 
-import com.yarten.device.UCP.Controllable;
-import com.yarten.device.UCP.Host;
-import com.yarten.device.UCP.Manager;
-import com.yarten.device.UCP.Signal;
+import com.yarten.ucp.Controllable;
+import com.yarten.ucp.Host;
+import com.yarten.ucp.Manager;
+import com.yarten.ucp.Signal;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Utils;
 
-import java.util.List;
 import java.util.Vector;
 
 public class MainActivity extends BaseActivity {

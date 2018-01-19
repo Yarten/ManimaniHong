@@ -81,4 +81,10 @@ public class RefreshListView<T, E extends CommonRecyclerView.ViewHolder<T>> exte
     }
 
     public CommonRecyclerView getCommonRecyclerView(){return commonRecyclerView;}
+
+    public void setEnable(boolean enable)
+    {
+        circleRefreshLayout.setEnabled(enable);
+        commonRecyclerView.setScrollEnable(enable);
+    }
 }

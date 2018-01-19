@@ -3,7 +3,6 @@ package com.yarten.editor;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,19 @@ import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.example.doublecursorseekbar.DoubleSeekBar;
-import com.yarten.device.UCP.Controller;
-import com.yarten.device.UCP.Controller.Pair;
-import com.yarten.circlerefresh.CircleRefreshLayout;
-import com.yarten.circlerefresh.RefreshListView;
-import com.yarten.device.UCP.Host;
-import com.yarten.device.UCP.Manager;
-import com.yarten.device.UCP.Signal;
+import com.yarten.ucp.Controllable;
+import com.yarten.ucp.Controller;
+import com.yarten.ucp.Controller.Pair;
+import com.yarten.ucp.Host;
+import com.yarten.ucp.Manager;
+import com.yarten.ucp.Signal;
 import com.yarten.shapebutton.ShapeButton;
 import com.yarten.singleseekbar.SingleSeekBar;
 import com.yarten.utils.CommonRecyclerView;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Utils;
+import com.yarten.widget.Widget;
+import com.yarten.widget.WidgetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,17 +61,14 @@ public class EventActivity extends AppCompatActivity {
     }
 
     private DrawerAdapter signalAdapter;
-    private RefreshListView refreshListView;
     private void initSignals()
     {
-        refreshListView = findViewById(R.id.circle_refresh);
-        final CommonRecyclerView commonRecyclerView = refreshListView.getCommonRecyclerView();
+        final CommonRecyclerView commonRecyclerView = findViewById(R.id.signal_list);
 
-        signalAdapter = new DrawerAdapter(this, commonRecyclerView, (ViewGroup) findViewById(R.id.temp_layout), new DrawerAdapter.Listener() {
+        signalAdapter = new DrawerAdapter(this, (ViewGroup) findViewById(R.id.temp_layout), new DrawerAdapter.Listener() {
             @Override
-            public void onCreateView(WidgetManager.Widget widget)
+            public void onCreateView(Widget widget)
             {
-                commonRecyclerView.setScrollEnable(true);
                 if(isInsideControlListView(widget.style.x))
                 {
                     Signal signal = new Signal(widget.name, toSignalType(widget.type), widget.description);
@@ -83,38 +80,32 @@ public class EventActivity extends AppCompatActivity {
 
             @Override
             public void onDragBegin() {
+
+            }
+
+            @Override
+            public void onItemDown() {
                 commonRecyclerView.setScrollEnable(false);
+            //    signalAdapter.hideBubble();
+            }
+
+            @Override
+            public void onItemUp() {
+                commonRecyclerView.setScrollEnable(true);
             }
         });
 
-        refreshListView.setOnCircleRefreshListener(new CircleRefreshLayout.OnCircleRefreshListener() {
-            @Override
-            public void completeRefresh() {
-                updateSignalList();
-            }
-
-            @Override
-            public void refreshing() {
-                Manager.instance.resetSignalList().requireList();
-            }
-        }).setAdapter(signalAdapter);
-
-        refreshListView.getCommonRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                signalAdapter.hideBubble();
-            }
-        });
-
+        commonRecyclerView.setAdapter(signalAdapter);
         updateSignalList();
     }
 
     private void initListener()
     {
-        Manager.instance.setControlListListener(new Manager.ControlListListener() {
+        Manager.instance.setControlListListener(new Manager.ControlListListener()
+        {
             @Override
             public void onList(List<Signal> signals) {
-                refreshListView.finishRefreshing();
+                // TODO
             }
         }).setDiscoverListener(null).setConnectListener(new Manager.ConnectListener() {
             @Override
@@ -133,15 +124,15 @@ public class EventActivity extends AppCompatActivity {
     private void updateSignalList()
     {
         List<Signal> signals = Manager.instance.getSignals();
-        List<WidgetManager.Widget> widgets = new ArrayList<>();
+        List<Widget> widgets = new ArrayList<>();
         for(int i = 0, size = signals.size(); i < size; i++)
         {
             Signal signal = signals.get(i);
-            WidgetManager.Widget widget = new WidgetManager.Widget();
-            widget.type = toWidgetType(signal.getType());
+            Widget widget = new Widget();
+            widget.type = Widget.Type.Button;
             widget.name = signal.getName();
             widget.description = signal.getDescription();
-            widget.style = WidgetManager.Widget.BUTTON_STYLE.clone();
+            widget.style = Widget.BUTTON_STYLE.clone();
             widget.style.color = Styleable.Color.colors[i % Styleable.Color.colors.length];
             widget.style.text = widget.name;
             widgets.add(widget);
@@ -152,16 +143,16 @@ public class EventActivity extends AppCompatActivity {
 
     private CommonRecyclerView.Adapter controlAdapter;
     private CommonRecyclerView commonRecyclerView;
-    private static Signal.Type controllerType;
+    private static Controllable.Type controllerType;
 
     private void initControlList()
     {
-        WidgetManager.Widget widget = WidgetManager.getCurrentWidget();
+        Widget widget = WidgetManager.getCurrentWidget();
         controllerType = toSignalType(widget.type);
 
         Controller controller = WidgetManager.getCurrentController();
         List<Pair> list = controller.getControlList();
-        controlAdapter = new CommonRecyclerView.Adapter(this, R.layout.control_item, list, ControlListViewHolder.class);
+        controlAdapter = new CommonRecyclerView.Adapter(this, R.layout.item_control, list, ControlListViewHolder.class);
 
         commonRecyclerView = findViewById(R.id.control_list);
         commonRecyclerView.setAdapter(controlAdapter);
@@ -169,32 +160,23 @@ public class EventActivity extends AppCompatActivity {
 
     private boolean isInsideControlListView(float x)
     {
-        final float left = commonRecyclerView.getX();
+        int[] position = new int[2];
+        commonRecyclerView.getLocationOnScreen(position);
+        final float left = position[0];
         final float right = commonRecyclerView.getWidth() + left;
         return x > left && x <right;
     }
 
-    private Signal.Type toSignalType(WidgetManager.Widget.Type type)
+    private Controllable.Type toSignalType(Widget.Type type)
     {
         switch (type)
         {
             case Button:
-                return Signal.Type.Boolean;
+                return Controllable.Type.Boolean;
+            case Rocker:
+                return Controllable.Type.Vector;
             default:
-                return Signal.Type.Undefined;
-        }
-    }
-
-    private WidgetManager.Widget.Type toWidgetType(Signal.Type type)
-    {
-        switch (type)
-        {
-            case Boolean:
-                return WidgetManager.Widget.Type.Button;
-            case Vector:
-                return WidgetManager.Widget.Type.Vector;
-            default:
-                return WidgetManager.Widget.Type.Undefined;
+                return Controllable.Type.Undefined;
         }
     }
     

@@ -1,6 +1,5 @@
 package com.yarten.editor;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -9,18 +8,22 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.yarten.device.UCP.Host;
-import com.yarten.device.UCP.Manager;
-import com.yarten.device.UCP.Signal;
-import com.yarten.editor.WidgetManager.Widget;
+import com.yarten.ucp.Host;
+import com.yarten.ucp.Manager;
+import com.yarten.ucp.Signal;
+import com.yarten.utils.Style;
+import com.yarten.widget.Widget;
 import com.example.drawer.DrawerActivity;
 import com.yarten.sgbutton.SGFloat;
 import com.yarten.sgbutton.SGWidget;
 import com.yarten.utils.CommonRecyclerView;
 import com.yarten.utils.Utils;
+import com.yarten.widget.WidgetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,24 +84,24 @@ public class MainActivity extends DrawerActivity {
         List<Widget> widgets = initWidget();
 
 
-        adapter = new DrawerAdapter(this, commonRecyclerView, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener()
+        adapter = new DrawerAdapter(this, (ViewGroup) findViewById(R.id.temp_layout), widgets, new DrawerAdapter.Listener()
         {
             @Override
             public void onCreateView(Widget widget)
             {
                 View view = WidgetManager.createView(MainActivity.this, widget);
-                SGFloat sgFloat = new SGFloat(view);
                 viewGroup.addView(view);
 
                 WidgetManager.add(view, widget);
                 Log.e("Create", "" + view);
 
+                SGFloat sgFloat = new SGFloat(view);
                 sgFloat.setOnClickListener(new SGWidget.OnActionListener()
                 {
                     @Override
                     public void onAction(View view, MotionEvent event)
                     {
-                        WidgetManager.showDialog(MainActivity.this, viewGroup, view);
+                        WidgetManager.showDialog(MainActivity.this, EditActivity.class, EventActivity.class, viewGroup, view);
                     }
                 });
 
@@ -110,6 +113,16 @@ public class MainActivity extends DrawerActivity {
             {
                 MainActivity.super.lockDrawer(true);
                 MainActivity.super.closeDrawer();
+            }
+
+            @Override
+            public void onItemDown() {
+                commonRecyclerView.setScrollEnable(false);
+            }
+
+            @Override
+            public void onItemUp() {
+                commonRecyclerView.setScrollEnable(true);
             }
         });
 
@@ -147,13 +160,21 @@ public class MainActivity extends DrawerActivity {
     private List<Widget> initWidget()
     {
         List<Widget> widgets = new ArrayList<>();
+        Widget.Type[] types = {Widget.Type.Button, Widget.Type.Rocker};
+        String[] names = {"Button", "Rocker"};
+        String[] descriptions = {
+                "一个普通按钮，按下为1，松开为0。",
+                "一个遥感控件，有两个维度的变换，从-1到1变换。"
+        };
+        Style[] styles = {Widget.BUTTON_STYLE, Widget.ROCKER_STYLE};
 
+        for(int i = 0; i < types.length; i++)
         {
             Widget widget = new Widget();
-            widget.type = Widget.Type.Button;
-            widget.name = "Button";
-            widget.description = "一个普通按钮，按下为1，松开为0";
-            widget.style = Widget.BUTTON_STYLE.clone();
+            widget.type = types[i];
+            widget.name = names[i];
+            widget.description = descriptions[i];
+            widget.style = styles[i].clone();
             widget.style.text = widget.name;
             widgets.add(widget);
         }

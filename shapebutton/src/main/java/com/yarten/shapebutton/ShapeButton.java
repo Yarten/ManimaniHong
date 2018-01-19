@@ -3,7 +3,6 @@ package com.yarten.shapebutton;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,10 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yarten.device.UCP.Controllable;
-import com.yarten.device.UCP.Controller;
-import com.yarten.device.UCP.Signal;
-import com.yarten.sgbutton.SGWidget;
+import com.yarten.ucp.Controllable;
+import com.yarten.ucp.Controller;
+import com.yarten.ucp.Signal;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 
@@ -48,8 +46,6 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     {
         super(context, attrs, defStyle);
         this.context = context;
-        this.controllers = new ArrayList<>();
-        this.controllers.add(new Controller(Signal.Type.Boolean, "Event"));
 
         LayoutInflater.from(context).inflate(R.layout.shape_button, this);
 
@@ -61,7 +57,6 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         values.add(0f);
         values.add(0f);
         initStyle(context, attrs);
-    //    initEvent();
     }
 
     private TextView textView;
@@ -94,44 +89,27 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     //endregion
 
     //region 事件控制
-    private void initEvent()
-    {
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
-                    case ACTION_DOWN:
-                        onDown();
-                        break;
-                    case ACTION_MOVE:
-                        onMove(event.getX(), event.getY());
-                        break;
-                    case ACTION_UP:
-                    case ACTION_CANCEL:
-                        onUp();
-                        return true;
-                }
-                return false;
-            }
-        });
+    private boolean isEnabled = true;
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUp();
-            }
-        });
+    public void setEnabled(boolean enabled)
+    {
+        isEnabled = enabled;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        super.onTouchEvent(event);
+        boolean result = super.onTouchEvent(event);
+
+        if(!isEnabled) return result;
+
         switch (event.getAction())
         {
             case ACTION_DOWN:
                 onDown();
+                break;
+            case ACTION_MOVE:
+                onMove(event.getX(), event.getY());
                 break;
             case ACTION_UP:
             case ACTION_CANCEL:
@@ -168,7 +146,6 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     }
 
     //endregion
-
 
     //region Styleable设置
     private int mColor = 0xFFFF0000;
@@ -256,7 +233,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
 
     @Override
     public Type getType() {
-        return Type.Button;
+        return Type.Boolean;
     }
 
     //endregion

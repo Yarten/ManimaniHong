@@ -1,11 +1,10 @@
 package com.yarten.jsonconverter;
 
 import com.google.gson.Gson;
-import com.yarten.device.UCP.Controllable;
-import com.yarten.device.UCP.Controller;
+import com.yarten.ucp.Controllable;
+import com.yarten.ucp.Controller;
 import com.yarten.utils.Style;
 
-import java.net.PortUnreachableException;
 import java.util.List;
 
 /**

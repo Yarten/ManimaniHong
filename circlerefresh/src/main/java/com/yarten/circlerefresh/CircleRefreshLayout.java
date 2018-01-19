@@ -166,8 +166,17 @@ public class CircleRefreshLayout extends FrameLayout {
         return ViewCompat.canScrollVertically(mChildView, -1);
     }
 
+    private boolean isEnable = true;
+
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public void setEnabled(boolean enable)
+    {
+        isEnable = enable;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev)
+    {
         if (mIsRefreshing) {
             return true;
         }
@@ -188,6 +197,8 @@ public class CircleRefreshLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!isEnable) return true;
+
         if (mIsRefreshing) {
             return super.onTouchEvent(event);
         }

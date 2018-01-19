@@ -63,6 +63,11 @@ public class Utils
         }
     }
 
+    public static void postHandler(Runnable runnable)
+    {
+        handler.post(runnable);
+    }
+
     public static float px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return pxValue * 1.0f / scale;

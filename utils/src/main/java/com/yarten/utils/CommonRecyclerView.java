@@ -219,6 +219,7 @@ public class CommonRecyclerView extends RecyclerView
                 @Override
                 public void onClick(View v) {
                     int position = holder.getAdapterPosition();
+                    if(position == -1) return;
                     holder.onClick(items.get(position), position);
                 }
             });
@@ -226,6 +227,7 @@ public class CommonRecyclerView extends RecyclerView
                 @Override
                 public boolean onLongClick(View v) {
                     int position = holder.getAdapterPosition();
+                    if(position == -1) return false;
                     return holder.onLongClick(items.get(position), position);
                 }
             });
