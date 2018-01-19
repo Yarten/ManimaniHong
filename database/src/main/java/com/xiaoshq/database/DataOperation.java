@@ -17,6 +17,7 @@ import java.util.List;
 public class DataOperation {
     private Context context;
     private DatabaseHelper databaseHelper;
+    public static DataOperation instance;
 
     public DataOperation(Context context) {
         this.context = context;
@@ -24,6 +25,8 @@ public class DataOperation {
         boolean hasTableUser = isExistTable("user");
         boolean hasTableCtrl = isExistTable("solution");
         if(!hasTableUser || !hasTableCtrl) initTable();
+
+        instance = this;
     }
 
     // 查询是否已经存在表名为tableName的表,true->存在，false->不存在
@@ -85,8 +88,7 @@ public class DataOperation {
             db.insertOrThrow("user",null,cv);
             db.setTransactionSuccessful();
 
-            int id = getUser(name).userId;
-            return id;
+
         } catch (SQLiteConstraintException e){
             Toast.makeText(context, "主键重复", Toast.LENGTH_SHORT).show();
         } catch (Exception e){
@@ -97,7 +99,8 @@ public class DataOperation {
                 db.close();
             }
         }
-        return 0;
+        int id = getUser(name).userId;
+        return id;
     }
 
     // 增加solution 返回：solution的Id
@@ -113,7 +116,7 @@ public class DataOperation {
             cv.put("detail", detail);
             db.insertOrThrow("solution",null,cv);
             db.setTransactionSuccessful();
-            return getSolution(userId, name).solId;
+
         } catch (SQLiteConstraintException e){
             Toast.makeText(context, "主键重复", Toast.LENGTH_SHORT).show();
         } catch (Exception e){
@@ -124,7 +127,8 @@ public class DataOperation {
                 db.close();
             }
         }
-        return 0;
+        int id = getSolution(userId, name).solId;
+        return id;
     }
     // endregion 增加
 
@@ -227,14 +231,14 @@ public class DataOperation {
                 Solution sol = toSolution(cursor);
                 solList.add(sol);
             }
-            return solList;
+
         } catch (Exception e) {
             Log.e("operate","",e);
         } finally {
             if (cursor != null) cursor.close();
             if (db != null) db.close();
         }
-        return null;
+        return solList;
     }
 
     // 根据solId返回拥有者User信息
@@ -249,14 +253,14 @@ public class DataOperation {
             if (cursor.moveToFirst()) {
                 userId = toSolution(cursor).userId;
             }
-            return getUser(userId);
+
         } catch (Exception e) {
             Log.e("operate","",e);
         } finally {
             if (cursor != null) cursor.close();
             if (db != null) db.close();
         }
-        return null;
+        return getUser(userId);
     }
 
     // 根据solId返回Solution

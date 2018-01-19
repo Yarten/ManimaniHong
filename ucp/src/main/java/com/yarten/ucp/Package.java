@@ -23,7 +23,7 @@ public class Package
      */
     public enum Type
     {
-        Boolean, Vector, Hello, Connect, List, Reply, Undefined
+        Boolean, Vector, Hello, Connect, List, Reply, Action, Undefined
     }
 
     public static class IncompatibleType extends Exception
@@ -54,7 +54,8 @@ public class Package
     boolean bValue, connected;
     Vector<Float> fValues = new Vector<>();
     String signal, name, password, selfName;
-    int code, port;
+    int code, port, duration, interval;
+    List<Package> actions = null;
     //endregion
 
     //region Getter
@@ -183,6 +184,15 @@ public class Package
     {
         check(Type.Hello);
         this.name = name;
+        return this;
+    }
+
+    public Package setAction(List<Package> actions, int duration, int interval) throws IncompatibleType
+    {
+        check(Type.Action);
+        this.actions = actions;
+        this.duration = duration;
+        this.interval = interval;
         return this;
     }
     //endregion

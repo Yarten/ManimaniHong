@@ -320,7 +320,7 @@ public class MySeekBar extends View implements ValueAnimator.AnimatorUpdateListe
      * @param right
      */
     public void setPosition(int left, int right) {
-        if (right > left && right >= 0 && left >= 0 && right <= pointCount) {
+        if (right > left && right >= 0 && left >= 0 && right < pointCount) {
             mLeftCI.setPoint(mPoints[left]);
             mRightCI.setPoint(mPoints[right]);
             callBack();

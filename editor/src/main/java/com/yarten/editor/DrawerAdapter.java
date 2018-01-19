@@ -137,6 +137,8 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
                 return R.layout.item_button;
             case Rocker:
                 return R.layout.item_rocker;
+            case TouchPad:
+                return R.layout.item_touchpad;
             default:
                 return super.getItemViewLayout(data, position);
         }

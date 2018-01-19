@@ -2,6 +2,7 @@ package com.yarten.device.Communication;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.yarten.device.Communication.Interface.Communication;
 import com.yarten.device.Communication.Interface.Receiver;
@@ -12,6 +13,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 /**
  * Created by yfic on 2017/12/29.
@@ -144,7 +147,17 @@ public class WifiNetwork implements Communication
         public Multicaster(Context context, int port, String groupIP, Listener listener) throws Exception
         {
             MulticastSocket socket = new MulticastSocket(port);
+            NetworkInterface wlan0 = NetworkInterface.getByName("wlan0");
+            socket.setNetworkInterface(wlan0);
             socket.joinGroup(InetAddress.getByName(groupIP));
+
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while(interfaces.hasMoreElements())
+            {
+                NetworkInterface i = interfaces.nextElement();
+                Log.i("Network", i.toString());
+            }
+
             DatagramPacket packet1 = new DatagramPacket(new byte[4096], 4096);
             DatagramPacket packet2 = new DatagramPacket(new byte[0], 0);
             udpReceiver = new UDPReceiver(socket, packet1, listener);

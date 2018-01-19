@@ -19,18 +19,24 @@ import java.util.List;
 public class Converter
 {
     //region 从对象转化为JSON字符串
+    public static String toJSON(Styleable styleable)
+    {
+        StringBuilder builder = new StringBuilder("{\"style\": {");
+        builder.append(toJSON(styleable.getStyle()));
+        builder.append("}}");
+        return builder.toString();
+    }
+
     public static String toJSON(Style style)
     {
         Gson gson = new Gson();
-        String json = gson.toJson(style);
-        return json;
+        return gson.toJson(style);
     }
 
     public static String toJSON(Controller controller)
     {
         Gson gson = new Gson();
-        String json = gson.toJson(controller);
-        return json;
+        return gson.toJson(controller);
     }
 
     public static String toJSON(Controllable controllable)
@@ -43,9 +49,8 @@ public class Converter
         for (int i=0; i<list.size(); i++) {
             String temp = toJSON(list.get(i));
             stringBuilder.append(temp);
-            if (i < list.size()-1) {
+            if (i < list.size()-1)
                 stringBuilder.append(",");
-            }
         }
         stringBuilder.append("]}");
         return stringBuilder.toString();
@@ -77,7 +82,7 @@ public class Converter
 
     // region
     // 从JSON字符串转化为对象
-    public Controller toController(String json)
+    public static Controller toController(String json)
     {
         Gson gson = new Gson();
         Controller controller = gson.fromJson(json, Controller.class);
@@ -85,7 +90,7 @@ public class Converter
     }
 
     // 从JSON字符串转化为List<Component>
-    void toSolution(String json, List<Component> components)
+    public static void toSolution(String json, List<Component> components)
     {
         Gson gson = new Gson();
         ComponentList componentList = gson.fromJson(json, ComponentList.class);
@@ -93,7 +98,7 @@ public class Converter
     }
 
     // 从JSON字符串转化为List<Component>
-    List<Component> toSolution(String json)
+    public static List<Component> toSolution(String json)
     {
         Gson gson = new Gson();
         ComponentList componentList = gson.fromJson(json, ComponentList.class);

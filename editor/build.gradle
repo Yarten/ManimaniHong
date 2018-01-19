@@ -51,4 +51,6 @@ dependencies {
     implementation project (':widget')
     implementation project (':ucp')
     implementation project (':rocker')
+    implementation project (':rangebar')
+    implementation project (':jsonconverter')
 }

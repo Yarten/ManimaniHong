@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.yarten.rocker.Rocker;
+import com.yarten.touchpad.TouchPad;
 import com.yarten.ucp.Controllable;
 import com.yarten.ucp.Controller;
 import com.yarten.shapebutton.ShapeButton;
@@ -42,6 +43,10 @@ public class WidgetManager
             case Rocker:
                 view = new Rocker(context);
                 length = Widget.ROCKER_LENGTH;
+                break;
+            case TouchPad:
+                view = new TouchPad(context);
+                length = Widget.TOUCHPAD_LENGTH;
                 break;
         }
 
@@ -206,7 +211,7 @@ public class WidgetManager
         widgets.clear();
     }
 
-    public static List<Widget> getWidgets() {return widgets;}
+    public static List<Widget> getWidgets(){return widgets;}
 
     public static List<View> getViews() {return views;}
 

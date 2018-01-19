@@ -1,6 +1,7 @@
 package com.example.airbubble;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -51,6 +52,12 @@ public class AirBubble extends ConstraintLayout {
     public int returbHeight() {
         return description.getLayoutParams().height;
     }
+
+    public void setTextAlignCenter() {
+        description.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+    }
+
+
 
     public void setBubbleLayout(int Direction, float Percentage) {
         if (Percentage <= 0.35) Percentage = (float)0.35;

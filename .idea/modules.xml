@@ -20,6 +20,7 @@
       <module fileurl="file://$PROJECT_DIR$/sgbutton/sgbutton.iml" filepath="$PROJECT_DIR$/sgbutton/sgbutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/shapebutton/shapebutton.iml" filepath="$PROJECT_DIR$/shapebutton/shapebutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/singleseekbar/singleseekbar.iml" filepath="$PROJECT_DIR$/singleseekbar/singleseekbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/touchpad/touchpad.iml" filepath="$PROJECT_DIR$/touchpad/touchpad.iml" />
       <module fileurl="file://$PROJECT_DIR$/ucp/ucp.iml" filepath="$PROJECT_DIR$/ucp/ucp.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/widget/widget.iml" filepath="$PROJECT_DIR$/widget/widget.iml" />

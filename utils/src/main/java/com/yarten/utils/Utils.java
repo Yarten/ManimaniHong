@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.transition.Slide;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class Utils
     public static void makeEditDialog(Context context, String msg, final EditDialogCallback callback)
     {
         final EditText et = new EditText(context);
+        et.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_CLASS_TEXT);
         new AlertDialog.Builder(context)
                 .setTitle(msg)
                 .setView(et)

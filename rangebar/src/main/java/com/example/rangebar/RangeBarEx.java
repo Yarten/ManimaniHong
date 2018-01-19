@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class RangeBarEx extends ConstraintLayout {
 
     public interface OnRangeBarChangeListener {
-        void onRangeBarChange(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue);
+        void onRangeBarChange(float leftPinValue, float rightPinValue);
     }
 
     private ConstraintLayout rangebarLayout;
@@ -56,15 +56,19 @@ public class RangeBarEx extends ConstraintLayout {
         maxValue.setText(String.format("%.2f",endValue));
     }
 
-    public void setCurrentValues(float leftValue, float rightValue) {
-        rangeBar.setRangePinsByValue(leftValue,rightValue);
+    public void setCurrentValues(float leftValue, float rightValue)
+    {
+        rangeBar.setRangePinsByValue(leftValue * 100, rightValue * 100);
     }
 
     public void setOnRangeBarChangeListener(final OnRangeBarChangeListener onRangeBarChangeListener) {
         rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                onRangeBarChangeListener.onRangeBarChange(rangeBar, leftPinIndex, rightPinIndex, leftPinValue, rightPinValue);
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue)
+            {
+                float left = Float.parseFloat(leftPinValue) / 100.0f;
+                float right = Float.parseFloat(rightPinValue) / 100.0f;
+                onRangeBarChangeListener.onRangeBarChange(left, right);
             }
         });
     }

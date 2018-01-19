@@ -35,6 +35,7 @@ public class BubbleToast {
         airBubble.setX(x);
         airBubble.setY(y);
         airBubble.setText(text);
+        airBubble.setTextAlignCenter();
     }
 
     public BubbleToast(Context context, float x, float y, String text, int Direction, float Percentage) {
@@ -44,6 +45,7 @@ public class BubbleToast {
         airBubble.setX(x);
         airBubble.setY(y);
         airBubble.setText(text);
+        airBubble.setTextAlignCenter();
         airBubble.setBubbleLayout(Direction,Percentage);
     }
 

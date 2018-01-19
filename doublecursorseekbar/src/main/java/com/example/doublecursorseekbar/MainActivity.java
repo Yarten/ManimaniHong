@@ -17,29 +17,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ini();
-//        notifySeekbarChanged(1,5);
     }
 
-    private void ini() {
-//        mySeekBar = findViewById(R.id.MySeekBar);
-//        leftCursor = findViewById(R.id.LeftCursor);
-//        rightCursor = findViewById(R.id.RightCursor);
+    private void ini()
+    {
         doubleSeekBar = findViewById(R.id.DoubleCursor);
         doubleSeekBar.setRange(3,5);
     }
-
-//    private void notifySeekbarChanged(final float min, final float max) {
-//        mySeekBar.setListener(new MySeekBar.OnSeekFinishListener() {
-//            @Override
-//            public void seekPos(MySeekBar.CircleIndicator left, MySeekBar.CircleIndicator right) {
-//                leftX = mySeekBar.leftX;
-//                rightX = mySeekBar.rightX;
-//                count = rightX - leftX;
-//                float newLeftX = (mySeekBar.mLeftCI.getCurX() - leftX) / count * (max - min) + min;
-//                float newRightX = (mySeekBar.mRightCI.getCurX() - leftX) / count * (max - min) + min;;
-//                leftCursor.setText(newLeftX + "");
-//                rightCursor.setText(newRightX + "");
-//            }
-//        });
-//    }
 }

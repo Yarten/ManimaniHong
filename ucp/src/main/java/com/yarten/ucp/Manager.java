@@ -5,11 +5,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.yarten.device.Communication.WifiNetwork;
+import com.yarten.utils.FiniteLinkedList;
 import com.yarten.utils.LoopThread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -38,7 +38,7 @@ public class Manager
         this.multicastPort = 9527;
         this.wifiNetwork.connect(singlecastPort, multicastPort, "239.0.1.0");
         this.converter = new Converter();
-    //    this.sendThread.start();
+        this.sendThread.start();
     }
 
     public void setSelfName(String name){selfName = name;}
@@ -340,15 +340,23 @@ public class Manager
     //endregion
 
     //region 指令发送管理
-    private List<Package> commands = new LinkedList<>();
-    private int bufferSize = 10;
+    private final List<Package> commands = new FiniteLinkedList<>();
+    private int serialNumber = 0;
 
     public void eventBinding(final Controllable controllable)
     {
         controllable.setListener(new Controllable.Listener() {
+            private List<Controller> controllers = controllable.getControllers();
+            // 用于约束每一个控制器只能在一个周期内发一次指令
+            private int downSerialNumber = 0, upSerialNumber = 0, moveSerialNumber = 0;
+
             @Override
-            public void onDown() {
-                final List<Controller> controllers = controllable.getControllers();
+            public void onDown()
+            {
+                if(downSerialNumber == serialNumber)
+                    return;
+                else downSerialNumber = serialNumber;
+
                 try
                 {
                     for(Controller controller : controllers)
@@ -358,7 +366,7 @@ public class Manager
                             switch (pair.signal.type)
                             {
                                 case Boolean:
-                                    send(new Package(Package.Type.Boolean).setBoolean(true).setSignal(pair.signal.name));
+                                    push(pair.signal.name, true);
                                     break;
                             }
                         }
@@ -368,8 +376,12 @@ public class Manager
             }
 
             @Override
-            public void onUp() {
-                final List<Controller> controllers = controllable.getControllers();
+            public void onUp()
+            {
+                if(upSerialNumber == serialNumber)
+                    return;
+                else upSerialNumber = serialNumber;
+
                 try
                 {
                     for(Controller controller : controllers)
@@ -379,7 +391,7 @@ public class Manager
                             switch (pair.signal.type)
                             {
                                 case Boolean:
-                                    send(new Package(Package.Type.Boolean).setBoolean(false).setSignal(pair.signal.name));
+                                    push(pair.signal.name, false);
                                     break;
                             }
                         }
@@ -389,47 +401,79 @@ public class Manager
             }
 
             @Override
-            public void onMove(Vector<Float> values) {
-                final List<Controller> controllers = controllable.getControllers();
+            public void onMove(Vector<Float> values)
+            {
+                if(moveSerialNumber == serialNumber)
+                    return;
+                else moveSerialNumber = serialNumber;
+
+                try
+                {
+                    for(int i = 0, size = controllers.size(); i < size; i++)
+                    {
+                        Controller controller = controllers.get(i);
+                        for(Controller.Pair pair : controller.getControlList())
+                        {
+                            switch (pair.signal.type)
+                            {
+                                case Vector:
+                                    push(pair.signal.name, values.get(i) * pair.value.num);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e){e.printStackTrace();}
             }
         });
     }
 
     public Manager setBufferSize(int bufferSize)
     {
-        this.bufferSize = bufferSize;
+        ((FiniteLinkedList)commands).setQueueSize(bufferSize);
         return this;
     }
 
-    synchronized public Manager push(String signal, boolean value)
+    public Manager push(String signal, boolean value)
     {
         try
         {
             Package pkg = new Package(Package.Type.Boolean)
                     .setSignal(signal)
                     .setBoolean(value);
+
+            synchronized (commands)
+            {
+                commands.add(pkg);
+            }
         }
         catch (Exception e){}
-
-        while(commands.size() > bufferSize)
-            commands.remove(0);
 
         return this;
     }
 
-    synchronized public Manager push(String signal, Vector<Float> values)
+    public Manager push(String signal, float...values)
+    {
+        Vector<Float> v = new Vector<>();
+        for(int i = 0; i < values.length; i++)
+            v.add(values[i]);
+        return push(signal, v);
+    }
+
+    public Manager push(String signal, Vector<Float> values)
     {
         try
         {
             Package pkg = new Package(Package.Type.Vector)
                     .setSignal(signal)
                     .setVector(values);
+
+            synchronized (commands)
+            {
+                commands.add(pkg);
+            }
         }
         catch (Exception e){}
-
-        while(commands.size() > bufferSize)
-            commands.remove(0);
-
         return this;
     }
 
@@ -438,55 +482,38 @@ public class Manager
         @Override
         public void onRun()
         {
-            String msg;
+            String msg = "";
 
             //region 序列化指令并清空缓存
-            synchronized (Manager.this)
+            synchronized (commands)
             {
-                msg = converter.toString(commands);
+                try
+                {
+                    if(commands.size() != 0)
+                        msg = converter.toString(new Package(Package.Type.Action).setAction(commands, 30, 5));
+                }
+                catch (Exception e){e.printStackTrace();}
                 commands.clear();
+                serialNumber++;
             }
-
             //endregion
+
             try
             {
-                Package nop = new Package(Package.Type.Reply).setReply(0);
                 synchronized (connectedHosts)
                 {
                     for(Host host : connectedHosts)
                     {
-                        Log.e("Watch Dog", host.watchDog + "");
-                        //region 超时处理：直接断开
-                        if(host.watchDog / 5 >= 4)
-                        {
-                            if(connectListener != null)
-                                connectListener.onDisconnected(host, true);
-                            disconnect(host);
-                            continue;
-                        }
-                        //endregion
-
-                        //region 发包
-                        if(host.watchDog != 0 && host.watchDog % 5 == 0) // 尝试重连
-                        {
-                            connect(host);
-                        }
-                        else // 正常发包
-                        {
-                            if(msg.length() != 0)
-                                send(host.host, host.port, msg);
-                            else send(host.host, host.port, nop);
-                        }
-                        //endregion
-
-                        host.watchDog++;
+                        if(msg.length() != 0)
+                            send(host.host, host.port, msg);
                     }
                 }
-
             }
             catch (Exception e){e.printStackTrace();}
+
+            Log.i("SendThread", msg);
         }
-    }.setRate(100);
+    }.setRate(30);
     //endregion
     //endregion
 

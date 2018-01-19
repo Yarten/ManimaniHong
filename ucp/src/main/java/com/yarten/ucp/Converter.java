@@ -27,6 +27,7 @@ public class Converter
                 case Connect: connect2s(builder, pkg); break;
                 case Boolean: boolean2s(builder, pkg); break;
                 case Vector: vector2s(builder, pkg); break;
+                case Action: action2s(builder, pkg); break;
                 default: throw new Exception("Unknow Type of Package.");
             }
         }
@@ -107,6 +108,16 @@ public class Converter
             builder.append('#');
             builder.append(value);
         }
+    }
+
+    private void action2s(StringBuilder builder, Package pkg) throws Package.IncompatibleType
+    {
+        builder.append('#');
+        builder.append(pkg.duration);
+        builder.append('#');
+        builder.append(pkg.interval);
+        builder.append('#');
+        builder.append(toString(pkg.actions));
     }
     //endregion
 
