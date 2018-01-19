@@ -35,5 +35,6 @@ dependencies {
 
     implementation project (':utils')
     implementation project (':ucp')
+    implementation project (':widget')
     implementation 'com.google.code.gson:gson:2.8.0'
 }

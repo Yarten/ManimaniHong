@@ -15,10 +15,14 @@
       <module fileurl="file://$PROJECT_DIR$/jsonconverter/jsonconverter.iml" filepath="$PROJECT_DIR$/jsonconverter/jsonconverter.iml" />
       <module fileurl="file://$PROJECT_DIR$/mainmenu/mainmenu.iml" filepath="$PROJECT_DIR$/mainmenu/mainmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/rangebar/rangebar.iml" filepath="$PROJECT_DIR$/rangebar/rangebar.iml" />
+      <module fileurl="file://D:\Android\Project\ManimaniHong\rangebar\rangebar.iml" filepath="D:\Android\Project\ManimaniHong\rangebar\rangebar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rocker/rocker.iml" filepath="$PROJECT_DIR$/rocker/rocker.iml" />
       <module fileurl="file://$PROJECT_DIR$/sgbutton/sgbutton.iml" filepath="$PROJECT_DIR$/sgbutton/sgbutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/shapebutton/shapebutton.iml" filepath="$PROJECT_DIR$/shapebutton/shapebutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/singleseekbar/singleseekbar.iml" filepath="$PROJECT_DIR$/singleseekbar/singleseekbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ucp/ucp.iml" filepath="$PROJECT_DIR$/ucp/ucp.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/widget.iml" filepath="$PROJECT_DIR$/widget/widget.iml" />
     </modules>
   </component>
 </project>

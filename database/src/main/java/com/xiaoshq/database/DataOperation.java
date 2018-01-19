@@ -22,7 +22,7 @@ public class DataOperation {
         this.context = context;
         databaseHelper = new DatabaseHelper(context);
         boolean hasTableUser = isExistTable("user");
-        boolean hasTableCtrl = isExistTable("ctrl");
+        boolean hasTableCtrl = isExistTable("solution");
         if(!hasTableUser || !hasTableCtrl) initTable();
     }
 
@@ -51,11 +51,28 @@ public class DataOperation {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
     }
 
-    /*
-     *   增加
-     */
+    // 将查找到的数据转换成User类
+    public User toUser(Cursor cursor) {
+        User user = new User(0,"","");
+        user.userId = (cursor.getInt(cursor.getColumnIndex("userId")));
+        user.userName = (cursor.getString(cursor.getColumnIndex("userName")));
+        user.password = (cursor.getString(cursor.getColumnIndex("password")));
+        return user;
+    }
 
-    // 增加用户
+    // 将查找到的数据转换成Solutioin类
+    public Solution toSolution(Cursor cursor) {
+        Solution solution = new Solution(0,0,"","");
+        solution.solId = (cursor.getInt(cursor.getColumnIndex("solId")));
+        solution.userId = (cursor.getInt(cursor.getColumnIndex("userId")));
+        solution.solName = (cursor.getString(cursor.getColumnIndex("solName")));
+        solution.detail = (cursor.getString(cursor.getColumnIndex("detail")));
+        return solution;
+    }
+
+    // region ** 增加 **
+
+    // 增加用户 返回：user的userId
     public int addUser(String name, String pwd) {
         SQLiteDatabase db = null;
         try {
@@ -68,7 +85,7 @@ public class DataOperation {
             db.insertOrThrow("user",null,cv);
             db.setTransactionSuccessful();
 
-            int id = getUserId(name);
+            int id = getUser(name).userId;
             return id;
         } catch (SQLiteConstraintException e){
             Toast.makeText(context, "主键重复", Toast.LENGTH_SHORT).show();
@@ -83,8 +100,8 @@ public class DataOperation {
         return 0;
     }
 
-    // 增加控制
-    public int addCtrl(int userId, String name, String detail) {
+    // 增加solution 返回：solution的Id
+    public int addSol(int userId, String name, String detail) {
         SQLiteDatabase db = null;
         try {
             db = databaseHelper.getWritableDatabase();
@@ -92,11 +109,11 @@ public class DataOperation {
             db.beginTransaction();
             ContentValues cv = new ContentValues();
             cv.put("userId",userId);
-            cv.put("ctrlName", name);
+            cv.put("solName", name);
             cv.put("detail", detail);
-            db.insertOrThrow("ctrl",null,cv);
+            db.insertOrThrow("solution",null,cv);
             db.setTransactionSuccessful();
-            return getCtrlId(userId, name);
+            return getSolution(userId, name).solId;
         } catch (SQLiteConstraintException e){
             Toast.makeText(context, "主键重复", Toast.LENGTH_SHORT).show();
         } catch (Exception e){
@@ -109,10 +126,9 @@ public class DataOperation {
         }
         return 0;
     }
+    // endregion 增加
 
-    /*
-     *   删除
-     */
+    // region ** 删除 **
 
     // 删除用户
     public boolean deleteUser(int userId) {
@@ -135,14 +151,14 @@ public class DataOperation {
         return false;
     }
 
-    // 删除控制
-    public boolean deleteCtrl(int ctrlId) {
+    // 删除solution
+    public boolean deleteSol(int solId) {
         SQLiteDatabase db = null;
-        String idStr = Integer.toString(ctrlId);
+        String idStr = Integer.toString(solId);
         try {
             db = databaseHelper.getWritableDatabase();
             db.beginTransaction();
-            db.delete("ctrl","ctrlId = ?",new String[]{idStr});
+            db.delete("solution","solId = ?",new String[]{idStr});
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -155,13 +171,12 @@ public class DataOperation {
         }
         return false;
     }
+    // endregion 删除
 
-    /*
-     *   查询
-     */
+    // region ** 查询 **
 
-    // 根据userId返回用户名
-    public String getuserNameById(int userId) {
+    // 根据用户ID返回User信息
+    public User getUser(int userId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         String idStr = Integer.toString(userId);
@@ -169,7 +184,7 @@ public class DataOperation {
             db = databaseHelper.getReadableDatabase();
             cursor = db.query("user",null,"userId=?",new String[]{idStr},null,null,null);
             if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex("userName"));
+                return toUser(cursor);
             }
         } catch (Exception e) {
             Log.e("operate","",e);
@@ -180,35 +195,15 @@ public class DataOperation {
         return null;
     }
 
-    // 根据用户名返回userId
-    public int getUserId(String name) {
+    // 根据用户名返回User
+    public User getUser(String name) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         try {
             db = databaseHelper.getReadableDatabase();
             cursor = db.query("user",null,"userName=?",new String[]{name},null,null,null);
             if (cursor.moveToFirst()) {
-                return cursor.getInt(cursor.getColumnIndex("userId"));
-            }
-        } catch (Exception e) {
-            Log.e("operate","",e);
-        } finally {
-            if (cursor != null) cursor.close();
-            if (db != null) db.close();
-        }
-        return 0;
-    }
-
-    // 根据userId返回用户密码
-    public String getPasswordById(int userId) {
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        String idStr = Integer.toString(userId);
-        try {
-            db = databaseHelper.getReadableDatabase();
-            cursor = db.query("user",null,"userId=?",new String[]{idStr},null,null,null);
-            if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex("password"));
+                return toUser(cursor);
             }
         } catch (Exception e) {
             Log.e("operate","",e);
@@ -219,42 +214,20 @@ public class DataOperation {
         return null;
     }
 
-    // 根据用户名返回用户密码
-    public String getPasswordByName(String name) {
+    // 根据用户ID返回列表List<Solution>
+    public List<Solution> getSolList(int userId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        try {
-            db = databaseHelper.getReadableDatabase();
-            cursor = db.query("user",null,"userName=?",new String[]{name},null,null,null);
-            if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex("password"));
-            }
-        } catch (Exception e) {
-            Log.e("operate","",e);
-        } finally {
-            if (cursor != null) cursor.close();
-            if (db != null) db.close();
-        }
-        return null;
-    }
-
-    // 根据userId返回ctrl列表
-    public List<Ctrl> getCtrlList(int userId) {
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        List<Ctrl> ctrlList = null;
+        List<Solution> solList = null;
         String idStr = Integer.toString(userId);
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("ctrl",null,"userId=?",new String[]{idStr},null,null,null);
+            cursor = db.query("solutioin",null,"userId=?",new String[]{idStr},null,null,null);
             while (cursor.moveToFirst()) {
-                int ctrlId = cursor.getInt(cursor.getColumnIndex("ctrlId"));
-                String ctrlName = cursor.getString(cursor.getColumnIndex("ctrlName"));
-                String detail = cursor.getString(cursor.getColumnIndex("detail"));
-                Ctrl ctrl = new Ctrl(ctrlId, userId, ctrlName, detail);
-                ctrlList.add(ctrl);
+                Solution sol = toSolution(cursor);
+                solList.add(sol);
             }
-            return ctrlList;
+            return solList;
         } catch (Exception e) {
             Log.e("operate","",e);
         } finally {
@@ -264,37 +237,19 @@ public class DataOperation {
         return null;
     }
 
-    // 根据ctrlId返回拥有者Id
-    public int getUserIdByCtrlId(int ctrlId) {
+    // 根据solId返回拥有者User信息
+    public User getUserBySolId(int solId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        String idStr = Integer.toString(ctrlId);
+        String idStr = Integer.toString(solId);
+        int userId = 0;
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("ctrl",null,"ctrlId=?",new String[]{idStr},null,null,null);
+            cursor = db.query("solution",null,"solId=?",new String[]{idStr},null,null,null);
             if (cursor.moveToFirst()) {
-                return cursor.getInt(cursor.getColumnIndex("userId"));
+                userId = toSolution(cursor).userId;
             }
-        } catch (Exception e) {
-            Log.e("operate","",e);
-        } finally {
-            if (cursor != null) cursor.close();
-            if (db != null) db.close();
-        }
-        return 0;
-    }
-
-    // 根据ctrlId返回控制名称
-    public String getCtrlNameById(int ctrlId) {
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        String idStr = Integer.toString(ctrlId);
-        try {
-            db = databaseHelper.getReadableDatabase();
-            cursor = db.query("ctrl",null,"ctrlId=?",new String[]{idStr},null,null,null);
-            if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex("ctrlName"));
-            }
+            return getUser(userId);
         } catch (Exception e) {
             Log.e("operate","",e);
         } finally {
@@ -304,16 +259,16 @@ public class DataOperation {
         return null;
     }
 
-    // 根据ctrlid返回控制内容
-    public String getDetailById(int ctrlId) {
+    // 根据solId返回Solution
+    public Solution getSolution(int solId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        String idStr = Integer.toString(ctrlId);
+        String idStr = Integer.toString(solId);
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("ctrl",null,"ctrlId=?",new String[]{idStr},null,null,null);
+            cursor = db.query("solution",null,"solId=?",new String[]{idStr},null,null,null);
             if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex("detail"));
+                return toSolution(cursor);
             }
         } catch (Exception e) {
             Log.e("operate","",e);
@@ -324,16 +279,16 @@ public class DataOperation {
         return null;
     }
 
-    // 根据控制名称和拥有者Id返回ctrlId
-    public int getCtrlId(int userId, String name) {
+    // 根据solution名称和拥有者Id返回Solution
+    public Solution getSolution(int userId, String name) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         String idStr = Integer.toString(userId);
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("ctrl",null,"userId=?,ctrlName=?",new String[]{idStr,name},null,null,null);
+            cursor = db.query("solution",null,"userId=?,solName=?",new String[]{idStr,name},null,null,null);
             if (cursor.moveToFirst()) {
-                return cursor.getInt(cursor.getColumnIndex("ctrlId"));
+                return toSolution(cursor);
             }
         } catch (Exception e) {
             Log.e("operate","",e);
@@ -341,12 +296,11 @@ public class DataOperation {
             if (cursor != null) cursor.close();
             if (db != null) db.close();
         }
-        return 0;
+        return null;
     }
+    // endregion 查询
 
-    /*
-     *   修改
-     */
+    // region ** 修改 **
 
     // 根据userId修改用户信息
     public boolean updateUser(int userId, String name, String pwd) {
@@ -374,21 +328,21 @@ public class DataOperation {
     }
 
     // 根据ctrlId修改控制信息
-    public boolean updateCtrl(int ctrlId, String name, String ctx) {
+    public boolean updateCtrl(int solId, String name, String ctx) {
         SQLiteDatabase db = null;
-        String idStr = Integer.toString(ctrlId);
+        String idStr = Integer.toString(solId);
         try {
             db = databaseHelper.getWritableDatabase();
 
             db.beginTransaction();
             ContentValues cv = new ContentValues();
-            cv.put("ctrlName", name);
+            cv.put("solName", name);
             cv.put("detail", ctx);
-            db.update("ctrl",cv,"ctrlId = ?",new String[]{idStr});
+            db.update("solution",cv,"solId = ?",new String[]{idStr});
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
-            Log.e("update ctrl","",e);
+            Log.e("update sol","",e);
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -397,4 +351,5 @@ public class DataOperation {
         }
         return false;
     }
+    // endregion 修改
 }
