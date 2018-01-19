@@ -49,8 +49,36 @@ public class AirBubble extends ConstraintLayout {
         return description.getText().toString();
     }
 
-    public int returbHeight() {
-        return description.getLayoutParams().height;
+    public void setWidth(int width) {
+        int percentage = bubbleLayout.getLayoutParams().width / width;
+        bubbleLayout.getLayoutParams().width = width;
+        triangle.getLayoutParams().width = triangle.getWidth() / percentage;
+        description.getLayoutParams().width = description.getWidth() / percentage;
+    }
+
+    public void setHeight(int height) {
+        int percentage = bubbleLayout.getLayoutParams().height / height;
+        bubbleLayout.getLayoutParams().height = height;
+        triangle.getLayoutParams().height = triangle.getHeight() / percentage;
+        description.getLayoutParams().height = description.getHeight() / percentage;
+    }
+
+    public void setSize(int width, int height) {
+        int percentage = bubbleLayout.getLayoutParams().width / width;
+        bubbleLayout.getLayoutParams().width = width;
+        triangle.getLayoutParams().width = triangle.getWidth() / percentage;
+        description.getLayoutParams().width = description.getWidth() / percentage;
+        bubbleLayout.getLayoutParams().height = height;
+        triangle.getLayoutParams().height = triangle.getHeight() / percentage;
+        description.getLayoutParams().height = description.getHeight() / percentage;
+    }
+
+    public int returnWidth() {
+        return bubbleLayout.getLayoutParams().width;
+    }
+
+    public int returnHeight() {
+        return bubbleLayout.getLayoutParams().height;
     }
 
     public void setTextAlignCenter() {

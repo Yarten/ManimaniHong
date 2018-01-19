@@ -49,6 +49,22 @@ public class BubbleToast {
         airBubble.setBubbleLayout(Direction,Percentage);
     }
 
+    public int getWidth() {
+        return airBubble.returnWidth();
+    }
+
+    public int getHeight() {
+        return airBubble.returnHeight();
+    }
+
+    public void setSize(int width, int height) {
+        airBubble.setSize(width, height);
+    }
+
+    public void setText(String text) {
+        airBubble.setText(text);
+    }
+
     public void show() {
         airBubble.setEnabled(false);
         windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -71,7 +87,6 @@ public class BubbleToast {
             @Override
             public void run() {
                 windowManager.removeView(view);
-
             }
         }, 3000);//3秒后执行Runnable中的run方法
     }
