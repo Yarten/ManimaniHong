@@ -113,6 +113,14 @@ public class FingerTracer extends View
         return true;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        onTouchEvent(ev);
+        super.dispatchTouchEvent(ev);
+        return true;
+    }
+
     private void onDown(int pointer, float x, float y)
     {
         if(traces.size() == maxPointers) return;
