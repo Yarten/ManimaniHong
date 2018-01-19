@@ -6,7 +6,7 @@ import java.util.List;
  * Created by ivan on 2018/1/19.
  */
 
-public class ComponentList
+class ComponentList
 {
-    public List<Component> components;
+    List<Component> components;
 }

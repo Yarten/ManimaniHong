@@ -3,6 +3,7 @@ package com.yarten.touchpad;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -87,20 +88,32 @@ public class TouchPad extends ConstraintLayout implements Controllable, Styleabl
         lastX = curX;
         lastY = curY;
 
+        Log.i("TouchPad","TouchPad");
         return true;
     }
 
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        super.onInterceptTouchEvent(ev);
+//        return true;
+//    }
+
+    private OnTouchListener onTouchListener;
+
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        super.onInterceptTouchEvent(ev);
-        return true;
+    public void setOnTouchListener(OnTouchListener onTouchListener)
+    {
+        this.onTouchListener = onTouchListener;
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
+        onTouchEvent(ev);
+        if(onTouchListener != null)
+            onTouchListener.onTouch(this, ev);
         super.dispatchTouchEvent(ev);
-        return false;
+        return true;
     }
 
     //region Styleable的设置

@@ -44,4 +44,6 @@ dependencies {
     implementation project (':utils')
     implementation project (':editor')
     implementation project (':app')
+    implementation project (':database')
+    implementation project (':airbubble')
 }

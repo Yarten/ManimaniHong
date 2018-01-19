@@ -82,7 +82,7 @@ public class Converter
 
     // region
     // 从JSON字符串转化为对象
-    public Controller toController(String json)
+    public static Controller toController(String json)
     {
         Gson gson = new Gson();
         Controller controller = gson.fromJson(json, Controller.class);
@@ -90,7 +90,7 @@ public class Converter
     }
 
     // 从JSON字符串转化为List<Component>
-    void toSolution(String json, List<Component> components)
+    public static void toSolution(String json, List<Component> components)
     {
         Gson gson = new Gson();
         ComponentList componentList = gson.fromJson(json, ComponentList.class);
@@ -98,7 +98,7 @@ public class Converter
     }
 
     // 从JSON字符串转化为List<Component>
-    List<Component> toSolution(String json)
+    public static List<Component> toSolution(String json)
     {
         Gson gson = new Gson();
         ComponentList componentList = gson.fromJson(json, ComponentList.class);

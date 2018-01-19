@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 
+import com.xiaoshq.database.DataOperation;
 import com.yarten.ucp.Controllable;
 import com.yarten.ucp.Host;
 import com.yarten.ucp.Manager;
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity {
         buttonPanel.toggle();
         new Manager(this.getApplicationContext())
                 .setSelfName("Honor V9");
+        new DataOperation(this);
     }
 
     private void initNotFirstTime(Bundle bundle)

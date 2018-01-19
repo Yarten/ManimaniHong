@@ -18,6 +18,7 @@ public class DataOperation {
     private Context context;
     private DatabaseHelper databaseHelper;
     private static final int ADMIN_ID = 1;
+    public static DataOperation instance;
 
     public DataOperation(Context context) {
         this.context = context;
@@ -26,6 +27,8 @@ public class DataOperation {
         boolean hasTableCtrl = isExistTable("solution");
         if(!hasTableUser || !hasTableCtrl) initTable();
         addUser(ADMIN_ID, "", "");
+
+        instance = this;
     }
 
     // 查询是否已经存在表名为tableName的表,true->存在，false->不存在

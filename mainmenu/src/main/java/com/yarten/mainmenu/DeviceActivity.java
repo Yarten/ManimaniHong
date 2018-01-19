@@ -2,13 +2,16 @@ package com.yarten.mainmenu;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.airbubble.BubbleToast;
 import com.yarten.ucp.Host;
 import com.yarten.ucp.Manager;
 import com.yarten.shapebutton.ButtonPanel;
@@ -62,7 +65,15 @@ public class DeviceActivity extends BaseActivity
                 }, new ViewPagerHelper.OnTriggleListener() {
                     @Override
                     public boolean onTriggle() {
-                        Utils.makeToast(DeviceActivity.this, "蓝牙功能还未开发");
+                        WindowManager windowManager = (WindowManager)DeviceActivity.this.getSystemService(Context.WINDOW_SERVICE);
+                        DisplayMetrics outMetrics = new DisplayMetrics();
+                        windowManager.getDefaultDisplay().getMetrics(outMetrics);
+                        int width = outMetrics.widthPixels;
+                        int height = outMetrics.heightPixels;
+                        BubbleToast bubbleToast = new BubbleToast(DeviceActivity.this,width/2,height/1.4f,"蓝牙功能尚未开发",Gravity.BOTTOM,(float)1.5);
+                        bubbleToast.show();
+                        Log.i("Width",width + "");
+                        Log.i("Height", height + "");
                         return false;
                     }
                 })

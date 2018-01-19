@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-    //    applicationId "com.yarten.touchpad"
+//        applicationId "com.yarten.touchpad"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
