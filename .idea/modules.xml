@@ -14,6 +14,7 @@
       <module fileurl="file://$PROJECT_DIR$/editor/editor.iml" filepath="$PROJECT_DIR$/editor/editor.iml" />
       <module fileurl="file://$PROJECT_DIR$/jsonconverter/jsonconverter.iml" filepath="$PROJECT_DIR$/jsonconverter/jsonconverter.iml" />
       <module fileurl="file://$PROJECT_DIR$/mainmenu/mainmenu.iml" filepath="$PROJECT_DIR$/mainmenu/mainmenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rangebar/rangebar.iml" filepath="$PROJECT_DIR$/rangebar/rangebar.iml" />
       <module fileurl="file://$PROJECT_DIR$/sgbutton/sgbutton.iml" filepath="$PROJECT_DIR$/sgbutton/sgbutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/shapebutton/shapebutton.iml" filepath="$PROJECT_DIR$/shapebutton/shapebutton.iml" />
       <module fileurl="file://$PROJECT_DIR$/singleseekbar/singleseekbar.iml" filepath="$PROJECT_DIR$/singleseekbar/singleseekbar.iml" />
