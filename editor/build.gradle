@@ -53,4 +53,6 @@ dependencies {
     implementation project (':rocker')
     implementation project (':rangebar')
     implementation project (':jsonconverter')
+    implementation project (':database')
+    implementation project (':sensorswitch')
 }

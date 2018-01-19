@@ -22,6 +22,8 @@ import com.yarten.shapebutton.ShapeButton;
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 import com.yarten.utils.Utils;
+import com.yarten.widget.Widget;
+import com.yarten.widget.WidgetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +39,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initView();
+
         Intent intent = getIntent();
         int id = intent.getIntExtra("SolutionID", 1);
         initSolution(id);
-
-        initView();
-        initController();
     }
 
 
@@ -66,7 +67,17 @@ public class MainActivity extends AppCompatActivity
         solution = db.getSolution(id);
 
         List<Component> components = Converter.toSolution(solution.detail);
+        WidgetManager.init();
 
+        for(Component component : components)
+        {
+            Widget widget = new Widget(component.name, component.type, component.style, component.description);
+            View view = WidgetManager.add(this, widget, component.controllers);
+            viewGroup.addView(view);
+            view.setX(widget.style.x);
+            view.setY(widget.style.y);
+            Manager.instance.eventBinding((Controllable) view);
+        }
     }
 
     private void initController()

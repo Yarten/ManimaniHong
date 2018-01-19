@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yarten.sensorswitch.MainActivity">
+
+    <com.yarten.sensorswitch.SensorSwitch
+        android:id="@+id/sensorSwitch2"
+        android:layout_width="78dp"
+        android:layout_height="79dp"
+        app:SensorType="Gravity"
+        app:layout_constraintEnd_toStartOf="@+id/sensorSwitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <com.yarten.sensorswitch.SensorSwitch
+        android:id="@+id/sensorSwitch"
+        android:layout_width="90dp"
+        android:layout_height="82dp"
+        app:SensorType="Orientation"
+        app:layout_constraintEnd_toStartOf="@+id/sensorSwitch3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sensorSwitch2"
+        tools:layout_editor_absoluteY="124dp" />
+
+    <com.yarten.sensorswitch.SensorSwitch
+        android:id="@+id/sensorSwitch3"
+        android:layout_width="93dp"
+        android:layout_height="81dp"
+        app:SensorType="Accelerometer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sensorSwitch"
+        tools:layout_editor_absoluteY="124dp" />
+</android.support.constraint.ConstraintLayout>

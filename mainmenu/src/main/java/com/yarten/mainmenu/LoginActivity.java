@@ -29,7 +29,7 @@ public class LoginActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        dataOperation = new DataOperation(LoginActivity.this);
+        dataOperation = DataOperation.instance;
 
         buttonPanel = findViewById(R.id.button_panel);
 

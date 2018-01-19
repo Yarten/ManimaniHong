@@ -6,5 +6,5 @@ package com.yarten.utils.Interface;
 
 public interface EditDialogCallback
 {
-    void onConfirm(String text);
+    boolean onConfirm(String text);
 }

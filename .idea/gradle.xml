@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/mainmenu" />
             <option value="$PROJECT_DIR$/rangebar" />
             <option value="$PROJECT_DIR$/rocker" />
+            <option value="$PROJECT_DIR$/sensorswitch" />
             <option value="$PROJECT_DIR$/sgbutton" />
             <option value="$PROJECT_DIR$/shapebutton" />
             <option value="$PROJECT_DIR$/singleseekbar" />

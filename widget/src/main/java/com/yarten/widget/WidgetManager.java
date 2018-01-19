@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.yarten.device.Sensor.Sensor;
 import com.yarten.rocker.Rocker;
+import com.yarten.sensorswitch.SensorSwitch;
 import com.yarten.touchpad.TouchPad;
 import com.yarten.ucp.Controllable;
 import com.yarten.ucp.Controller;
@@ -32,6 +34,11 @@ public class WidgetManager
 {
     public static View createView(Context context, Widget widget)
     {
+        return createView(context, widget, null);
+    }
+
+    public static View createView(Context context, Widget widget, List<Controller> controllers)
+    {
         View view = null;
         int length = Widget.WIDGET_LENGTH;
         switch (widget.type)
@@ -48,6 +55,12 @@ public class WidgetManager
                 view = new TouchPad(context);
                 length = Widget.TOUCHPAD_LENGTH;
                 break;
+            case Orientation:
+                view = new SensorSwitch(context, Sensor.Type.Orientation);
+                break;
+            case Accelerometer:
+                view = new SensorSwitch(context, Sensor.Type.Accelerometer);
+                break;
         }
 
         length = Utils.dip2px(context, length);
@@ -58,7 +71,9 @@ public class WidgetManager
         view.setY(widget.style.y);
 
         tryStylize(view, widget.style);
-        installControllers(view, widget.type);
+        if(controllers == null)
+            installControllers(view, createControllers(widget.type));
+        else installControllers(view, controllers);
 
         return view;
     }
@@ -74,6 +89,20 @@ public class WidgetManager
             case Rocker:
                 controllers.add(new Controller(Controllable.Type.Vector, "Rocker X"));
                 controllers.add(new Controller(Controllable.Type.Vector, "Rocker Y"));
+                break;
+            case TouchPad:
+                controllers.add(new Controller(Controllable.Type.Vector, "Touch X"));
+                controllers.add(new Controller(Controllable.Type.Vector, "Touch Y"));
+                break;
+            case Orientation:
+                controllers.add(new Controller(Controllable.Type.Vector, "Yaw"));
+                controllers.add(new Controller(Controllable.Type.Vector, "Pitch"));
+                controllers.add(new Controller(Controllable.Type.Vector, "Roll"));
+                break;
+            case Accelerometer:
+                controllers.add(new Controller(Controllable.Type.Vector, "X"));
+                controllers.add(new Controller(Controllable.Type.Vector, "Y"));
+                controllers.add(new Controller(Controllable.Type.Vector, "Z"));
                 break;
         }
 
@@ -99,12 +128,12 @@ public class WidgetManager
     /**
      * 为Controllable的控件安装遥控器
      * @param view 由WidgetManager生成的控件
-     * @param type 控件的类型（按钮、遥感等）
+     * @param controllers 要安装的遥控器
      */
-    public static void installControllers(View view, Widget.Type type)
+    public static void installControllers(View view, List<Controller> controllers)
     {
         Controllable controllable = (Controllable)view;
-        controllable.setControllers(createControllers(type));
+        controllable.setControllers(controllers);
     }
 
     /**
@@ -194,6 +223,13 @@ public class WidgetManager
     {
         widgets.add(widget);
         views.add(view);
+    }
+
+    public static View add(Context context, Widget widget, List<Controller> controllers)
+    {
+        View view = createView(context, widget, controllers);
+        add(view, widget);
+        return view;
     }
 
     public static void remove(ViewGroup viewGroup, View view)

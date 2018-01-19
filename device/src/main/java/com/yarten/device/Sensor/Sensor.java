@@ -24,6 +24,7 @@ public class Sensor implements SensorEventListener
 
     public enum Type
     {
+        Undefined,
         Accelerometer,
         MagneticField,
         Orientation,
@@ -43,7 +44,7 @@ public class Sensor implements SensorEventListener
     public Sensor(Context context, Type type)
     {
         sm = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        sensor = sm.getDefaultSensor(type.ordinal() + 1);
+        sensor = sm.getDefaultSensor(type.ordinal());
         this.type = type;
     }
 
@@ -62,7 +63,25 @@ public class Sensor implements SensorEventListener
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public void onSensorChanged(SensorEvent event)
+    {
+        float range = sensor.getMaximumRange();
+        float min = range * -0.5f;
+        float max = range * 0.5f;
+
+        for(int i = 0; i < event.values.length; i++)
+        {
+            float value = event.values[i];
+            value = value >= max ? 1.0f : value <= min ? -1.0f : -1.0f + 2 * (value - min) / (max - min);
+            if(value >= 0.95)
+                value = 1.0f;
+            else if(value <= -0.95)
+                value = -1.0f;
+            else if(value <= 0.05f && value >= -0.05f)
+                value = 0.0f;
+            event.values[i] = value;
+        }
+
         listener.onChange(event.values);
     }
 

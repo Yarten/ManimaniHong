@@ -1,5 +1,7 @@
 package com.yarten.widget;
 
+import android.graphics.Color;
+
 import com.yarten.utils.Interface.Styleable;
 import com.yarten.utils.Style;
 
@@ -17,7 +19,7 @@ public class Widget
      */
     public enum Type
     {
-        Button, Rocker, TouchPad, Undefined
+        Button, Rocker, TouchPad, Orientation, Accelerometer, Undefined
     }
 
     public static final int WIDGET_LENGTH = 100;
@@ -27,6 +29,8 @@ public class Widget
     public static Style BUTTON_STYLE = new Style();
     public static Style ROCKER_STYLE = new Style();
     public static Style TOUCHPAD_STYLE = new Style();
+    public static Style ORIENTATION_STYLE = new Style();
+    public static Style ACCELEROMETER_STYLE = new Style();
 
     static
     {
@@ -36,12 +40,26 @@ public class Widget
         ROCKER_STYLE.shape = Styleable.Shape.Circle;
         TOUCHPAD_STYLE.color = Styleable.Color.Dark;
         TOUCHPAD_STYLE.shape = Styleable.Shape.Square;
+        ORIENTATION_STYLE.color = Styleable.Color.Purple;
+        ORIENTATION_STYLE.shape = Styleable.Shape.Circle;
+        ACCELEROMETER_STYLE.color = Styleable.Color.Red;
+        ACCELEROMETER_STYLE.shape = Styleable.Shape.Circle;
     }
 
     public Type type;
     public String name;
     public String description;
     public Style style;
+
+    public Widget(){}
+
+    public Widget(String name, Type type, Style style, String description)
+    {
+        this.name = name;
+        this.type = type;
+        this.style = style;
+        this.description = description;
+    }
 
     public Widget clone()
     {

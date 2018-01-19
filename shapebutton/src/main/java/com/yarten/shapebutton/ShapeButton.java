@@ -68,19 +68,8 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
     {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ShapeButton);
 
-        switch (ta.getInt(R.styleable.ShapeButton_shape, 0))
-        {
-            case 0:
-                setShape(Shape.Square);
-                break;
-            case 1:
-                setShape(Shape.Circle);
-                break;
-            case 2:
-                setShape(Shape.Triangle);
-                break;
-        }
-
+        Shape shape = Shape.values()[ta.getInt(R.styleable.ShapeButton_shape, 0)];
+        setShape(shape);
         setColor(ta.getColor(R.styleable.ShapeButton_color, Color.Red));
         setBackgroundRotation(ta.getInteger(R.styleable.ShapeButton_rotation, 0));
         setText(ta.getString(R.styleable.ShapeButton_text));

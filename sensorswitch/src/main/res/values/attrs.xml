@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="SensorType" format="enum">
+        <enum name="Accelerometer" value="1"/>
+        <enum name="MagneticField" value="2"/>
+        <enum name="Orientation" value="3"/>
+        <enum name="Light" value="4"/>
+        <enum name="Pressure" value="5"/>
+        <enum name="Temperature" value="6"/>
+        <enum name="Proximity" value="7"/>
+        <enum name="Gravity" value="8"/>
+        <enum name="LinearAcceleration" value="9"/>
+        <enum name="RotationVector" value="10"/>
+    </attr>
+
+    <declare-styleable name="SensorSwitch">
+        <attr name="SensorType"/>
+    </declare-styleable>
+</resources>

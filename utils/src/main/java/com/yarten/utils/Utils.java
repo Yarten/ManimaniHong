@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.transition.Slide;
+import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -34,21 +35,57 @@ public class Utils
                 .show();
     }
 
-    public static void makeEditDialog(Context context, String msg, final EditDialogCallback callback)
+    public static void makeEditDialog(Context context,
+                                      String msg,
+                                      final EditDialogCallback callback)
     {
         final EditText et = new EditText(context);
         et.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_CLASS_TEXT);
-        new AlertDialog.Builder(context)
+        final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(msg)
                 .setView(et)
                 .setNegativeButton("取消", null)
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onConfirm(et.getText().toString());
-                    }
-                })
+                .setPositiveButton("确认", null)
                 .show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(callback.onConfirm(et.getText().toString()))
+                    dialog.dismiss();
+            }
+        });
+    }
+
+    public static void makeEditDialog(Context context,
+                                      String msg,
+                                      String positiveText,
+                                      String neutralText,
+                                      final EditDialogCallback positiveCallback,
+                                      final EditDialogCallback neutralCallback)
+    {
+        final EditText et = new EditText(context);
+        et.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_CLASS_TEXT);
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(msg)
+                .setView(et)
+                .setNegativeButton("取消", null)
+                .setNeutralButton(neutralText, null)
+                .setPositiveButton(positiveText, null)
+                .show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(positiveCallback.onConfirm(et.getText().toString()))
+                    dialog.dismiss();
+            }
+        });
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(neutralCallback.onConfirm(et.getText().toString()))
+                    dialog.dismiss();
+            }
+        });
     }
 
     public static void makeToast(final Context context, final String msg)

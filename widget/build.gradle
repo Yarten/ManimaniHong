@@ -39,4 +39,6 @@ dependencies {
     implementation project (':shapebutton')
     implementation project (':rocker')
     implementation project (':touchpad')
+    implementation project (':sensorswitch')
+    implementation project (':device')
 }

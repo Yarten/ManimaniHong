@@ -106,7 +106,9 @@ public class DeviceActivity extends BaseActivity
                     adapter.notifyUpdate(position);
                 }
 
-                Utils.makeToast(DeviceActivity.this, "密码不正确，请重试");
+                if(!isTimeout)
+                    Utils.makeToast(DeviceActivity.this, "密码不正确，请重试");
+                else Utils.makeToast(DeviceActivity.this, "与 [" + host.name + "] 已断开连接");
             }
         }).setDiscoverListener(new Manager.DiscoverListener() {
             @Override
@@ -199,9 +201,10 @@ public class DeviceActivity extends BaseActivity
                             aSwitch.setChecked(false);
                             Utils.makeEditDialog(DeviceActivity.instance, "请输入[" + data.name + "]的密码", new EditDialogCallback() {
                                 @Override
-                                public void onConfirm(String text) {
+                                public boolean onConfirm(String text) {
                                     Manager.instance.connect(data, text);
                                     notifyUpdate(position);
+                                    return true;
                                 }
                             }); break;
                     }

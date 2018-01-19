@@ -14,7 +14,8 @@ import java.util.List;
  * Created by ivan on 2018/1/2.
  */
 
-public class DataOperation {
+public class DataOperation
+{
     private Context context;
     private DatabaseHelper databaseHelper;
     private static final int ADMIN_ID = 1;
@@ -23,13 +24,23 @@ public class DataOperation {
     public DataOperation(Context context) {
         this.context = context;
         databaseHelper = new DatabaseHelper(context);
+
         boolean hasTableUser = isExistTable("user");
         boolean hasTableCtrl = isExistTable("solution");
-        if(!hasTableUser || !hasTableCtrl) initTable();
-        addUser(ADMIN_ID, "", "");
+
+        if(!hasTableUser || !hasTableCtrl)
+        {
+            initTable();
+        }
 
         instance = this;
     }
+
+    private int loginID = 1;
+
+    public void setLoginID(int id){loginID = id;}
+
+    public int getLoginID(){return loginID;}
 
     // 查询是否已经存在表名为tableName的表,true->存在，false->不存在
     public boolean isExistTable(String tableName) {
@@ -40,7 +51,7 @@ public class DataOperation {
             db = databaseHelper.getReadableDatabase();
             cursor = db.rawQuery("select count(*)  from sqlite_master where type='table' and name = '?';", new String[]{tableName});
             if (cursor.moveToFirst()) {
-                return true;
+                count = cursor.getInt(0);
             }
         } catch (Exception e) {
             Log.e("operate","",e);
@@ -48,13 +59,34 @@ public class DataOperation {
             if (cursor != null) cursor.close();
             if (db != null) db.close();
         }
-        return false;
+        if (count > 0) return true;
+        else return false;
     }
+
 
     // 初始化两张表
     public void initTable() {
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        SQLiteDatabase db = null;
+        try {
+            db = databaseHelper.getWritableDatabase();
+            db.beginTransaction();
+            ContentValues cv = new ContentValues();
+            cv.put("userId",ADMIN_ID);
+            cv.put("userName", "");
+            cv.put("password", "");
+            db.insertOrThrow("user",null,cv);
+            db.setTransactionSuccessful();
+
+        } catch (Exception e) {
+            Log.e("operate","",e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
     }
+
 
     // 将查找到的数据转换成User类
     public User toUser(Cursor cursor) {
@@ -133,7 +165,12 @@ public class DataOperation {
     }
 
     // 增加solution 返回：solution的Id
-    public int addSol(int userId, String name, String detail) {
+    public int addSolution(String name, String detail)
+    {
+        return addSolution(loginID, name, detail);
+    }
+
+    public int addSolution(int userId, String name, String detail) {
         SQLiteDatabase db = null;
         try {
             db = databaseHelper.getWritableDatabase();
@@ -185,7 +222,7 @@ public class DataOperation {
     }
 
     // 删除solution
-    public boolean deleteSol(int solId) {
+    public boolean deleteSolution(int solId) {
         SQLiteDatabase db = null;
         String idStr = Integer.toString(solId);
         try {
@@ -248,7 +285,7 @@ public class DataOperation {
     }
 
     // 根据用户ID返回列表List<Solution>
-    public List<Solution> getSolList(int userId) {
+    public List<Solution> getSolutionList(int userId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         List<Solution> solList = null;
@@ -271,7 +308,7 @@ public class DataOperation {
     }
 
     // 根据solId返回拥有者User信息
-    public User getUserBySolId(int solId) {
+    public User getUserBySolutionId(int solId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         String idStr = Integer.toString(solId);
@@ -313,6 +350,11 @@ public class DataOperation {
     }
 
     // 根据solution名称和拥有者Id返回Solution
+    public Solution getSolution(String name)
+    {
+        return getSolution(loginID, name);
+    }
+
     public Solution getSolution(int userId, String name) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -330,6 +372,33 @@ public class DataOperation {
             if (db != null) db.close();
         }
         return null;
+    }
+
+    // 根据用户ID查询是否已经存在名字为solutionName的solution（true->存在，false->不存在）
+    public boolean isSolutionExist(String name)
+    {
+        return isSolutionExist(loginID, name);
+    }
+
+    public boolean isSolutionExist(int userId, String solutionName) {
+        int count = 0;
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        String idStr = Integer.toString(userId);
+        try {
+            db = databaseHelper.getReadableDatabase();
+            cursor = db.rawQuery("select count(*)  from solution where userId='?' and name = '?';", new String[]{idStr,solutionName});
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+        } catch (Exception e) {
+            Log.e("operate","",e);
+        } finally {
+            if (cursor != null) cursor.close();
+            if (db != null) db.close();
+        }
+        if (count > 0) return true;
+        else return false;
     }
     // endregion 查询
 
@@ -361,7 +430,7 @@ public class DataOperation {
     }
 
     // 根据ctrlId修改控制信息
-    public boolean updateCtrl(int solId, String name, String ctx) {
+    public boolean updateSolution(int solId, String name, String ctx) {
         SQLiteDatabase db = null;
         String idStr = Integer.toString(solId);
         try {

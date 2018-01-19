@@ -92,12 +92,6 @@ public class TouchPad extends ConstraintLayout implements Controllable, Styleabl
         return true;
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        super.onInterceptTouchEvent(ev);
-//        return true;
-//    }
-
     private OnTouchListener onTouchListener;
 
     @Override

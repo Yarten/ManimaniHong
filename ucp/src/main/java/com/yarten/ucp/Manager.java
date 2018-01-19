@@ -173,7 +173,7 @@ public class Manager
         {
             disconnect(host);
             if(connectListener != null)
-                connectListener.onDisconnected(host, false);
+                connectListener.onDisconnected(host, true);
         }
     }
 
