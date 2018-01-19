@@ -17,6 +17,7 @@ import java.util.List;
 public class DataOperation {
     private Context context;
     private DatabaseHelper databaseHelper;
+    private static final int ADMIN_ID = 1;
     public static DataOperation instance;
 
     public DataOperation(Context context) {
@@ -25,6 +26,7 @@ public class DataOperation {
         boolean hasTableUser = isExistTable("user");
         boolean hasTableCtrl = isExistTable("solution");
         if(!hasTableUser || !hasTableCtrl) initTable();
+        addUser(ADMIN_ID, "", "");
 
         instance = this;
     }
@@ -101,6 +103,33 @@ public class DataOperation {
         }
         int id = getUser(name).userId;
         return id;
+    }
+
+    // 增加用户 返回：user的userId
+    public int addUser(int uId, String name, String pwd) {
+        SQLiteDatabase db = null;
+        try {
+            db = databaseHelper.getWritableDatabase();
+
+            db.beginTransaction();
+            ContentValues cv = new ContentValues();
+            cv.put("userId",uId);
+            cv.put("userName", name);
+            cv.put("password", pwd);
+            db.insertOrThrow("user",null,cv);
+            db.setTransactionSuccessful();
+
+        } catch (SQLiteConstraintException e){
+            Toast.makeText(context, "主键重复", Toast.LENGTH_SHORT).show();
+        } catch (Exception e){
+            Log.e("operate","", e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+        return uId;
     }
 
     // 增加solution 返回：solution的Id
