@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.yarten.jsonconverter.Converter;
 import com.yarten.ucp.Host;
 import com.yarten.ucp.Manager;
 import com.yarten.ucp.Signal;
@@ -213,6 +214,6 @@ public class MainActivity extends DrawerActivity {
     {
         List<Widget> widgets = WidgetManager.getWidgets();
         List<View> views = WidgetManager.getViews();
-
+        String solution = Converter.toJSON(views, widgets);
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class DataOperation {
     private Context context;
     private DatabaseHelper databaseHelper;
+    public static DataOperation instance;
 
     public DataOperation(Context context) {
         this.context = context;
@@ -24,6 +25,8 @@ public class DataOperation {
         boolean hasTableUser = isExistTable("user");
         boolean hasTableCtrl = isExistTable("solution");
         if(!hasTableUser || !hasTableCtrl) initTable();
+
+        instance = this;
     }
 
     // 查询是否已经存在表名为tableName的表,true->存在，false->不存在
