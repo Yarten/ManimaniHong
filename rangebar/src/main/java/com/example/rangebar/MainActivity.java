@@ -33,11 +33,8 @@ public class MainActivity extends AppCompatActivity {
         });
         rangeBarEx.setOnRangeBarChangeListener(new RangeBarEx.OnRangeBarChangeListener() {
             @Override
-            public void onRangeBarChange(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                float left = Float.parseFloat(leftPinValue);
-                float right = Float.parseFloat(rightPinValue);
-
-                Log.i("Rangebar", left + " " + right);
+            public void onRangeBarChange(float leftPinValue, float rightPinValue) {
+                Log.i("Rangebar", leftPinValue + " " + rightPinValue);
             }
         });
     }

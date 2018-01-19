@@ -34,4 +34,5 @@ dependencies {
     implementation project (':utils')
     implementation project (':ucp')
     implementation project (':shapebutton')
+    implementation project (':rocker')
 }

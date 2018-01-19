@@ -19,18 +19,24 @@ import java.util.List;
 public class Converter
 {
     //region 从对象转化为JSON字符串
+    public static String toJSON(Styleable styleable)
+    {
+        StringBuilder builder = new StringBuilder("{\"style\": {");
+        builder.append(toJSON(styleable.getStyle()));
+        builder.append("}}");
+        return builder.toString();
+    }
+
     public static String toJSON(Style style)
     {
         Gson gson = new Gson();
-        String json = gson.toJson(style);
-        return json;
+        return gson.toJson(style);
     }
 
     public static String toJSON(Controller controller)
     {
         Gson gson = new Gson();
-        String json = gson.toJson(controller);
-        return json;
+        return gson.toJson(controller);
     }
 
     public static String toJSON(Controllable controllable)
@@ -43,9 +49,8 @@ public class Converter
         for (int i=0; i<list.size(); i++) {
             String temp = toJSON(list.get(i));
             stringBuilder.append(temp);
-            if (i < list.size()-1) {
+            if (i < list.size()-1)
                 stringBuilder.append(",");
-            }
         }
         stringBuilder.append("]}");
         return stringBuilder.toString();

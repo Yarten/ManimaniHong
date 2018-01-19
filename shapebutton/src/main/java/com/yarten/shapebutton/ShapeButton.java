@@ -96,6 +96,8 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         isEnabled = enabled;
     }
 
+    public boolean isEnabled(){return isEnabled;}
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -119,14 +121,14 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
         return true;
     }
 
-    private void onDown()
+    protected void onDown()
     {
         shapeView.setColor(mColor - 0x70000000);
         if(listener != null)
             listener.onDown();
     }
 
-    private void onUp()
+    protected void onUp()
     {
         shapeView.setColor(mColor);
         if(listener != null)
@@ -135,7 +137,7 @@ public class ShapeButton extends ConstraintLayout implements Styleable<ShapeButt
 
     private Vector<Float> values;
 
-    private void onMove(float x, float y)
+    protected void onMove(float x, float y)
     {
         if(listener != null)
         {

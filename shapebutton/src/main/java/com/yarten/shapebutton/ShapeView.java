@@ -94,8 +94,8 @@ public class ShapeView extends View
         switch (shape)
         {
             case Square:
-                canvas.drawRoundRect(halfWidth - half, halfHeight - half, halfWidth + half, halfHeight + half, 5, 5, paint);
-                canvas.drawRoundRect(halfWidth - 0.7f * half, halfHeight - 0.7f * half, halfWidth + 0.7f * half, halfHeight + 0.7f * half, 5, 5, paint2);
+                canvas.drawRoundRect(halfWidth - half, halfHeight - half, halfWidth + half, halfHeight + half, half * 0.1f, half * 0.1f, paint);
+                canvas.drawRoundRect(halfWidth - 0.7f * half, halfHeight - 0.7f * half, halfWidth + 0.7f * half, halfHeight + 0.7f * half, half * 0.1f * 0.7f, half * 0.1f *0.7f, paint2);
                 break;
             case Circle:
                 canvas.drawCircle(halfWidth, halfHeight, half, paint);

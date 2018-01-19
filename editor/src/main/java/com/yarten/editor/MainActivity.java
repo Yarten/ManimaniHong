@@ -30,6 +30,7 @@ import java.util.List;
 
 public class MainActivity extends DrawerActivity {
 
+    //region 初始化
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,13 +161,14 @@ public class MainActivity extends DrawerActivity {
     private List<Widget> initWidget()
     {
         List<Widget> widgets = new ArrayList<>();
-        Widget.Type[] types = {Widget.Type.Button, Widget.Type.Rocker};
-        String[] names = {"Button", "Rocker"};
+        Widget.Type[] types = {Widget.Type.Button, Widget.Type.Rocker, Widget.Type.TouchPad};
+        String[] names = {"Button", "Rocker", "TouchPad"};
         String[] descriptions = {
                 "一个普通按钮，按下为1，松开为0。",
-                "一个遥感控件，有两个维度的变换，从-1到1变换。"
+                "一个遥感控件，有两个维度的变换，从-1到1变换。",
+                "一个触摸板，根据手指在上面的移动速度和方向作为相应输出"
         };
-        Style[] styles = {Widget.BUTTON_STYLE, Widget.ROCKER_STYLE};
+        Style[] styles = {Widget.BUTTON_STYLE, Widget.ROCKER_STYLE, Widget.TOUCHPAD_STYLE};
 
         for(int i = 0; i < types.length; i++)
         {
@@ -204,5 +206,13 @@ public class MainActivity extends DrawerActivity {
                 })
                 .resetSignalList()
                 .requireList();
+    }
+    //endregion
+
+    private void saveToDB(String name)
+    {
+        List<Widget> widgets = WidgetManager.getWidgets();
+        List<View> views = WidgetManager.getViews();
+
     }
 }

@@ -38,4 +38,5 @@ dependencies {
     implementation project (':ucp')
     implementation project (':shapebutton')
     implementation project (':rocker')
+    implementation project (':touchpad')
 }

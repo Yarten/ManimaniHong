@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="PointersNumber" format="integer"/>
+    <attr name="PointerRadius" format="dimension"/>
+    <attr name="PointerColor" format="color"/>
+
+    <declare-styleable name="FingerTracer">
+        <attr name="PointersNumber"/>
+        <attr name="PointerRadius"/>
+        <attr name="PointerColor"/>
+    </declare-styleable>
+</resources>

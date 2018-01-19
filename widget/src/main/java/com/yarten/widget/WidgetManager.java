@@ -206,7 +206,7 @@ public class WidgetManager
         widgets.clear();
     }
 
-    public static List<Widget> getWidgets() {return widgets;}
+    public static List<Widget> getWidgets(){return widgets;}
 
     public static List<View> getViews() {return views;}
 

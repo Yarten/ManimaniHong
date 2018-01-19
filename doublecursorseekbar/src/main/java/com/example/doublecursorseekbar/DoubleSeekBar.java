@@ -6,18 +6,18 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+import com.example.rangebar.RangeBarEx;
+
 /**
  * Created by lenovo on 2018/1/1.
+ * 双端seekbar
  */
 
 public class DoubleSeekBar extends ConstraintLayout {
 
     //region 定义成员变量
-    private ConstraintLayout seekbarLayout;
-    private MySeekBar mySeekBar;
+    private RangeBarEx rangeBar;
     private TextView leftCursor,rightCursor;
-    private TextView minValue, maxValue;
-    private float leftX,rightX,count;
     private float min,max;
     //endregion
 
@@ -25,33 +25,21 @@ public class DoubleSeekBar extends ConstraintLayout {
         this(context,null);
     }
 
-    public DoubleSeekBar(Context context, AttributeSet attributeSet) {
+    public DoubleSeekBar(Context context, AttributeSet attributeSet)
+    {
         super(context,attributeSet);
-        LayoutInflater.from(context).inflate(R.layout.myseekbar, this);
+        LayoutInflater.from(context).inflate(R.layout.double_seekbar, this);
 
         ini();
-        notifySeekbarChanged();
     }
 
-    private void ini() {
-        seekbarLayout = findViewById(R.id.SeekbarLayout);
-        mySeekBar = findViewById(R.id.MySeekBar);
+    private void ini()
+    {
+        rangeBar = findViewById(R.id.rangeBarEx);
         leftCursor = findViewById(R.id.LeftCursor);
         rightCursor = findViewById(R.id.RightCursor);
-        minValue = findViewById(R.id.minValue);
-        maxValue = findViewById(R.id.maxValue);
         min = 0;
         max = 0;
-    }
-
-    //返回左游标的值
-    public float getLeftBound() {
-        return leftX;
-    }
-
-    //返回右游标的值
-    public float getRightBound() {
-        return rightX;
     }
 
     private String outputFormat = "%.2f";
@@ -66,8 +54,22 @@ public class DoubleSeekBar extends ConstraintLayout {
         this.min = min;
         this.max = max;
         outputFormat = "%." + fixed + "f";
-        minValue.setText(String.format(outputFormat, min));
-        maxValue.setText(String.format(outputFormat, max));
+        rangeBar.setRange(min, max);
+        setCurrentValues(min, max);
+    }
+
+    public void setCurrentValues(float left, float right)
+    {
+        rangeBar.setCurrentValues(left, right);
+        if(left < right)
+            notifyValuesChange(left, right);
+        else notifyValuesChange(right, left);
+    }
+
+    private void notifyValuesChange(float left, float right)
+    {
+        leftCursor.setText(String.format(outputFormat, left));
+        rightCursor.setText(String.format(outputFormat, right));
     }
 
     //返回最小值
@@ -81,23 +83,6 @@ public class DoubleSeekBar extends ConstraintLayout {
     }
 
     //识别游标变化
-    public void notifySeekbarChanged() {
-        mySeekBar.setListener(new MySeekBar.OnSeekFinishListener() {
-            @Override
-            public void seekPos(MySeekBar.CircleIndicator left, MySeekBar.CircleIndicator right) {
-                leftX = mySeekBar.leftX;
-                rightX = mySeekBar.rightX;
-                count = rightX - leftX;
-                float newLeftX = (mySeekBar.mLeftCI.getCurX() - leftX) / count * (max - min) + min;
-                float newRightX = (mySeekBar.mRightCI.getCurX() - leftX) / count * (max - min) + min;
-                leftCursor.setText(String.format(outputFormat, newLeftX));
-                rightCursor.setText(String.format(outputFormat, newRightX));
-                if(onValueChangeListener != null)
-                    onValueChangeListener.onChange(newLeftX, newRightX);
-            }
-        });
-    }
-
     public interface OnValueChangedListener
     {
         void onChange(float min, float max);
@@ -108,5 +93,14 @@ public class DoubleSeekBar extends ConstraintLayout {
     public void setOnValueChangeListener(OnValueChangedListener onValueChangeListener)
     {
         this.onValueChangeListener = onValueChangeListener;
+        rangeBar.setOnRangeBarChangeListener(new RangeBarEx.OnRangeBarChangeListener()
+        {
+            @Override
+            public void onRangeBarChange(float leftPinValue, float rightPinValue)
+            {
+                notifyValuesChange(leftPinValue, rightPinValue);
+                DoubleSeekBar.this.onValueChangeListener.onChange(leftPinValue, rightPinValue);
+            }
+        });
     }
 }

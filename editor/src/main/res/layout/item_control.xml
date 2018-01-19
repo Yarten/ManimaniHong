@@ -25,12 +25,12 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="132dp">
+            android:minHeight="102dp">
 
             <com.yarten.shapebutton.ShapeButton
                 android:id="@+id/signal"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"

@@ -156,7 +156,7 @@ public class Rocker extends ConstraintLayout implements Styleable<Rocker>, Contr
         if(listener != null)
         {
             values.set(0, curX / (radius * boundScale));
-            values.set(1, - curY / (radius * boundScale));
+            values.set(1, curY / (radius * boundScale));
             listener.onMove(values);
         }
         //endregion
