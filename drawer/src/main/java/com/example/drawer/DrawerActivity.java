@@ -44,7 +44,7 @@ public class DrawerActivity extends AppCompatActivity {
     }
     //endregion
 
-    //region 设置手势识别
+    //region 设置是否使用手势识别
     public void lockDrawer(boolean isLock)
     {
         if(isLock)
