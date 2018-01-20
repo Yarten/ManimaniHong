@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputEditText;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -167,6 +168,7 @@ public class LoginActivity extends BaseActivity
                                     bubbleToast.show();
                                 }
                                 else{
+                                    Log.i("register",username + "+" + password);
                                     dataOperation.addUser(username, password);
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/6,height/1.4f,"注册成功", Gravity.TOP, 1.0f);
                                     bubbleToast.show();
