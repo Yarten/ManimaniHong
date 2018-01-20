@@ -81,14 +81,20 @@ public class DrawerActivity extends AppCompatActivity {
                                 float distanceX, float distanceY) {
             int result=drawTouch(e1.getX(),e1.getY(),e2.getX(),e2.getY());
             if (result == Gravity.RIGHT)
-                mainLayout.openDrawer(Gravity.START);
+                mainLayout.openDrawer(Gravity.START);   //打开抽屉
             if (result == Gravity.LEFT)
-                mainLayout.closeDrawer(Gravity.START);
+                mainLayout.closeDrawer(Gravity.START);  //关闭抽屉
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
 
         private int drawTouch(float x,float y,float upx,float upy){
-            //水平滑动"
+            /*
+             * 如果手指松开时x方向上往右偏移了100px以上，则判断为向右滑动
+             * 如果手指松开时x方向上往左偏移了100px以上，则判断为向左滑动
+             * 如果手指松开时y方向上向下偏移了100px以上，则判断为向下滑动
+             * 如果手指松开时y方向上向上偏移了100px以上，则判断为向上滑动
+             * 如果以上的情况都不是，则判断为无滑动。
+             */
             if(upx-x>100){
                 return Gravity.RIGHT;
             }else if(x-upx>100){
