@@ -168,7 +168,6 @@ public class LoginActivity extends BaseActivity
                                     bubbleToast.show();
                                 }
                                 else{
-                                    Log.i("register",username + "+" + password);
                                     dataOperation.addUser(username, password);
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/6,height/1.4f,"注册成功", Gravity.TOP, 1.0f);
                                     bubbleToast.show();

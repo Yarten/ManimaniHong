@@ -16,12 +16,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_USER = "create table " + TABLE_NAME_USER
             + " (userId integer primary key autoincrement,"
-            + " userName text not null,"
-            + " password text not null);";
+            + " userName text,"
+            + " password text);";
     private static final String SQL_CREATE_TABLE_SOL = "create table " + TABLE_NAME_SOL
             + " (solId integer primary key autoincrement,"
-            + " userId integer not null,"
-            + " solName text not null,"
+            + " userId integer,"
+            + " solName text,"
             + " detail text);";
 
     public DatabaseHelper(Context context) {

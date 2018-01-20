@@ -50,6 +50,7 @@ public class DataOperation
         try {
             db = databaseHelper.getReadableDatabase();
             cursor = db.rawQuery("select count(*)  from sqlite_master where type='table' and name = '?';", new String[]{tableName});
+//            cursor = db.rawQuery("select " + tableName + " from sqlite_master where type = 'table';", null);
             if (cursor.moveToFirst()) {
                 count = cursor.getInt(0);
             }
@@ -59,6 +60,7 @@ public class DataOperation
             if (cursor != null) cursor.close();
             if (db != null) db.close();
         }
+        Log.i("count",count +"");
         if (count > 0) return true;
         else return false;
     }
