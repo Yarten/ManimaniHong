@@ -30,16 +30,21 @@ public class DrawerActivity extends AppCompatActivity {
         gesture();
     }
 
+    //region 关闭抽屉
     public void closeDrawer()
     {
         mainLayout.closeDrawer(Gravity.LEFT);
     }
+    //endregion
 
+    //region 设置监听器
     public void addDrawerListener(DrawerLayout.DrawerListener drawerListener)
     {
         mainLayout.addDrawerListener(drawerListener);
     }
+    //endregion
 
+    //region 锁定抽屉
     public void lockDrawer(boolean isLock)
     {
         if(isLock)
@@ -51,6 +56,7 @@ public class DrawerActivity extends AppCompatActivity {
             mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
+    //endregion
 
     //region 绑定控件
     private void ini() {
