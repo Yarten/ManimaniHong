@@ -38,7 +38,10 @@ public class MainActivity extends BaseActivity {
     private void init()
     {
         buttonPanel = findViewById(R.id.button_panel);
-        initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.users);
+        if(DataOperation.instance == null || DataOperation.instance.getLoginID() == DataOperation.ADMIN_ID)
+            initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.users);
+        else initTriangle(buttonPanel.getRightButton(), LoginActivity.class, Gravity.LEFT, Gravity.RIGHT, R.mipmap.logout);
+
         initTriangle(buttonPanel.getLeftButton(), AboutActivity.class, Gravity.RIGHT, Gravity.LEFT, R.mipmap.member);
         initTriangle(buttonPanel.getTopButton(), ReposActivity.class, Gravity.BOTTOM, Gravity.TOP, R.mipmap.cloud);
         initTriangle(buttonPanel.getBottomButton(), DeviceActivity.class, Gravity.TOP, Gravity.BOTTOM, R.mipmap.wifi);

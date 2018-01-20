@@ -18,7 +18,7 @@ public class DataOperation
 {
     private Context context;
     private DatabaseHelper databaseHelper;
-    private static final int ADMIN_ID = 1;
+    public static final int ADMIN_ID = 1;
     public static DataOperation instance;
 
     public DataOperation(Context context) {

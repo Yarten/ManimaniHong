@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.airbubble.BubbleToast;
 import com.xiaoshq.database.DataOperation;
+import com.xiaoshq.database.User;
 import com.yarten.shapebutton.ButtonPanel;
 
 public class LoginActivity extends BaseActivity
@@ -38,6 +39,8 @@ public class LoginActivity extends BaseActivity
         buttonPanel = findViewById(R.id.button_panel);
 
         ActivityHelper.initTriangle(buttonPanel.getLeftButton(), buttonPanel, this, MainActivity.class, Gravity.RIGHT, Gravity.LEFT, R.mipmap.right);
+
+        dataOperation.setLoginID(DataOperation.ADMIN_ID);
 
         new ViewPagerHelper(this)
                 .initLayout(R.layout.page_login, R.id.bt1, new ViewPagerHelper.InitHandler() {
@@ -77,27 +80,29 @@ public class LoginActivity extends BaseActivity
 
                                 String usernameInput = ET_login_username.getText().toString();
                                 String passwordInput = ET_login_password.getText().toString();
-                                int id = dataOperation.getUser(usernameInput).userId;
-                                String passwordDB = dataOperation.getUser(id).password;
+                                User user = dataOperation.getUser(usernameInput);
+                                int id = 0;
+                                String passwordDB = "";
+
+                                if(user != null)
+                                {
+                                    id = user.userId;
+                                    passwordDB = dataOperation.getUser(id).password;
+                                }
+
                                 if(id==0) {
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/4,height/6f,"该用户不存在", Gravity.BOTTOM, 1.0f);
-//                                    bubbleToast.setSize(bubbleToast.getWidth()/2, bubbleToast.getHeight()/2);
                                     bubbleToast.show();
                                 }
                                 else if(passwordInput.equals(""))
                                 {
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/6,height/3f,"密码不能为空", Gravity.BOTTOM, 1.0f);
-//                                    tmpWidth = bubbleToast.getWidth()/1.3f;
-//                                    tmpHeight = bubbleToast.getHeight()/1.3f;
-//                                    bubbleToast.setSize((int)tmpWidth,(int)tmpHeight);
                                     bubbleToast.show();
                                 }
                                 else if(passwordInput.equals(passwordDB)){
                                     Toast.makeText(LoginActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent();
-                                    intent.setClass(LoginActivity.this, MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivityForResult(intent, 1);
+                                    dataOperation.setLoginID(id);
+                                    ActivityHelper.startActivity(LoginActivity.this, MainActivity.class, buttonPanel);
                                 }
                                 else {
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/3,height/1.7f,"用户名或密码错误", Gravity.BOTTOM, 1.0f);
@@ -153,8 +158,10 @@ public class LoginActivity extends BaseActivity
                                 WindowManager windowManager = (WindowManager)LoginActivity.this.getSystemService(Context.WINDOW_SERVICE);
                                 DisplayMetrics outMetrics = new DisplayMetrics();
                                 windowManager.getDefaultDisplay().getMetrics(outMetrics);
+
                                 int width = outMetrics.widthPixels;
                                 int height = outMetrics.heightPixels;
+
                                 if(username.equals("")){
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/6,height/4.3f,"用户名不能为空", Gravity.BOTTOM, 1.0f);
                                     bubbleToast.show();
@@ -168,13 +175,11 @@ public class LoginActivity extends BaseActivity
                                     bubbleToast.show();
                                 }
                                 else{
-                                    dataOperation.addUser(username, password);
+                                    int id = dataOperation.addUser(username, password);
                                     BubbleToast bubbleToast = new BubbleToast(LoginActivity.this,width/6,height/1.4f,"注册成功", Gravity.TOP, 1.0f);
                                     bubbleToast.show();
-                                    Intent intent = new Intent();
-                                    intent.setClass(LoginActivity.this, MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
+                                    dataOperation.setLoginID(id);
+                                    ActivityHelper.startActivity(LoginActivity.this, MainActivity.class, buttonPanel);
                                 }
 
                             }

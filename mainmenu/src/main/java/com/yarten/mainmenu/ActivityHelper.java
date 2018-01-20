@@ -136,6 +136,19 @@ class ActivityHelper
         Intent intent = new Intent(src, com.yarten.editor.MainActivity.class);
         src.startActivity(intent);
     }
+
+    public static void startActivity(AppCompatActivity source, Class target, ButtonPanel buttonPanel)
+    {
+        Intent intent = new Intent(source, target);
+        Bundle bundle = new Bundle();
+        intent.putExtras(bundle);
+        source.startActivity(intent,
+                ActivityOptions.makeSceneTransitionAnimation(
+                        source,
+                        buttonPanel, ID2S(source, R.string.button_panel)
+                ).toBundle());
+    }
+
     //endregion
 
     static String ID2S(Context context, int id)
