@@ -33,6 +33,7 @@ public class DoubleSeekBar extends ConstraintLayout {
         ini();
     }
 
+    //region 绑定控件
     private void ini()
     {
         rangeBar = findViewById(R.id.rangeBarEx);
@@ -41,10 +42,11 @@ public class DoubleSeekBar extends ConstraintLayout {
         min = 0;
         max = 0;
     }
+    //endregion
 
     private String outputFormat = "%.2f";
 
-    //设置最大最小值范围
+    //region 设置最大最小值范围
     public void setRange(float min, float max) {
         setRange(min, max, 2);
     }
@@ -57,7 +59,9 @@ public class DoubleSeekBar extends ConstraintLayout {
         rangeBar.setRange(min, max);
         setCurrentValues(min, max);
     }
+    //endregion
 
+    //region 设置游标位置
     public void setCurrentValues(float left, float right)
     {
         if(min == max) return;
@@ -67,12 +71,15 @@ public class DoubleSeekBar extends ConstraintLayout {
             notifyValuesChange(left, right);
         else notifyValuesChange(right, left);
     }
+    //endregion
 
+    //region 识别游标的变化
     private void notifyValuesChange(float left, float right)
     {
         leftCursor.setText(String.format(outputFormat, left));
         rightCursor.setText(String.format(outputFormat, right));
     }
+    //endregion
 
     //返回最小值
     public float getMin() {
