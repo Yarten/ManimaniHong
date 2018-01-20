@@ -19,7 +19,7 @@ public class Widget
      */
     public enum Type
     {
-        Button, Rocker, TouchPad, Orientation, Accelerometer, Undefined
+        Button, Rocker, TouchPad, Orientation, Accelerometer, Vector, Undefined
     }
 
     public static final int WIDGET_LENGTH = 100;

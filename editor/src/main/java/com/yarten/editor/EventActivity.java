@@ -129,7 +129,7 @@ public class EventActivity extends AppCompatActivity {
         {
             Signal signal = signals.get(i);
             Widget widget = new Widget();
-            widget.type = Widget.Type.Button;
+            widget.type = toWidgetType(signal.type);
             widget.name = signal.getName();
             widget.description = signal.getDescription();
             widget.style = Widget.BUTTON_STYLE.clone();
@@ -173,10 +173,23 @@ public class EventActivity extends AppCompatActivity {
         {
             case Button:
                 return Controllable.Type.Boolean;
-            case Rocker:
+            case Vector: case TouchPad: case Rocker: case Orientation: case Accelerometer:
                 return Controllable.Type.Vector;
             default:
                 return Controllable.Type.Undefined;
+        }
+    }
+
+    private Widget.Type toWidgetType(Controllable.Type type)
+    {
+        switch (type)
+        {
+            case Boolean:
+                return Widget.Type.Button;
+            case Vector:
+                return Widget.Type.Vector;
+            default:
+                return Widget.Type.Undefined;
         }
     }
     
@@ -237,15 +250,15 @@ public class EventActivity extends AppCompatActivity {
                     {
                         case Vector:
                         {
+                            singleSeekBar.setRange(0, 1);
                             doubleSeekbar.setVisibility(View.GONE);
                             singleSeekBar.setVisibility(View.VISIBLE);
-
                         }break;
                         case Boolean:
                         {
+                            doubleSeekbar.setRange(-1, 1);
                             doubleSeekbar.setVisibility(View.VISIBLE);
                             singleSeekBar.setVisibility(View.GONE);
-                            doubleSeekbar.setRange(-1, 1);
                         }break;
                     }break;
                 case Boolean:
@@ -253,9 +266,9 @@ public class EventActivity extends AppCompatActivity {
                     {
                         case Vector:
                         {
+                            doubleSeekbar.setRange(-1, 1);
                             doubleSeekbar.setVisibility(View.VISIBLE);
                             singleSeekBar.setVisibility(View.GONE);
-                            doubleSeekbar.setRange(-1, 1);
                         }break;
                         case Boolean:
                         {
@@ -271,9 +284,11 @@ public class EventActivity extends AppCompatActivity {
             singleSeekBar.setOnValueChangedListener(new SingleSeekBar.OnValueChangedListener() {
                 @Override
                 public void onChange(float value) {
-
+                    data.value.num = value;
                 }
             });
+
+            singleSeekBar.setCurrentValue(data.value.num);
 
             doubleSeekbar.setOnValueChangeListener(new DoubleSeekBar.OnValueChangedListener() {
                 @Override
@@ -282,6 +297,8 @@ public class EventActivity extends AppCompatActivity {
                     data.value.max = max;
                 }
             });
+
+            doubleSeekbar.setCurrentValues(data.value.min, data.value.max);
         }
 
         @Override

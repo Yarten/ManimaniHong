@@ -60,6 +60,8 @@ public class DoubleSeekBar extends ConstraintLayout {
 
     public void setCurrentValues(float left, float right)
     {
+        if(min == max) return;
+
         rangeBar.setCurrentValues(left, right);
         if(left < right)
             notifyValuesChange(left, right);

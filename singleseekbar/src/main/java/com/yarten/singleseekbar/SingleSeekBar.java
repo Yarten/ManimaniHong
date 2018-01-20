@@ -79,6 +79,13 @@ public class SingleSeekBar extends ConstraintLayout
         maxValue.setText(F2S(max));
     }
 
+    public void setCurrentValue(float value)
+    {
+        if(max == min) return;
+        currentValue.setText(value + "");
+        seekBar.setProgress((int)(10000 * (value - min) / (max - min)));
+    }
+
     private String F2S(float value)
     {
         return String.format(outputFormat, value);

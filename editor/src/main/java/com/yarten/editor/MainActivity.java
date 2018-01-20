@@ -138,6 +138,7 @@ public class MainActivity extends DrawerActivity {
 
                 WidgetManager.add(view, widget);
                 Log.e("Create", "" + view);
+                adapter.cleanUp();
 
                 SGFloat sgFloat = new SGFloat(view);
                 sgFloat.setOnClickListener(new SGWidget.OnActionListener()

@@ -133,7 +133,7 @@ public class DrawerAdapter extends CommonRecyclerView.Adapter<Widget, DrawerAdap
     protected int getItemViewLayout(Widget data, int position) {
         switch (data.type)
         {
-            case Button:
+            case Button: case Vector:
                 return R.layout.item_button;
             case Rocker:
                 return R.layout.item_rocker;

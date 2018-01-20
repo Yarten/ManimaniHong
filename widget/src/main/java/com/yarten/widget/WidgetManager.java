@@ -43,7 +43,7 @@ public class WidgetManager
         int length = Widget.WIDGET_LENGTH;
         switch (widget.type)
         {
-            case Button:
+            case Button: case Vector:
                 view = new ShapeButton(context);
                 length = Widget.BUTTON_LENGTH;
                 break;
