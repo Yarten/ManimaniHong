@@ -66,7 +66,7 @@ public class DrawerActivity extends AppCompatActivity {
     }
     //endregion
 
-    //region 添加控件
+    //region 添加layout
     public void setContentView(int mainLayoutID, int drawerLayoutID) {
         LinearLayout main = findViewById(R.id.mainContainer);
         LayoutInflater.from(this).inflate(mainLayoutID, main);
