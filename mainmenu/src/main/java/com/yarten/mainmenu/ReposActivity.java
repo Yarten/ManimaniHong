@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xiaoshq.database.DataOperation;
+import com.xiaoshq.database.Solution;
 import com.yarten.shapebutton.ButtonPanel;
 import com.yarten.utils.CommonRecyclerView;
 import com.yarten.utils.Utils;
@@ -33,22 +32,29 @@ public class ReposActivity extends BaseActivity
         ActivityHelper.initTriangle(buttonPanel.getBottomButton(), buttonPanel, this, MainActivity.class, Gravity.TOP, Gravity.BOTTOM, R.mipmap.up);
 
         new ViewPagerHelper(this)
+                //region 初始化本地界面
                 .initLayout(R.layout.page_local, R.id.bt1, new ViewPagerHelper.InitHandler()
                 {
                     @Override
                     public void onInit(View view)
                     {
                         CommonRecyclerView commonRecyclerView = view.findViewById(R.id.common_list_view);
-                        List<String> ls = getList();
-                        commonRecyclerView.setAdapter(new CommonRecyclerView.Adapter(ReposActivity.this, R.layout.item_controller, ls, Work.class));
+                        commonRecyclerView.setAdapter(
+                                new CommonRecyclerView.Adapter(
+                                        ReposActivity.this,
+                                        R.layout.item_controller,
+                                        getList(),
+                                        Work.class));
                     }
-                }, new ViewPagerHelper.OnTriggleListener()
+                }, new ViewPagerHelper.OnTriggerListener()
                 {
                     @Override
-                    public boolean onTriggle() {
+                    public boolean onTrigger() {
                         return true;
                     }
                 })
+                //endregion
+                //region 初始化云界面
                 .initLayout(R.layout.page_cloud, R.id.bt2, new ViewPagerHelper.InitHandler()
                 {
                     @Override
@@ -56,26 +62,27 @@ public class ReposActivity extends BaseActivity
                     {
 
                     }
-                }, new ViewPagerHelper.OnTriggleListener()
+                }, new ViewPagerHelper.OnTriggerListener()
                 {
                     @Override
-                    public boolean onTriggle()
+                    public boolean onTrigger()
                     {
                         Utils.makeToast(ReposActivity.this, "您还没登录呢");
                         return false;
                     }
                 })
+                //endregion
                 .build(R.id.view_pager);
     }
 
-    private List<String> getList()
+    private List<Solution> getList()
     {
         List<String> ls = new ArrayList<>();
-        ls.add("Example");
-        return ls;
+        DataOperation db = DataOperation.instance;
+        return db.getSolutionList(db.getLoginID());
     }
 
-    public static class Work extends CommonRecyclerView.ViewHolder<String>
+    public static class Work extends CommonRecyclerView.ViewHolder<Solution>
     {
         private TextView title;
 
@@ -87,18 +94,19 @@ public class ReposActivity extends BaseActivity
         }
 
         @Override
-        public void onBind(String data, int position) {
-            title.setText(data);
+        public void onBind(Solution data, int position) {
+            title.setText(data.solName);
         }
 
         @Override
-        public void onClick(String data, int position) {
+        public void onClick(Solution data, int position) {
             Intent intent = new Intent(ReposActivity.instance, com.yarten.manimanihong.MainActivity.class);
+            intent.putExtra("SolutionID", data.solId);
             ReposActivity.instance.startActivity(intent);
         }
 
         @Override
-        public boolean onLongClick(String data, final int position) {
+        public boolean onLongClick(Solution data, final int position) {
             Utils.makeDialog(ReposActivity.instance, "是否删除该遥控器？", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class DataOperation
         instance = this;
     }
 
-    private int loginID = 1;
+    private int loginID = ADMIN_ID;
 
     public void setLoginID(int id){loginID = id;}
 
@@ -290,12 +291,12 @@ public class DataOperation
     public List<Solution> getSolutionList(int userId) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        List<Solution> solList = null;
+        List<Solution> solList = new ArrayList<>();
         String idStr = Integer.toString(userId);
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("solutioin",null,"userId=?",new String[]{idStr},null,null,null);
-            while (cursor.moveToFirst()) {
+            cursor = db.query("solution",null,"userId=?",new String[]{idStr},null,null,null);
+            while (cursor.moveToNext()) {
                 Solution sol = toSolution(cursor);
                 solList.add(sol);
             }
@@ -363,7 +364,7 @@ public class DataOperation
         String idStr = Integer.toString(userId);
         try {
             db = databaseHelper.getReadableDatabase();
-            cursor = db.query("solution",null,"userId=?,solName=?",new String[]{idStr,name},null,null,null);
+            cursor = db.query("solution",null,"userId=? and solName=?",new String[]{idStr,name},null,null,null);
             if (cursor.moveToFirst()) {
                 return toSolution(cursor);
             }

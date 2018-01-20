@@ -1,14 +1,10 @@
 package com.yarten.mainmenu;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -114,9 +110,9 @@ public class LoginActivity extends BaseActivity
                     }
 
 
-                }, new ViewPagerHelper.OnTriggleListener() {
+                }, new ViewPagerHelper.OnTriggerListener() {
                     @Override
-                    public boolean onTriggle() {
+                    public boolean onTrigger() {
                         return true;
                     }
                 })
@@ -186,9 +182,9 @@ public class LoginActivity extends BaseActivity
                         });
                     }
 
-                }, new ViewPagerHelper.OnTriggleListener() {
+                }, new ViewPagerHelper.OnTriggerListener() {
                     @Override
-                    public boolean onTriggle() {
+                    public boolean onTrigger() {
                         return true;
                     }
                 })

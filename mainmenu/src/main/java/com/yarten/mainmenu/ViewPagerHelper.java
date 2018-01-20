@@ -5,7 +5,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,7 +21,7 @@ public class ViewPagerHelper
     private ArrayList<InitHandler> handlers;
     private ArrayList<Integer> layouts;
     private ArrayList<Integer> triggers;
-    private ArrayList<OnTriggleListener> onTriggleListeners;
+    private ArrayList<OnTriggerListener> onTriggerListeners;
 
     public ViewPagerHelper(Context context)
     {
@@ -30,15 +29,15 @@ public class ViewPagerHelper
         handlers = new ArrayList<>();
         layouts = new ArrayList<>();
         triggers = new ArrayList<>();
-        onTriggleListeners = new ArrayList<>();
+        onTriggerListeners = new ArrayList<>();
     }
 
-    public ViewPagerHelper initLayout(int layout, int trigger, InitHandler handler, OnTriggleListener onTriggleListener)
+    public ViewPagerHelper initLayout(int layout, int trigger, InitHandler handler, OnTriggerListener onTriggerListener)
     {
         layouts.add(layout);
         triggers.add(trigger);
         handlers.add(handler);
-        onTriggleListeners.add(onTriggleListener);
+        onTriggerListeners.add(onTriggerListener);
         return this;
     }
 
@@ -56,7 +55,7 @@ public class ViewPagerHelper
             views.add(view);
             handlers.get(i).onInit(view);
 
-            trigger.setOnClickListener(new OnChangeListener(viewPager, i, onTriggleListeners.get(i)));
+            trigger.setOnClickListener(new OnChangeListener(viewPager, i, onTriggerListeners.get(i)));
         }
 
         viewPager.setAdapter(new Adapter(views));
@@ -68,28 +67,28 @@ public class ViewPagerHelper
         void onInit(View view);
     }
 
-    public interface OnTriggleListener
+    public interface OnTriggerListener
     {
-        boolean onTriggle();
+        boolean onTrigger();
     }
 
     class OnChangeListener implements View.OnClickListener
     {
         private ViewPager viewPager;
         private int position;
-        private OnTriggleListener onTriggleListener;
+        private OnTriggerListener onTriggerListener;
 
-        OnChangeListener(ViewPager viewPage, int position, OnTriggleListener onTriggleListener)
+        OnChangeListener(ViewPager viewPage, int position, OnTriggerListener onTriggerListener)
         {
             this.viewPager = viewPage;
             this.position = position;
-            this.onTriggleListener = onTriggleListener;
+            this.onTriggerListener = onTriggerListener;
         }
 
         @Override
         public void onClick(View v)
         {
-            if(onTriggleListener == null || onTriggleListener.onTriggle())
+            if(onTriggerListener == null || onTriggerListener.onTrigger())
                 viewPager.setCurrentItem(position);
         }
     }

@@ -51,9 +51,9 @@ public class DeviceActivity extends BaseActivity
                         commonRecyclerView.setAdapter(adapter);
                         initListener(adapter);
                     }
-                }, new ViewPagerHelper.OnTriggleListener() {
+                }, new ViewPagerHelper.OnTriggerListener() {
                     @Override
-                    public boolean onTriggle() {
+                    public boolean onTrigger() {
                         return true;
                     }
                 })
@@ -62,9 +62,9 @@ public class DeviceActivity extends BaseActivity
                     public void onInit(View view) {
 
                     }
-                }, new ViewPagerHelper.OnTriggleListener() {
+                }, new ViewPagerHelper.OnTriggerListener() {
                     @Override
-                    public boolean onTriggle() {
+                    public boolean onTrigger() {
                         WindowManager windowManager = (WindowManager)DeviceActivity.this.getSystemService(Context.WINDOW_SERVICE);
                         DisplayMetrics outMetrics = new DisplayMetrics();
                         windowManager.getDefaultDisplay().getMetrics(outMetrics);

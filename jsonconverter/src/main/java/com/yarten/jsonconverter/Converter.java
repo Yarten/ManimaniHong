@@ -74,7 +74,9 @@ public class Converter
         }
 
         Gson gson = new Gson();
-        String json = gson.toJson(components);
+        ComponentList componentList = new ComponentList();
+        componentList.components = components;
+        String json = gson.toJson(componentList);
         return json;
 
     }
